@@ -12,14 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  formHead1,
-  formHead2,
-  formHead3,
-  formTitle1,
-  formTitle2,
-  formTitle3,
-} from "@/constants/data";
+import { formHead1, formHead2, formHead3, formTitles } from "@/constants/data";
 import Link from "next/link";
 
 const Department = async ({
@@ -50,7 +43,7 @@ const Department = async ({
       {/* PUBLISHED BOOKS */}
       <AccordionItem value="item-1">
         <AccordionTrigger className="font-bold text-left text-primary hover:text-secondary">
-          {formTitle1}
+          {formTitles[0]}
         </AccordionTrigger>
         <AccordionContent>
           <div className="max-h-[500px] overflow-y-auto">
@@ -219,7 +212,7 @@ const Department = async ({
       {/* BOOK AUTHORED EDITED */}
       <AccordionItem value="item-2">
         <AccordionTrigger className="font-bold text-left text-primary hover:text-secondary">
-          {formTitle2}
+          {formTitles[1]}
         </AccordionTrigger>
         <AccordionContent>
           <div className="max-h-[500px] overflow-y-auto">
@@ -388,7 +381,7 @@ const Department = async ({
       {/* RESEARCH PROJECTS */}
       <AccordionItem value="item-3">
         <AccordionTrigger className="font-bold text-left text-primary hover:text-secondary">
-          {formTitle3}
+          {formTitles[2]}
         </AccordionTrigger>
         <AccordionContent>
           <div className="max-h-[500px] overflow-y-auto">
