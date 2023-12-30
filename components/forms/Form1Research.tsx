@@ -57,6 +57,7 @@ export function Form1Research({
   const [books, setBooks] = useState([]);
   const [error, setError] = useState("");
   const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
+  const [selectedSdg, setSelectedSdg] = useState<string[]>([]);
 
   useLayoutEffect(() => {
     const fetchBooks = async () => {
@@ -168,12 +169,22 @@ export function Form1Research({
     }
   };
 
-  const checkChange = (countryName: string) => {
+  const checkCountryChange = (countryName: string) => {
     setSelectedCountries((prevSelected: any) => {
       if (prevSelected.includes(countryName)) {
         return prevSelected.filter((name: any) => name !== countryName);
       } else {
         return [...prevSelected, countryName];
+      }
+    });
+  };
+
+  const checkSdgChange = (sdgName: string) => {
+    setSelectedSdg((prevSelected: any) => {
+      if (prevSelected.includes(sdgName)) {
+        return prevSelected.filter((name: any) => name !== sdgName);
+      } else {
+        return [...prevSelected, sdgName];
       }
     });
   };
@@ -497,7 +508,7 @@ export function Form1Research({
                 <DropdownMenuCheckboxItem
                   key={index}
                   checked={selectedCountries.includes(country.name)}
-                  onCheckedChange={() => checkChange(country.name)}
+                  onCheckedChange={() => checkCountryChange(country.name)}
                 >
                   {country.name}
                 </DropdownMenuCheckboxItem>
@@ -505,7 +516,35 @@ export function Form1Research({
             </DropdownMenuContent>
           </DropdownMenu>
           {/* ADDRESSING */}
-          <FormField
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button className="w-full" variant="outline">
+                {selectedCountries.map((country, index) => (
+                  <span
+                    key={index}
+                    className="m-1 p-1 border border-primary rounded-lg"
+                  >
+                    {country}
+                  </span>
+                ))}
+                Other Countries
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56 h-64 overflow-y-auto">
+              <DropdownMenuLabel>Select SDG</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {SDG.map((sdg, index: number) => (
+                <DropdownMenuCheckboxItem
+                  key={index}
+                  checked={selectedSdg.includes(sdg.name)}
+                  onCheckedChange={() => checkSdgChange(sdg.name)}
+                >
+                  {sdg.name}
+                </DropdownMenuCheckboxItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          {/* <FormField
             control={form.control}
             name="addressing"
             render={({ field }) => (
@@ -533,7 +572,7 @@ export function Form1Research({
                 <FormMessage className="text-xs sm:text-base" />
               </FormItem>
             )}
-          />
+          /> */}
 
           <div className="">
             <Button

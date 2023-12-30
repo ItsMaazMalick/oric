@@ -25,10 +25,10 @@ export function Toaster() {
                   <Image
                     src={`/images/${
                       props.variant === "default"
-                        ? "loading.gif"
+                        ? "loading-animate.gif"
                         : props.variant === "success"
-                        ? "tick.gif"
-                        : "cross.gif"
+                        ? "tick-animate.gif"
+                        : "cross-animate.gif"
                     }`}
                     alt="Loading icon"
                     fill
