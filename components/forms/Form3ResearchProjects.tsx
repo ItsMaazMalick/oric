@@ -25,9 +25,17 @@ import {
 import { SDG, years } from "@/constants/data";
 import { validateForm3 } from "@/lib/validator";
 import { useLayoutEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { ChevronDown, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 //FORM VALIDATION
 const formSchema = validateForm3;
@@ -42,6 +50,7 @@ export function Form3ResearchProjects({
   const [loading, setLoading] = useState(false);
   const [books, setBooks] = useState([]);
   const [file, setFile] = useState();
+  const [selectedSdg, setSelectedSdg] = useState<string[]>([]);
 
   useLayoutEffect(() => {
     const fetchBooks = async () => {
@@ -142,6 +151,16 @@ export function Form3ResearchProjects({
       });
       setLoading(false);
     }
+  };
+
+  const checkSdgChange = (sdgName: string) => {
+    setSelectedSdg((prevSelected: any) => {
+      if (prevSelected.includes(sdgName)) {
+        return prevSelected.filter((name: any) => name !== sdgName);
+      } else {
+        return [...prevSelected, sdgName];
+      }
+    });
   };
 
   return (
@@ -507,39 +526,43 @@ export function Form3ResearchProjects({
             </div>
           </div>
           <div className="flex flex-col lg:flex-row w-full gap-4">
-            <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
-                name="remarks"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Addressing any SDG
-                    </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      //   defaultValue={field.value}
+            <div className="w-full lg:w-[50%]">
+              <div className="mb-2 text-xs sm:text-base sm:font-medium">
+                Addressing any SDG
+              </div>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button className="w-full" variant="outline">
+                    {selectedSdg.map((sdg, index) => (
+                      <span
+                        key={index}
+                        className="m-1 p-1 border border-primary rounded-lg"
+                      >
+                        {sdg}
+                      </span>
+                    ))}
+                    <span className="ml-1 rounded-md bg-primary text-primary-foreground">
+                      <ChevronDown size={20} />
+                    </span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56 h-64 overflow-y-auto">
+                  <DropdownMenuLabel>Select SDG</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {SDG.map((sdg, index: number) => (
+                    <DropdownMenuCheckboxItem
+                      key={index}
+                      checked={selectedSdg.includes(sdg.name)}
+                      onCheckedChange={() => checkSdgChange(sdg.name)}
                     >
-                      <FormControl className="text-xs sm:text-base">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select value" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent className="h-48">
-                        {SDG.map((sdg, index) => (
-                          <SelectItem key={index} value={sdg.name}>
-                            {sdg.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
+                      {sdg.name}
+                    </DropdownMenuCheckboxItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
             {/* ANNEX FILE */}
-            <div className="w-full lg:w-[70%]">
+            <div className="w-full lg:w-[50%]">
               <div className="mb-2">
                 <label htmlFor="" className="text-xs sm:text-base font-medium">
                   Submission Proof / Award Letter / Completion Certificate
