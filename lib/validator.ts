@@ -54,8 +54,8 @@ export const validateForm1 = z.object({
       "Correct way: https://abc.com"
     )
     .min(1, "Weblink is required"),
-  country: z.string().min(1, "Country is required"),
-  addressing: z.string().min(1, "Address is required"),
+  country: z.string(),
+  addressing: z.string(),
 });
 // 2 - Book Authored / Edited
 export const validateForm2 = z.object({

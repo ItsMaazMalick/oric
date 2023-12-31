@@ -519,15 +519,15 @@ export function Form1Research({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button className="w-full" variant="outline">
-                {selectedCountries.map((country, index) => (
+                {selectedSdg.map((sdg, index) => (
                   <span
                     key={index}
                     className="m-1 p-1 border border-primary rounded-lg"
                   >
-                    {country}
+                    {sdg}
                   </span>
                 ))}
-                Other Countries
+                Addressing any SDG
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56 h-64 overflow-y-auto">
