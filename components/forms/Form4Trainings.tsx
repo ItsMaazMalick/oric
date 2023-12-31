@@ -24,10 +24,20 @@ import {
 } from "../ui/select";
 import { validateForm4 } from "@/lib/validator";
 import { useLayoutEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { ChevronDown, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
 import { countries } from "@/constants/data";
+
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Label } from "../ui/label";
 
 //FORM VALIDATION
 const formSchema = validateForm4;
@@ -42,6 +52,7 @@ export function Form4Trainings({
   const [loading, setLoading] = useState(false);
   const [books, setBooks] = useState([]);
   const [role, setRole] = useState("");
+  const [selectedAudience, setSelectedAudience] = useState<string[]>([]);
 
   useLayoutEffect(() => {
     const fetchBooks = async () => {
@@ -122,6 +133,16 @@ export function Form4Trainings({
     }
   };
 
+  const checkAudienceChange = (sdgName: string) => {
+    setSelectedAudience((prevSelected: any) => {
+      if (prevSelected.includes(sdgName)) {
+        return prevSelected.filter((name: any) => name !== sdgName);
+      } else {
+        return [...prevSelected, sdgName];
+      }
+    });
+  };
+
   return (
     <>
       <Form {...form}>
@@ -159,7 +180,7 @@ export function Form4Trainings({
               />
             </div>
             {/* ROLE */}
-            <div className="w-full lg:w-[30%]">
+            <div className="w-full lg:w-[35%]">
               <div className="mb-2 text-xs sm:text-base sm:font-medium">
                 Applicant Role
               </div>
@@ -186,7 +207,7 @@ export function Form4Trainings({
               </select>
             </div>
             {/* YEAR*/}
-            <div className="w-full lg:w-[30%]">
+            <div className="w-full lg:w-[35%]">
               <FormField
                 control={form.control}
                 name="date"
@@ -207,6 +228,8 @@ export function Form4Trainings({
                 )}
               />
             </div>
+          </div>
+          <div className="flex flex-col lg:flex-row w-full gap-4">
             {/* YEAR*/}
             <div className="w-full lg:w-[30%]">
               <FormField
@@ -231,7 +254,7 @@ export function Form4Trainings({
             </div>
 
             {/* TITLE OF TRAINING*/}
-            <div className="w-full lg:w-[40%]">
+            <div className="w-full lg:w-[35%]">
               <FormField
                 control={form.control}
                 name="title_of_training"
@@ -248,10 +271,9 @@ export function Form4Trainings({
                 )}
               />
             </div>
-          </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+
             {/* NO OF PARTICIPANTS */}
-            <div className="w-full lg:w-[20%]">
+            <div className="w-full lg:w-[35%]">
               <FormField
                 control={form.control}
                 name="no_of_participants"
@@ -272,6 +294,8 @@ export function Form4Trainings({
                 )}
               />
             </div>
+          </div>
+          <div className="flex flex-col lg:flex-row w-full gap-4">
             {/* MAJOR FOCUS */}
             <div className="w-full lg:w-[30%]">
               <FormField
@@ -290,36 +314,57 @@ export function Form4Trainings({
                 )}
               />
             </div>
+
             {/* AUDIENCE TYPE */}
-            <div className="w-full lg:w-[20%]">
-              <FormField
-                control={form.control}
-                name="audience_type"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Audience Type
-                    </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      //   defaultValue={field.value}
-                    >
-                      <FormControl className="text-xs sm:text-base">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Type" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Student">Student</SelectItem>
-                        <SelectItem value="Faculty">Faculty</SelectItem>
-                        <SelectItem value="Researchers">Researchers</SelectItem>
-                        <SelectItem value="Community">Community</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
+            <div className="w-full lg:w-[70%]">
+              <div className="mb-2 text-xs sm:text-base sm:font-medium">
+                Audience Type
+              </div>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button className="w-full" variant="outline">
+                    {selectedAudience.map((audience, index) => (
+                      <span
+                        key={index}
+                        className="m-1 p-1 border border-primary rounded-lg"
+                      >
+                        {audience}
+                      </span>
+                    ))}
+                    <span className="ml-1 rounded-md bg-primary text-primary-foreground">
+                      <ChevronDown size={20} />
+                    </span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56">
+                  <DropdownMenuLabel>Select SDG</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuCheckboxItem
+                    checked={selectedAudience.includes("Student")}
+                    onCheckedChange={() => checkAudienceChange("Student")}
+                  >
+                    Student
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem
+                    checked={selectedAudience.includes("Faculty")}
+                    onCheckedChange={() => checkAudienceChange("Faculty")}
+                  >
+                    Faculty
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem
+                    checked={selectedAudience.includes("Researchers")}
+                    onCheckedChange={() => checkAudienceChange("Researchers")}
+                  >
+                    Researchers
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem
+                    checked={selectedAudience.includes("Community")}
+                    onCheckedChange={() => checkAudienceChange("Community")}
+                  >
+                    Community
+                  </DropdownMenuCheckboxItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
           <div className="flex flex-col lg:flex-row w-full gap-4">
@@ -342,7 +387,7 @@ export function Form4Trainings({
               />
             </div>
             {/* COUNTRY */}
-            <div className="w-full lg:w-1/2">
+            <div className="w-full lg:w-[70%]">
               <FormField
                 control={form.control}
                 name="audience_type"

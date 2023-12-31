@@ -2,6 +2,14 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -25,9 +33,10 @@ import {
 import { SDG, countries, years } from "@/constants/data";
 import { validateForm2 } from "@/lib/validator";
 import { useLayoutEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { ChevronDown, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
+import { Label } from "../ui/label";
 
 //FORM VALIDATION
 const formSchema = validateForm2;
@@ -43,6 +52,7 @@ export function Form2BookAuthoredEdited({
   const [books, setBooks] = useState([]);
   const [error, setError] = useState("");
   const [author, setAuthor] = useState("");
+  const [selectedSdg, setSelectedSdg] = useState<string[]>([]);
 
   useLayoutEffect(() => {
     const fetchBooks = async () => {
@@ -141,6 +151,16 @@ export function Form2BookAuthoredEdited({
       });
       setLoading(false);
     }
+  };
+
+  const checkSdgChange = (sdgName: string) => {
+    setSelectedSdg((prevSelected: any) => {
+      if (prevSelected.includes(sdgName)) {
+        return prevSelected.filter((name: any) => name !== sdgName);
+      } else {
+        return [...prevSelected, sdgName];
+      }
+    });
   };
 
   return (
@@ -375,35 +395,41 @@ export function Form2BookAuthoredEdited({
             </div>
           </div>
           {/* ADDRESSING */}
-          <FormField
-            control={form.control}
-            name="addressing"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-xs sm:text-base">
-                  Addressing any SDG
-                </FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  //   defaultValue={field.value}
-                >
-                  <FormControl className="text-xs sm:text-base">
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select value" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent className="h-48">
-                    {SDG.map((sdg, index) => (
-                      <SelectItem key={index} value={sdg.name}>
-                        {sdg.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage className="text-xs sm:text-base" />
-              </FormItem>
-            )}
-          />
+          <div>
+            <div className="mb-2 text-xs sm:text-base sm:font-medium">
+              Addressing any SDG
+            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button className="w-full" variant="outline">
+                  {selectedSdg.map((sdg, index) => (
+                    <span
+                      key={index}
+                      className="m-1 p-1 border border-primary rounded-lg"
+                    >
+                      {sdg}
+                    </span>
+                  ))}
+                  <span className="ml-1 rounded-md bg-primary text-primary-foreground">
+                    <ChevronDown size={20} />
+                  </span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56 h-64 overflow-y-auto">
+                <DropdownMenuLabel>Select SDG</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {SDG.map((sdg, index: number) => (
+                  <DropdownMenuCheckboxItem
+                    key={index}
+                    checked={selectedSdg.includes(sdg.name)}
+                    onCheckedChange={() => checkSdgChange(sdg.name)}
+                  >
+                    {sdg.name}
+                  </DropdownMenuCheckboxItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
 
           <div className="">
             <Button

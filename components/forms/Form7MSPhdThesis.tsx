@@ -41,6 +41,7 @@ export function Form7MSPhdThesis({
 }) {
   const [loading, setLoading] = useState(false);
   const [books, setBooks] = useState([]);
+  const [role, setRole] = useState("");
 
   useLayoutEffect(() => {
     const fetchBooks = async () => {
@@ -129,62 +130,54 @@ export function Form7MSPhdThesis({
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <div className="flex flex-col lg:flex-row w-full gap-4">
-            {/* SUPERVISOR */}
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="supervisor"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Applicant Role
-                    </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      //   defaultValue={field.value}
-                    >
-                      <FormControl className="text-xs sm:text-base">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Role" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Supervisor">Supervisor</SelectItem>
-                        <SelectItem value="Co-Supervisor">
-                          Co-Supervisor
-                        </SelectItem>
-                        <SelectItem value="Member Supervisory Committee">
-                          Member Supervisory Committee
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
+            {/* ROLE */}
+            <div className="w-full lg:w-[30%]">
+              <div className="mb-2 text-xs sm:text-base sm:font-medium">
+                Applicant Role
+              </div>
+              <select
+                name=""
+                id=""
+                className="w-full p-2 border rounded-md text-xs sm:text-base"
+                onChange={(e) => setRole(e.target.value)}
+              >
+                <option disabled value="">
+                  Select Role
+                </option>
+                <option value="Co-Supervisor">Co-Supervisor</option>
+                <option value="Supervisor">Supervisor</option>
+                <option value="Member Supervisory Committee">
+                  Member Supervisory Committee
+                </option>
+              </select>
             </div>
             {/* CO_SUPERVISOR */}
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="co_supervisor"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Name of Supervisor
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Name of Supervisor" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+            {role !== "Supervisor" && (
+              <div className="w-full lg:w-[35%]">
+                <FormField
+                  control={form.control}
+                  name="co_supervisor"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs sm:text-base">
+                        Name of Supervisor
+                      </FormLabel>
+                      <FormControl className="text-xs sm:text-base">
+                        <Input placeholder="Name of Supervisor" {...field} />
+                      </FormControl>
+                      <FormMessage className="text-xs sm:text-base" />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
+
             {/* YEAR*/}
-            <div className="w-full lg:w-[30%]">
+            <div
+              className={`w-full lg:${
+                role !== "Supervisor" ? "w-[35%]" : "w-[70%]"
+              }`}
+            >
               <FormField
                 control={form.control}
                 name="date"
@@ -212,9 +205,10 @@ export function Form7MSPhdThesis({
                 )}
               />
             </div>
-
+          </div>
+          <div className="flex flex-col lg:flex-row w-full gap-4">
             {/* LEVEL OF DEGREE*/}
-            <div className="w-full lg:w-[35%]">
+            <div className="w-full lg:w-[30%]">
               <FormField
                 control={form.control}
                 name="level_of_degree"
@@ -249,7 +243,7 @@ export function Form7MSPhdThesis({
               />
             </div>
             {/* DEGREE PROGRAM */}
-            <div className="w-full lg:w-[30%]">
+            <div className="w-full lg:w-[35%]">
               <FormField
                 control={form.control}
                 name="degree_program"

@@ -35,9 +35,10 @@ import {
 import { SDG, countries, years } from "@/constants/data";
 import { validateForm1 } from "@/lib/validator";
 import { useLayoutEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { ChevronDown, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
+import { Label } from "../ui/label";
 
 //FORM VALIDATION
 const formSchema = validateForm1;
@@ -487,63 +488,77 @@ export function Form1Research({
             </div>
           </div>
           {/* OTHER COUNTRIES*/}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button className="w-full" variant="outline">
-                {selectedCountries.map((country, index) => (
-                  <span
-                    key={index}
-                    className="m-1 p-1 border border-primary rounded-lg"
-                  >
-                    {country}
+          <div>
+            <div className="mb-2 text-xs sm:text-base sm:font-medium">
+              Other Countries
+            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button className="w-full" variant="outline">
+                  {selectedCountries.map((country, index) => (
+                    <span
+                      key={index}
+                      className="m-1 p-1 border border-primary rounded-lg"
+                    >
+                      {country}
+                    </span>
+                  ))}
+                  <span className="ml-1 rounded-md bg-primary text-primary-foreground">
+                    <ChevronDown size={20} />
                   </span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56 h-64 overflow-y-auto">
+                <DropdownMenuLabel>Select Countries</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {countries.map((country, index: number) => (
+                  <DropdownMenuCheckboxItem
+                    key={index}
+                    checked={selectedCountries.includes(country.name)}
+                    onCheckedChange={() => checkCountryChange(country.name)}
+                  >
+                    {country.name}
+                  </DropdownMenuCheckboxItem>
                 ))}
-                Other Countries
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56 h-64 overflow-y-auto">
-              <DropdownMenuLabel>Select Countries</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {countries.map((country, index: number) => (
-                <DropdownMenuCheckboxItem
-                  key={index}
-                  checked={selectedCountries.includes(country.name)}
-                  onCheckedChange={() => checkCountryChange(country.name)}
-                >
-                  {country.name}
-                </DropdownMenuCheckboxItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
           {/* ADDRESSING */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button className="w-full" variant="outline">
-                {selectedSdg.map((sdg, index) => (
-                  <span
-                    key={index}
-                    className="m-1 p-1 border border-primary rounded-lg"
-                  >
-                    {sdg}
+          <div>
+            <div className="mb-2 text-xs sm:text-base sm:font-medium">
+              Addressing any SDG
+            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button className="w-full" variant="outline">
+                  {selectedSdg.map((sdg, index) => (
+                    <span
+                      key={index}
+                      className="m-1 p-1 border border-primary rounded-lg"
+                    >
+                      {sdg}
+                    </span>
+                  ))}
+                  <span className="ml-1 rounded-md bg-primary text-primary-foreground">
+                    <ChevronDown size={20} />
                   </span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56 h-64 overflow-y-auto">
+                <DropdownMenuLabel>Select SDG</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {SDG.map((sdg, index: number) => (
+                  <DropdownMenuCheckboxItem
+                    key={index}
+                    checked={selectedSdg.includes(sdg.name)}
+                    onCheckedChange={() => checkSdgChange(sdg.name)}
+                  >
+                    {sdg.name}
+                  </DropdownMenuCheckboxItem>
                 ))}
-                Addressing any SDG
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56 h-64 overflow-y-auto">
-              <DropdownMenuLabel>Select SDG</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {SDG.map((sdg, index: number) => (
-                <DropdownMenuCheckboxItem
-                  key={index}
-                  checked={selectedSdg.includes(sdg.name)}
-                  onCheckedChange={() => checkSdgChange(sdg.name)}
-                >
-                  {sdg.name}
-                </DropdownMenuCheckboxItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
           {/* <FormField
             control={form.control}
             name="addressing"

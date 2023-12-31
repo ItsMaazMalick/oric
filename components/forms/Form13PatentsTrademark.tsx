@@ -258,6 +258,9 @@ export function Form13PatentsTrademark({
                     <FormControl className="text-xs sm:text-base">
                       <Input placeholder="Names of Inventors" {...field} />
                     </FormControl>
+                    <FormDescription>
+                      Separated with comma ( , )
+                    </FormDescription>
                     <FormMessage className="text-xs sm:text-base" />
                   </FormItem>
                 )}
