@@ -24,11 +24,11 @@ export function Toaster() {
               <div className="flex items-center">
                 <div className="relative w-6 h-6 mr-2">
                   {props.variant === "default" ? (
-                    <AlertCircle className="animate-pulse" />
+                    <AlertCircle className="animate-bounce" />
                   ) : props.variant === "success" ? (
-                    <CheckCircle className="animate-pulse" />
+                    <CheckCircle className="animate-bounce" />
                   ) : (
-                    <XCircle className="animate-pulse" />
+                    <XCircle className="animate-bounce" />
                   )}
 
                   {/* <Image
@@ -45,9 +45,13 @@ export function Toaster() {
                   /> */}
                 </div>
                 <div>
-                  {title && <ToastTitle>{title}</ToastTitle>}
+                  {title && (
+                    <ToastTitle className="animate-bounce">{title}</ToastTitle>
+                  )}
                   {description && (
-                    <ToastDescription>{description}</ToastDescription>
+                    <ToastDescription className="animate-bounce">
+                      {description}
+                    </ToastDescription>
                   )}
                 </div>
               </div>
