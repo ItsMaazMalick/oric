@@ -9,6 +9,7 @@ import {
   ToastViewport,
 } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
+import { AlertCircle, CheckCircle, XCircle } from "lucide-react";
 import Image from "next/image";
 
 export function Toaster() {
@@ -22,7 +23,15 @@ export function Toaster() {
             <div className="grid gap-1">
               <div className="flex items-center">
                 <div className="relative w-6 h-6 mr-2">
-                  <Image
+                  {props.variant === "default" ? (
+                    <AlertCircle />
+                  ) : props.variant === "success" ? (
+                    <CheckCircle />
+                  ) : (
+                    <XCircle />
+                  )}
+
+                  {/* <Image
                     src={`/images/${
                       props.variant === "default"
                         ? "loading-animate.gif"
@@ -33,7 +42,7 @@ export function Toaster() {
                     alt="Loading icon"
                     fill
                     className=""
-                  />
+                  /> */}
                 </div>
                 <div>
                   {title && <ToastTitle>{title}</ToastTitle>}
