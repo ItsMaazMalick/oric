@@ -1,11 +1,11 @@
-import { socialLinks } from "@/constants/socialLinks";
+import { portfolioLink, socialLinks } from "@/constants/socialLinks";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 const Footer = () => {
   return (
-    <div className="w-full bg-primary-foreground text-primary flex flex-col lg:flex-row justify-center lg:justify-between items-center text-xs sm:text-base p-2 lg:p-4 ring-1">
+    <div className="w-full bg-secondary text-gray-300 flex flex-col lg:flex-row justify-center lg:justify-between items-center text-xs sm:text-base p-2 lg:p-4 ring-1">
       <p className="p-2 text-sm text-center">
         &copy; 2023 ORIC. All rights reserved.&nbsp;
       </p>
@@ -22,10 +22,10 @@ const Footer = () => {
         ))}
       </div>
       <p className="p-2 text-sm text-center">
-        Developed by&nbsp;
+        Developed by
         <Link
-          className="text-black hover:underline transition-all duration-300"
-          href={"https://maazmalick.vercel.app"}
+          className="ml-2 text-white hover:underline transition-all duration-300 italic"
+          href={portfolioLink}
           target="_blank"
         >
           Department of Computer Science AIOU

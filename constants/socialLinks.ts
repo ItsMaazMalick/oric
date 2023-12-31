@@ -4,6 +4,7 @@ const twitterUserName = "itsmaazmalick";
 const phoneNumber = "+923125770904";
 const whatsAppChatMessage =
   "Hi 👋! Thanks for your message. I'll get back to you within 24 hours.";
+export const portfolioLink: string = "https://itsmaazmalick.vercel.app";
 
 export const socialLinks = [
   {

@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <>
       {/* RIGHT DIV */}
-      <div className="w-10 fixed top-52 right-5 space-y-4">
+      <div className="w-10 fixed top-52 right-5 space-y-4 z-50">
         {socialLinks.map((social) => (
           <Link
             key={social.id}
@@ -72,7 +72,7 @@ export default function Home() {
             </div>
             {/* IMAGE */}
             <div className="relative w-96 h-60">
-              <Image src={blog.image} alt="IMage" fill />
+              <Image src={blog.image} alt="Image" fill />
             </div>
           </div>
         ))}

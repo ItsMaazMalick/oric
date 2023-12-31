@@ -8,7 +8,7 @@ const MainNavbar = () => {
   const pathName = usePathname();
 
   return (
-    <div className="flex gap-10">
+    <div className="hidden md:flex gap-10">
       {navLinks.map((links) => (
         <Link
           className={`hover:text-primary-foreground ${

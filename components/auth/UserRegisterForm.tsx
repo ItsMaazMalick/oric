@@ -204,8 +204,9 @@ const UserRegisterForm = () => {
                     </FormControl>
                     <SelectContent>
                       <SelectItem value="Dr">Dr</SelectItem>
-                      <SelectItem value="">Dr</SelectItem>
-                      <SelectItem value="">Dr</SelectItem>
+                      <SelectItem value="Mr">Mr</SelectItem>
+                      <SelectItem value="Ms">Ms</SelectItem>
+                      <SelectItem value="Mrs">Mrs</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage className="text-xs sm:text-base" />

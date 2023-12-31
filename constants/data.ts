@@ -966,24 +966,6 @@ export const formTitles = [
   "17. List of Student Organizations / Associations / Clubs / Alumni Groups",
   "18. List of Facilities / Labs Accessible to Students / Community",
 ];
-// export const formTitle1 = `1. Research Publications (Impact Journal / HJRS / HEC Recognized Journals)`;
-// export const formTitle2 = `2. Book Authored / Edited`;
-// export const formTitle3 = `3. Research Projects`;
-// export const formTitle4 = `4. Trainings / Workshops / Seminars / Conferences`;
-// export const formTitle6 = `6. Thesis / FYP Supervised`;
-// export const formTitle8 = `8. Policy Advocacy or Case Studies Presented to Government Department`;
-// export const formTitle9 = `9. Links Established with other HEIs / Corporate Sector / Industry / Community`;
-// export const formTitle10 = `10. Contract Research Awarded by Industry or Government Organizations`;
-// export const formTitle11 = `11. Civic Engagement Events / Initiatives on Issues of Public Concern`;
-// export const formTitle12 = `12. Consultancy Contracts with Industry, Commerce or Government`;
-// export const formTitle13 = `13. Patents / Trade Marks / Design Patent / Copyrights, etc.`;
-// export const formTitle14 = `14. Research Products / Process / Prototype (e.g. Architectural designs, Assesment tools, Books, Softwares, Apps, Video Lectures, Arts designs,  etc)`;
-// export const formTitle15 = `15. Science / Arts Products or any Creative Activity / Exhibitions / Showcasing Events / Industry Linkages / Book Fair Arranged by your Department`;
-// export const formTitle16 = `16. Agreements Signed for Collaboration with Industry, Government or Community (at National / International Level)`;
-// export const formTitle17 = `17. List of Community work by Faculty Members or Students`;
-// export const formTitle18 = `18. List of Mentorship Programmes`;
-// export const formTitle19 = `19. List of Student Organizations / Associations / Clubs / Alumni Groups`;
-// export const formTitle20 = `20. List of Facilities / Labs Accessible to Students / Community`;
 
 // FACULTIES
 export const faculties = [
