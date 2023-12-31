@@ -91,6 +91,7 @@ const UserRegisterForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      title: "",
       name: "",
       dob: "",
       password: "",
@@ -130,6 +131,7 @@ const UserRegisterForm = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
+            title: values.title,
             name: values.name,
             email,
             cnic,
@@ -184,6 +186,33 @@ const UserRegisterForm = () => {
       </div>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <div className="w-full flex flex-col lg:flex-row justify-center items-center gap-4">
+          <div className="w-full lg:w-[20%]">
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xs sm:text-base">Title</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    //   defaultValue={field.value}
+                  >
+                    <FormControl className="text-xs sm:text-base">
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Title" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="Dr">Dr</SelectItem>
+                      <SelectItem value="">Dr</SelectItem>
+                      <SelectItem value="">Dr</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage className="text-xs sm:text-base" />
+                </FormItem>
+              )}
+            />
+          </div>
           {/* NAME */}
           <div className="w-full lg:w-[30%]">
             <FormField
@@ -201,7 +230,7 @@ const UserRegisterForm = () => {
             />
           </div>
           {/* Email */}
-          <div className="w-full lg:w-[35%]">
+          <div className="w-full lg:w-[30%]">
             <div className="mb-2">Email</div>
             <Input
               className="text-xs md:text-base"
@@ -219,7 +248,7 @@ const UserRegisterForm = () => {
             )}
           </div>
           {/* CNIC */}
-          <div className="w-full lg:w-[35%]">
+          <div className="w-full lg:w-[20%]">
             <div className="mb-2">CNIC</div>
             <Input
               className="text-xs md:text-base"

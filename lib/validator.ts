@@ -9,6 +9,7 @@ export const validateLogin = z.object({
 
 export const userValidation = z
   .object({
+    title: z.string().min(1, "Title is required"),
     name: z.string().min(1, "Name is required"),
     dob: z.string().refine((dob) => {
       // Parse the date string into a Date object

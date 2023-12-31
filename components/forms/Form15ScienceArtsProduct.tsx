@@ -182,7 +182,7 @@ export function Form15ScienceArtsProduct({
               />
             </div>
             {/* thematic_area */}
-            <div className="w-full lg:w-[30%]">
+            <div className="w-full lg:w-[35%]">
               <FormField
                 control={form.control}
                 name="title"
@@ -218,9 +218,10 @@ export function Form15ScienceArtsProduct({
                 )}
               />
             </div>
-
+          </div>
+          <div className="flex flex-col lg:flex-row w-full gap-4">
             {/* pi_name */}
-            <div className="w-full lg:w-[35%]">
+            <div className="w-full lg:w-[30%]">
               <FormField
                 control={form.control}
                 name="lead_designation"
@@ -237,10 +238,9 @@ export function Form15ScienceArtsProduct({
                 )}
               />
             </div>
-          </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+
             {/* pi_designation */}
-            <div className="w-full lg:w-[30%]">
+            <div className="w-full lg:w-[35%]">
               <FormField
                 control={form.control}
                 name="lead_department"
@@ -275,8 +275,10 @@ export function Form15ScienceArtsProduct({
                 )}
               />
             </div>
+          </div>
+          <div className="flex flex-col lg:flex-row w-full gap-4">
             {/* co_pi_designation */}
-            <div className="w-full lg:w-[35%]">
+            <div className="w-full lg:w-[30%]">
               <FormField
                 control={form.control}
                 name="location_scope"
@@ -293,10 +295,9 @@ export function Form15ScienceArtsProduct({
                 )}
               />
             </div>
-          </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+
             {/* co_pi_department */}
-            <div className="w-full lg:w-[30%]">
+            <div className="w-full lg:w-[35%]">
               <FormField
                 control={form.control}
                 name="forum"
@@ -331,8 +332,10 @@ export function Form15ScienceArtsProduct({
                 )}
               />
             </div>
+          </div>
+          <div className="flex flex-col lg:flex-row w-full gap-4">
             {/* sponsoring_agency_name */}
-            <div className="w-full lg:w-[35%]">
+            <div className="w-full lg:w-[30%]">
               <FormField
                 control={form.control}
                 name="financial_support"
@@ -349,10 +352,9 @@ export function Form15ScienceArtsProduct({
                 )}
               />
             </div>
-          </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+
             {/* sponsoring_agency_address */}
-            <div className="w-full lg:w-[30%]">
+            <div className="w-full lg:w-[35%]">
               <FormField
                 control={form.control}
                 name="field_of_use"

@@ -7,6 +7,7 @@ export async function POST(req: NextRequest) {
   try {
     const reqBody = await req.json();
     const {
+      title,
       name,
       email,
       cnic,
@@ -21,6 +22,7 @@ export async function POST(req: NextRequest) {
       highest_degree,
     } = reqBody;
     if (
+      !title ||
       !name ||
       !email ||
       !cnic ||
@@ -67,6 +69,7 @@ export async function POST(req: NextRequest) {
 
     const newUser = await prisma.user.create({
       data: {
+        title,
         name,
         email,
         cnic,

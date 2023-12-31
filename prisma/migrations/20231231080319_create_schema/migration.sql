@@ -13,6 +13,7 @@ CREATE TABLE "Admin" (
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "cnic" TEXT NOT NULL,
@@ -322,7 +323,7 @@ CREATE TABLE "PatentsTrademark" (
     "patent_name" TEXT NOT NULL,
     "patent_department" TEXT NOT NULL,
     "location_scope" TEXT NOT NULL,
-    "financial_support" TEXT,
+    "financial_support" INTEGER,
     "date_of_filling" TEXT NOT NULL,
     "patent_copy_file" TEXT NOT NULL,
     "approved_status" TEXT NOT NULL DEFAULT 'pending',
@@ -455,6 +456,7 @@ CREATE TABLE "ListOfFacilities" (
     "user_id" TEXT NOT NULL,
     "lab_name" TEXT NOT NULL,
     "equipment_type" TEXT NOT NULL,
+    "available_to_student" TEXT NOT NULL,
     "available_to_community" TEXT NOT NULL,
     "proofs" TEXT NOT NULL,
     "approved_status" TEXT NOT NULL DEFAULT 'pending',

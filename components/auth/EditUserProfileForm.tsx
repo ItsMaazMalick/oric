@@ -33,7 +33,6 @@ import BackButton from "../button/BackButton";
 const formSchema = userValidation;
 
 const EditUserProfileForm = ({ user }: any) => {
-  console.log(user);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [cnic, setCnic] = useState(user.cnic);
@@ -79,6 +78,7 @@ const EditUserProfileForm = ({ user }: any) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      title: user.title,
       name: user.name,
       dob: user.dob,
       password: "",
@@ -173,6 +173,35 @@ const EditUserProfileForm = ({ user }: any) => {
         </div>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="w-full flex flex-col lg:flex-row justify-center items-center gap-4">
+            <div className="w-full lg:w-[10%]">
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs sm:text-base">
+                      Title
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl className="text-xs sm:text-base">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Title" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Dr">Dr</SelectItem>
+                        <SelectItem value="">Dr</SelectItem>
+                        <SelectItem value="">Dr</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage className="text-xs sm:text-base" />
+                  </FormItem>
+                )}
+              />
+            </div>
             {/* NAME */}
             <div className="w-full lg:w-[30%]">
               <FormField
@@ -191,12 +220,13 @@ const EditUserProfileForm = ({ user }: any) => {
             </div>
 
             {/* CNIC */}
-            <div className="w-full lg:w-[35%]">
+            <div className="w-full lg:w-[30%]">
               <div className="mb-2">CNIC</div>
               <Input
+                disabled
                 className="text-xs md:text-base"
                 value={cnic}
-                onChange={handleCnicChange}
+                // onChange={handleCnicChange}
                 type="text"
                 placeholder="12345-1234567-1"
               />
@@ -208,11 +238,12 @@ const EditUserProfileForm = ({ user }: any) => {
                 </div>
               )}
             </div>
-          </div>
-          <div className="w-full flex flex-col lg:flex-row justify-center items-center gap-4">
+            {/* </div>
+          <div className="w-full flex flex-col lg:flex-row justify-center items-center gap-4"> */}
             {/* DOB */}
             <div className="w-full lg:w-[30%]">
               <FormField
+                disabled
                 control={form.control}
                 name="dob"
                 render={({ field }) => (
@@ -275,7 +306,9 @@ const EditUserProfileForm = ({ user }: any) => {
                 className="w-full p-2 border rounded-md text-xs sm:text-base mb-3"
                 onChange={handleFaculty}
               >
-                <option defaultValue={fact}>{fact.replaceAll("-", " ")}</option>
+                <option defaultValue={fact} value={fact}>
+                  {fact.replaceAll("-", " ")}
+                </option>
                 {faculties.map((faculty) => (
                   <option key={faculty.id} value={faculty.href}>
                     {faculty.title}
@@ -294,7 +327,9 @@ const EditUserProfileForm = ({ user }: any) => {
                 onChange={handleDepartmentChange}
                 className="w-full p-2 border rounded-md text-xs sm:text-base mb-3"
               >
-                <option defaultValue={dept}>{dept.replaceAll("-", " ")}</option>
+                <option defaultValue={dept} value={dept}>
+                  {dept.replaceAll("-", " ")}
+                </option>
                 {department.map(
                   (dept: { id: number; title: string; href: string }) => (
                     <option key={dept.id} value={dept.href}>

@@ -18,6 +18,7 @@ model Admin {
 
 model User {
   id                              String                                   @id @default(uuid())
+  title                           String
   name                            String
   email                           String                                   @unique
   cnic                            String                                   @unique
