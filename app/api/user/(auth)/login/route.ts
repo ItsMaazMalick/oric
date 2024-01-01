@@ -61,6 +61,7 @@ export async function POST(req: NextRequest) {
     response.cookies.set("auth-token", token);
     return response;
   } catch (error) {
+    console.log(error);
     return NextResponse.json({
       status: 500,
       success: false,
