@@ -1,19 +1,31 @@
-import { cookies } from "next/headers";
+"use client";
+import React from "react";
 import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { toast } from "../ui/use-toast";
-import { redirect } from "next/navigation";
 
-export default function UserLogout() {
+const Logout = () => {
+  const router = useRouter();
   const handleLogout = async () => {
-    "use server";
-    cookies()?.set("auth-token", "", { expires: new Date(0) });
-    redirect("/user/login");
+    toast({ variant: "default", title: "Please wait..." });
+    const res = await fetch(`/api/user/logout`, { cache: "no-store" });
+    if (res.ok) {
+      router.refresh();
+      router.push("/user/login");
+      toast({ variant: "success", title: "Successfully logged out" });
+    } else {
+      toast({ variant: "destructive", title: "Something went wrong" });
+    }
   };
+
   return (
-    <form action={handleLogout}>
-      <Button type="submit" variant={"destructive"}>
+    <Link href={"/user/login"}>
+      <Button onClick={handleLogout} variant={"destructive"}>
         Logout
       </Button>
-    </form>
+    </Link>
   );
-}
+};
+
+export default Logout;
