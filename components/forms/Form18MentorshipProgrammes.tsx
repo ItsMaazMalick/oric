@@ -16,7 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { validateForm18 } from "@/lib/validator";
-import { useLayoutEffect, useState } from "react";
+import { FormEvent, useLayoutEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
@@ -34,7 +34,7 @@ export function Form18MentorshipProgrammes({
 }) {
   const [loading, setLoading] = useState(false);
   const [books, setBooks] = useState([]);
-  const [file, setFile] = useState();
+  const [evidence, setEvidence] = useState();
   const [nill, setNill] = useState<boolean>(false);
 
   useLayoutEffect(() => {
@@ -129,20 +129,48 @@ export function Form18MentorshipProgrammes({
     }
   };
 
+  const handleNill = (e: FormEvent<HTMLFormElement>) => {
+    setLoading(true);
+    e.preventDefault();
+    console.log({ program_name: "NILL", no_of_students: 0, details: "NILL" });
+    setLoading(false);
+  };
+
   return (
     <>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <div className="flex items-center space-x-2 p-2 w-16 border-2 border-primary rounded-full">
-            <Checkbox onClick={() => setNill((prev) => !prev)} id="terms" />
-            <label
-              htmlFor="terms"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              Nill
-            </label>
+      <div className="flex items-center space-x-2 p-2 w-16 border-2 border-primary rounded-md mb-4">
+        <Checkbox onClick={() => setNill((prev) => !prev)} id="nill" />
+        <label
+          htmlFor="nill"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          Nill
+        </label>
+      </div>
+      {nill ? (
+        <>
+          <div className="w-full flex justify-center items-center font-bold text-destructive">
+            All fields are marked as NILL
           </div>
-          {!nill && (
+          <div className="">
+            <form onSubmit={handleNill}>
+              <Button
+                disabled={loading}
+                type="submit"
+                className="text-xs sm:text-base"
+              >
+                {loading ? (
+                  <Loader2 className="mx-auto h-4 w-4 animate-spin" />
+                ) : (
+                  "Submit"
+                )}
+              </Button>
+            </form>
+          </div>
+        </>
+      ) : (
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <>
               <div className="flex flex-col lg:flex-row w-full gap-4">
                 {/* PROGRAM NAME */}
@@ -218,28 +246,28 @@ export function Form18MentorshipProgrammes({
                 <input
                   className="w-full p-2 rounded-md border"
                   type="file"
-                  onChange={(e: any) => setFile(e.target.files?.[0])}
+                  onChange={(e: any) => setEvidence(e.target.files?.[0])}
                   name=""
                   id=""
                 />
               </div>
+              <div className="">
+                <Button
+                  disabled={loading}
+                  type="submit"
+                  className="text-xs sm:text-base"
+                >
+                  {loading ? (
+                    <Loader2 className="mx-auto h-4 w-4 animate-spin" />
+                  ) : (
+                    "Submit"
+                  )}
+                </Button>
+              </div>
             </>
-          )}
-          <div className="">
-            <Button
-              disabled={loading}
-              type="submit"
-              className="text-xs sm:text-base"
-            >
-              {loading ? (
-                <Loader2 className="mx-auto h-4 w-4 animate-spin" />
-              ) : (
-                "Submit"
-              )}
-            </Button>
-          </div>
-        </form>
-      </Form>
+          </form>
+        </Form>
+      )}
     </>
   );
 }

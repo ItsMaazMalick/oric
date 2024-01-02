@@ -344,9 +344,9 @@ export const validateForm17 = z.object({
 //   details: z.string().min(1, "Details required"),
 // });
 export const validateForm18 = z.object({
-  program_name: z.string().min(1, "Field is required"),
-  no_of_students: z.coerce.number().min(0, "Field is required"),
-  details: z.string().min(1, "Details required"),
+  program_name: z.string().min(1, "Program Name is required"),
+  no_of_students: z.coerce.number().min(0, "No of Students is required"),
+  details: z.string().min(1, "Details are required"),
 });
 
 // 19 - LIST OF STUDENT

@@ -7,7 +7,7 @@ const Footer = () => {
   return (
     <div className="w-full bg-secondary text-gray-300 flex flex-col lg:flex-row justify-center lg:justify-between items-center text-xs sm:text-base p-2 lg:p-4 ring-1">
       <p className="p-2 text-sm text-center">
-        &copy; 2023 ORIC. All rights reserved.&nbsp;
+        &copy; {new Date().getFullYear()} ORIC. All rights reserved.&nbsp;
       </p>
       <div className="p-2 text-2xl flex gap-4">
         {socialLinks.map((social) => (
