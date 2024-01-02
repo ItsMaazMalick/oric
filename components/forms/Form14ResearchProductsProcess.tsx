@@ -288,9 +288,7 @@ export function Form14ResearchProductsProcess({
                     <FormControl className="text-xs sm:text-base">
                       <Input placeholder="Names of inventors" {...field} />
                     </FormControl>
-                    <FormDescription>
-                      Separated with comma ( , )
-                    </FormDescription>
+                    <FormDescription>Separate with comma ( , )</FormDescription>
                     <FormMessage className="text-xs sm:text-base" />
                   </FormItem>
                 )}

@@ -212,7 +212,7 @@ export function Form18ListMentorship({
                     htmlFor=""
                     className="text-xs sm:text-base font-medium"
                   >
-                    Proofs
+                    Evidence
                   </label>
                 </div>
                 <input

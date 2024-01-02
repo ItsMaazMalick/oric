@@ -164,10 +164,44 @@ export function Form16AgreementSigned({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      Type of Linkages
+                      Type of Linkage
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      //   defaultValue={field.value}
+                    >
+                      <FormControl className="text-xs sm:text-base">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Type" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Academic">Academic</SelectItem>
+                        <SelectItem value="Research">Research</SelectItem>
+                        <SelectItem value="Both">Both</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage className="text-xs sm:text-base" />
+                  </FormItem>
+                )}
+              />
+            </div>
+            {/* sponsoring_agency_address */}
+            <div className="w-full lg:w-[35%]">
+              <FormField
+                control={form.control}
+                name="linkage_establishment_date"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs sm:text-base">
+                      Linkage Establishment Date
                     </FormLabel>
                     <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Type of Linkages" {...field} />
+                      <Input
+                        type="date"
+                        placeholder="Linkage Establishment Date"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage className="text-xs sm:text-base" />
                   </FormItem>
@@ -183,30 +217,24 @@ export function Form16AgreementSigned({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      National/International
+                      Scope
                     </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="National/International" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {/* pi_name */}
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="host_name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Host Name
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Host Name" {...field} />
-                    </FormControl>
+                    <Select
+                      onValueChange={field.onChange}
+                      //   defaultValue={field.value}
+                    >
+                      <FormControl className="text-xs sm:text-base">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Scope" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="National">National</SelectItem>
+                        <SelectItem value="International">
+                          International
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
                     <FormMessage className="text-xs sm:text-base" />
                   </FormItem>
                 )}
@@ -214,37 +242,49 @@ export function Form16AgreementSigned({
             </div>
           </div>
           <div className="flex flex-col lg:flex-row w-full gap-4">
-            {/* pi_designation */}
+            {/* pi_name */}
             <div className="w-full lg:w-[30%]">
               <FormField
                 control={form.control}
-                name="host_address"
+                name="host_name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      Host Address
+                      Collaborating Agency
                     </FormLabel>
                     <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Host Address" {...field} />
+                      <Input placeholder="Collaborating Agency" {...field} />
                     </FormControl>
                     <FormMessage className="text-xs sm:text-base" />
                   </FormItem>
                 )}
               />
             </div>
-            {/* pi_department */}
+
+            {/* pi_designation */}
             <div className="w-full lg:w-[35%]">
               <FormField
                 control={form.control}
-                name="host_country"
+                name="host_address"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      Host Country
+                      Collaborating Agency Country
                     </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Host Country" {...field} />
-                    </FormControl>
+                    <Select onValueChange={field.onChange}>
+                      <FormControl className="text-xs sm:text-base">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Country" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent className="h-48">
+                        {countries.map((country, index) => (
+                          <SelectItem key={index} value={country.name}>
+                            {country.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage className="text-xs sm:text-base" />
                   </FormItem>
                 )}
@@ -288,86 +328,9 @@ export function Form16AgreementSigned({
                 )}
               />
             </div>
-            {/* co_pi_university */}
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="field"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Field
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Field" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            {/* sponsoring_agency_name */}
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="scope_of_collaboration"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Scope of Collaboration
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Scope of Collaboration" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
-            {/* sponsoring_agency_address */}
-            <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
-                name="linkage_establishment_date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Linkage Establishment Date
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input
-                        type="date"
-                        placeholder="Linkage Establishment Date"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            {/* sponsoring_agency_address */}
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="financial_support"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Financial Support (if any)
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Financial Support" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
+
             {/* sponsoring_agency_country */}
-            <div className="w-full lg:w-[35%]">
+            <div className="w-full lg:w-[70%]">
               <FormField
                 control={form.control}
                 name="mou_copy_file"

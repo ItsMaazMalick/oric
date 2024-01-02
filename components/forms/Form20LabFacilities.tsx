@@ -20,6 +20,13 @@ import { useLayoutEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 //FORM VALIDATION
 const formSchema = validateForm20;
@@ -163,11 +170,22 @@ export function Form20LabFacilities({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      Available to Student
+                      Available to Students
                     </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Available to Student" {...field} />
-                    </FormControl>
+                    <Select
+                      onValueChange={field.onChange}
+                      //   defaultValue={field.value}
+                    >
+                      <FormControl className="text-xs sm:text-base">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Value" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Yes">Yes</SelectItem>
+                        <SelectItem value="No">No</SelectItem>
+                      </SelectContent>
+                    </Select>
                     <FormMessage className="text-xs sm:text-base" />
                   </FormItem>
                 )}
@@ -185,9 +203,20 @@ export function Form20LabFacilities({
                     <FormLabel className="text-xs sm:text-base">
                       Available to Community
                     </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Available to Community" {...field} />
-                    </FormControl>
+                    <Select
+                      onValueChange={field.onChange}
+                      //   defaultValue={field.value}
+                    >
+                      <FormControl className="text-xs sm:text-base">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Value" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Yes">Yes</SelectItem>
+                        <SelectItem value="No">No</SelectItem>
+                      </SelectContent>
+                    </Select>
                     <FormMessage className="text-xs sm:text-base" />
                   </FormItem>
                 )}
@@ -197,7 +226,7 @@ export function Form20LabFacilities({
             <div className="w-full lg:w-[70%]">
               <div className="mb-2">
                 <label htmlFor="" className="text-xs sm:text-base font-medium">
-                  Proofs
+                  Evidence
                 </label>
               </div>
               <input

@@ -157,7 +157,7 @@ export function Form15ScienceArtsProduct({
             <div className="w-full lg:w-[30%]">
               <FormField
                 control={form.control}
-                name="title"
+                name="category"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
@@ -173,7 +173,23 @@ export function Form15ScienceArtsProduct({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value=""></SelectItem>
+                        <SelectItem value="Science Products Display">
+                          Science Products Display
+                        </SelectItem>
+                        <SelectItem value="Arts Products Display">
+                          Arts Products Display
+                        </SelectItem>
+                        <SelectItem value="Books Exibition">
+                          Books Exibition
+                        </SelectItem>
+                        <SelectItem value="Design Products Display">
+                          Design Products Display
+                        </SelectItem>
+                        <SelectItem value="Drama">Drama</SelectItem>
+                        <SelectItem value="Posters Exhibition">
+                          Posters Exhibition
+                        </SelectItem>
+                        <SelectItem value="FYP Display">FYP Display</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage className="text-xs sm:text-base" />
@@ -181,8 +197,56 @@ export function Form15ScienceArtsProduct({
                 )}
               />
             </div>
-            {/* thematic_area */}
             <div className="w-full lg:w-[35%]">
+              <FormField
+                control={form.control}
+                name="forum"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs sm:text-base">Date</FormLabel>
+                    <FormControl className="text-xs sm:text-base">
+                      <Input type="date" placeholder="Date" {...field} />
+                    </FormControl>
+                    <FormMessage className="text-xs sm:text-base" />
+                  </FormItem>
+                )}
+              />
+            </div>
+            {/* LOCATION SCOPE */}
+            <div className="w-full lg:w-[35%]">
+              <FormField
+                control={form.control}
+                name="location_scope"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs sm:text-base">
+                      Scope
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      //   defaultValue={field.value}
+                    >
+                      <FormControl className="text-xs sm:text-base">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Scope" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="National">National</SelectItem>
+                        <SelectItem value="International">
+                          International
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage className="text-xs sm:text-base" />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+          <div className="flex flex-col lg:flex-row w-full gap-4">
+            {/* thematic_area */}
+            <div className="w-full lg:w-[30%]">
               <FormField
                 control={form.control}
                 name="title"
@@ -208,163 +272,10 @@ export function Form15ScienceArtsProduct({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      Lead Name
+                      Department Name
                     </FormLabel>
                     <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Lead Name" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
-            {/* pi_name */}
-            <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
-                name="lead_designation"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Lead Designation
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Lead Designation" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {/* pi_designation */}
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="lead_department"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Lead Department
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Lead Department" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            {/* pi_department */}
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="category"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Category
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Category" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
-            {/* co_pi_designation */}
-            <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
-                name="location_scope"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      National/International
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="National/International" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {/* co_pi_department */}
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="forum"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Forum
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Forum" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            {/* co_pi_university */}
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="status"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Status
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Status" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
-            {/* sponsoring_agency_name */}
-            <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
-                name="financial_support"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Financial Support (if any)
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Financial Support" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {/* sponsoring_agency_address */}
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="field_of_use"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Field of Use
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Field of Use" {...field} />
+                      <Input placeholder="Department Name" {...field} />
                     </FormControl>
                     <FormMessage className="text-xs sm:text-base" />
                   </FormItem>
@@ -379,10 +290,10 @@ export function Form15ScienceArtsProduct({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      Briefs
+                      Evidence
                     </FormLabel>
                     <FormControl className="text-xs sm:text-base">
-                      <Input type="file" placeholder="Briefs" {...field} />
+                      <Input type="file" placeholder="Evidence" {...field} />
                     </FormControl>
                     <FormMessage className="text-xs sm:text-base" />
                   </FormItem>

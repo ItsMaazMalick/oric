@@ -187,10 +187,27 @@ export function Form19ListStudent({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      Objective
+                      Objectives
                     </FormLabel>
                     <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Objective" {...field} />
+                      <Input placeholder="Objectives" {...field} />
+                    </FormControl>
+                    <FormMessage className="text-xs sm:text-base" />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="w-full lg:w-[35%]">
+              <FormField
+                control={form.control}
+                name="objective"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs sm:text-base">
+                      Weblink (if any)
+                    </FormLabel>
+                    <FormControl className="text-xs sm:text-base">
+                      <Input placeholder="Weblink (if any)" {...field} />
                     </FormControl>
                     <FormMessage className="text-xs sm:text-base" />
                   </FormItem>
@@ -198,10 +215,10 @@ export function Form19ListStudent({
               />
             </div>
             {/* PROOFS*/}
-            <div className="w-full lg:w-[70%]">
+            <div className="w-full lg:w-[35%]">
               <div className="mb-2">
                 <label htmlFor="" className="text-xs sm:text-base font-medium">
-                  Proofs
+                  Evidence
                 </label>
               </div>
               <input

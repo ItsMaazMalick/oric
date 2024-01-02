@@ -1,6 +1,5 @@
 import { cookies } from "next/headers";
 import { Button } from "../ui/button";
-import { toast } from "../ui/use-toast";
 import { redirect } from "next/navigation";
 
 export default function UserLogout() {

@@ -122,6 +122,39 @@ export function Form17ListOfCommunity({
             <div className="w-full lg:w-[30%]">
               <FormField
                 control={form.control}
+                name="date"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs sm:text-base">Date</FormLabel>
+                    <FormControl className="text-xs sm:text-base">
+                      <Input type="date" placeholder="Date" {...field} />
+                    </FormControl>
+                    <FormMessage className="text-xs sm:text-base" />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="w-full lg:w-[35%]">
+              <FormField
+                control={form.control}
+                name="community_type"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs sm:text-base">
+                      Applicant's Role
+                    </FormLabel>
+                    <FormControl className="text-xs sm:text-base">
+                      <Input placeholder="Applicant's Role" {...field} />
+                    </FormControl>
+                    <FormMessage className="text-xs sm:text-base" />
+                  </FormItem>
+                )}
+              />
+            </div>
+            {/* PROGRAM NAME */}
+            <div className="w-full lg:w-[35%]">
+              <FormField
+                control={form.control}
                 name="community_type"
                 render={({ field }) => (
                   <FormItem>
@@ -136,9 +169,10 @@ export function Form17ListOfCommunity({
                 )}
               />
             </div>
-
+          </div>
+          <div className="flex flex-col lg:flex-row w-full gap-4">
             {/* NUMBER OF STUDENTS */}
-            <div className="w-full lg:w-[35%]">
+            <div className="w-full lg:w-[30%]">
               <FormField
                 control={form.control}
                 name="title"
@@ -156,55 +190,18 @@ export function Form17ListOfCommunity({
               />
             </div>
 
-            {/* DETAILS */}
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="proofs"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Proofs
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input type="file" placeholder="Proofs" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
-            {/* PROGRAM NAME */}
-            <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
-                name="date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">Date</FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input type="date" placeholder="Date" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-
             {/* NUMBER OF STUDENTS */}
-            <div className="w-full lg:w-[35%]">
+            <div className="w-full lg:w-[70%]">
               <FormField
                 control={form.control}
                 name="picture_file"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      Picture
+                      Evidence
                     </FormLabel>
                     <FormControl className="text-xs sm:text-base">
-                      <Input type="file" placeholder="Picture" {...field} />
+                      <Input type="file" placeholder="Evidence" {...field} />
                     </FormControl>
                     <FormMessage className="text-xs sm:text-base" />
                   </FormItem>
