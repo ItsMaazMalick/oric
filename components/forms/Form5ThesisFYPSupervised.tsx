@@ -32,7 +32,7 @@ import { toast } from "../ui/use-toast";
 //FORM VALIDATION
 const formSchema = validateForm7;
 
-export function Form7MSPhdThesis({
+export function Form5ThesisFYPSupervised({
   id,
   userCookie,
 }: {

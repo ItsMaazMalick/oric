@@ -24,7 +24,7 @@ import { toast } from "../ui/use-toast";
 //FORM VALIDATION
 const formSchema = validateForm19;
 
-export function Form19ListStudent({
+export function Form19StudentOrganizations({
   id,
   userCookie,
 }: {

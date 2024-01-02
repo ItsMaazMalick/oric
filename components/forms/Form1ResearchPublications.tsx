@@ -43,7 +43,7 @@ import { Label } from "../ui/label";
 //FORM VALIDATION
 const formSchema = validateForm1;
 
-export function Form1Research({
+export function Form1ResearchPublications({
   id,
   userCookie,
 }: {

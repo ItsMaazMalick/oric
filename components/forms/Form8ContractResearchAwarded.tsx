@@ -32,7 +32,7 @@ import { toast } from "../ui/use-toast";
 //FORM VALIDATION
 const formSchema = validateForm10;
 
-export function Form10ContractResearch({
+export function Form8ContractResearchAwarded({
   id,
   userCookie,
 }: {

@@ -22,27 +22,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { validateForm4 } from "@/lib/validator";
+import { countries, years } from "@/constants/data";
+import {
+  validateForm10,
+  validateForm11,
+  validateForm12,
+  validateForm13,
+  validateForm3,
+  validateForm9,
+} from "@/lib/validator";
 import { useLayoutEffect, useState } from "react";
-import { ChevronDown, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
-import { countries } from "@/constants/data";
-
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Label } from "../ui/label";
 
 //FORM VALIDATION
-const formSchema = validateForm4;
+const formSchema = validateForm13;
 
-export function Form4Trainings({
+export function Form11PatentsTradeMarksDesignPatent({
   id,
   userCookie,
 }: {
@@ -51,8 +48,7 @@ export function Form4Trainings({
 }) {
   const [loading, setLoading] = useState(false);
   const [books, setBooks] = useState([]);
-  const [role, setRole] = useState("");
-  const [selectedAudience, setSelectedAudience] = useState<string[]>([]);
+  const [file, setFile] = useState();
 
   useLayoutEffect(() => {
     const fetchBooks = async () => {
@@ -74,12 +70,20 @@ export function Form4Trainings({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title_of_training: "",
-      date: "",
-      organizer: "",
-      no_of_participants: 0,
-      focus_area_outcomes: "",
-      audience_type: "",
+      lead_inventor_name: "",
+      lead_inventor_designation: "",
+      lead_inventor_department: "",
+      title_on_invention: "",
+      ip_category: "",
+      development_status: "",
+      key_scientific_aspects: "",
+      commercial_partner: "",
+      patent_name: "",
+      patent_department: "",
+      location_scope: "",
+      financial_support: "",
+      date_of_filling: "",
+      patent_copy_file: "",
     },
   });
 
@@ -89,22 +93,35 @@ export function Form4Trainings({
         toast({ variant: "destructive", title: "All fields are required" });
       } else {
         setLoading(true);
+        const formData = new FormData();
+        // formData.append("date", values.date);
+        // formData.append("funding_agency", values.funding_agency);
+        // formData.append("name_of_research", values.name_of_research);
+        // formData.append("status", values.status);
+        // formData.append("type", values.type);
+        // formData.append("role", values.role);
+        // formData.append("grant_amount", String(values.grant_amount));
+        // formData.append("title", values.title);
+        // formData.append("start_date", values.start_date);
+        // formData.append("end_date", values.end_date);
+        // formData.append("total_funding", String(values.total_funding));
+        // formData.append("collaborating_partner", values.collaborating_partner);
+        // formData.append("co_funding_partner", values.co_funding_partner);
+        // formData.append("completion", values.completion);
+        // formData.append("remarks", values.remarks);
+        if (file) {
+          formData.set("file", file);
+        }
+        formData.set("user_id", id);
+
         toast({ variant: "default", title: "Please wait..." });
-        const res = await fetch(`/api/user/records/trainings-workshops`, {
+        const res = await fetch(`/api/user/records/research-projects`, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            // "Content-Type": "application/json",
             Authorization: `Bearer ${userCookie}`,
           },
-          body: JSON.stringify({
-            title_of_training: values.title_of_training,
-            date: values.date,
-            organizer: values.organizer,
-            no_of_participants: values.no_of_participants,
-            focus_area_outcomes: values.focus_area_outcomes,
-            audience_type: values.audience_type,
-            user_id: id,
-          }),
+          body: formData,
         });
         const data = await res.json();
         console.log(data);
@@ -133,30 +150,19 @@ export function Form4Trainings({
     }
   };
 
-  const checkAudienceChange = (sdgName: string) => {
-    setSelectedAudience((prevSelected: any) => {
-      if (prevSelected.includes(sdgName)) {
-        return prevSelected.filter((name: any) => name !== sdgName);
-      } else {
-        return [...prevSelected, sdgName];
-      }
-    });
-  };
-
   return (
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <div className="flex flex-col lg:flex-row w-full gap-4">
-            {/* AUDIENCE TYPE */}
             <div className="w-full lg:w-[30%]">
               <FormField
                 control={form.control}
-                name="audience_type"
+                name="lead_inventor_name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      Type of Event
+                      Type of IP
                     </FormLabel>
                     <Select
                       onValueChange={field.onChange}
@@ -168,10 +174,17 @@ export function Form4Trainings({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="Training">Training</SelectItem>
-                        <SelectItem value="Workshop">Workshop</SelectItem>
-                        <SelectItem value="Seminar">Seminar</SelectItem>
-                        <SelectItem value="Conference">Conference</SelectItem>
+                        <SelectItem value="Patent">Patent</SelectItem>
+                        <SelectItem value="Copyright">Copyright</SelectItem>
+                        <SelectItem value="Trademark">Trademark</SelectItem>
+                        <SelectItem value="Design">Design</SelectItem>
+                        <SelectItem value="Logo">Logo</SelectItem>
+                        <SelectItem value="Industrial Design">
+                          Industrial Design
+                        </SelectItem>
+                        <SelectItem value="Trade Secret">
+                          Trade Secret
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage className="text-xs sm:text-base" />
@@ -179,47 +192,49 @@ export function Form4Trainings({
                 )}
               />
             </div>
-            {/* ROLE */}
-            <div className="w-full lg:w-[35%]">
-              <div className="mb-2 text-xs sm:text-base sm:font-medium">
-                Applicant Role
-              </div>
-              <select
-                name=""
-                id=""
-                className="w-full p-2 border rounded-md text-xs sm:text-base"
-                onChange={(e) => setRole(e.target.value)}
-              >
-                <option disabled value="">
-                  Select Value
-                </option>
-                <option value="Organizer">Organizer</option>
-                <option value="Participant">Participant</option>
-                <option value="Both (Organizer & Participant)">
-                  Both (Organizer & Participant)
-                </option>
-                <option value="Resource Person">Resource Person</option>
-                <option value="Speaker">Speaker</option>
-                <option value="Invited / Keynote Speaker">
-                  Invited / Keynote Speaker
-                </option>
-                <option value="Poster Presenter">Poster Presenter</option>
-              </select>
-            </div>
-            {/* YEAR*/}
+            {/* location_scope */}
             <div className="w-full lg:w-[35%]">
               <FormField
                 control={form.control}
-                name="date"
+                name="location_scope"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      Date of Event (from)
+                      National/International
                     </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      //   defaultValue={field.value}
+                    >
+                      <FormControl className="text-xs sm:text-base">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Scope" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="National">National</SelectItem>
+                        <SelectItem value="International">
+                          International
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage className="text-xs sm:text-base" />
+                  </FormItem>
+                )}
+              />
+            </div>
+            {/* sponsoring_agency_address */}
+            <div className="w-full lg:w-[35%]">
+              <FormField
+                control={form.control}
+                name="date_of_filling"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs sm:text-base">Date</FormLabel>
                     <FormControl className="text-xs sm:text-base">
                       <Input
                         type="date"
-                        placeholder="Date of Event"
+                        placeholder="Date of Filling"
                         {...field}
                       />
                     </FormControl>
@@ -230,62 +245,132 @@ export function Form4Trainings({
             </div>
           </div>
           <div className="flex flex-col lg:flex-row w-full gap-4">
-            {/* YEAR*/}
+            {/* thematic_area */}
             <div className="w-full lg:w-[30%]">
               <FormField
                 control={form.control}
-                name="date"
+                name="lead_inventor_name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      Date of Event (to)
+                      Names of Inventors
                     </FormLabel>
                     <FormControl className="text-xs sm:text-base">
-                      <Input
-                        type="date"
-                        placeholder="Date of Event"
-                        {...field}
-                      />
+                      <Input placeholder="Names of Inventors" {...field} />
                     </FormControl>
+                    <FormDescription>Separate with comma ( , )</FormDescription>
                     <FormMessage className="text-xs sm:text-base" />
                   </FormItem>
                 )}
               />
             </div>
 
-            {/* TITLE OF TRAINING*/}
+            {/* pi_designation */}
             <div className="w-full lg:w-[35%]">
               <FormField
                 control={form.control}
-                name="title_of_training"
+                name="title_on_invention"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      Title of Event
+                      Invention Title
                     </FormLabel>
                     <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Title of Event" {...field} />
+                      <Input placeholder="Invention Title" {...field} />
                     </FormControl>
                     <FormMessage className="text-xs sm:text-base" />
                   </FormItem>
                 )}
               />
             </div>
-
-            {/* NO OF PARTICIPANTS */}
             <div className="w-full lg:w-[35%]">
               <FormField
                 control={form.control}
-                name="no_of_participants"
+                name="ip_category"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      No. Of Participants
+                      IP Status
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      //   defaultValue={field.value}
+                    >
+                      <FormControl className="text-xs sm:text-base">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Type" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Disclosure of IP">
+                          Disclosure of IP
+                        </SelectItem>
+                        <SelectItem value="Submitted to IPO">
+                          Submitted to IPO
+                        </SelectItem>
+                        <SelectItem value="Published">Published</SelectItem>
+                        <SelectItem value="Granted">Granted</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage className="text-xs sm:text-base" />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+          <div className="flex flex-col lg:flex-row w-full gap-4">
+            <div className="w-full lg:w-[30%]">
+              <FormField
+                control={form.control}
+                name="key_scientific_aspects"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs sm:text-base">
+                      Royality / Revenue Generated (Rs)
                     </FormLabel>
                     <FormControl className="text-xs sm:text-base">
                       <Input
                         type="number"
-                        placeholder="No. Of Participants"
+                        placeholder="Royality / Revenue Generated (Rs)"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-xs sm:text-base" />
+                  </FormItem>
+                )}
+              />
+            </div>
+            {/* co_pi_department */}
+            <div className="w-full lg:w-[35%]">
+              <FormField
+                control={form.control}
+                name="key_scientific_aspects"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs sm:text-base">
+                      Key Scientific Aspects
+                    </FormLabel>
+                    <FormControl className="text-xs sm:text-base">
+                      <Input placeholder="Key Scientific Aspects" {...field} />
+                    </FormControl>
+                    <FormMessage className="text-xs sm:text-base" />
+                  </FormItem>
+                )}
+              />
+            </div>
+            {/* co_pi_university */}
+            <div className="w-full lg:w-[35%]">
+              <FormField
+                control={form.control}
+                name="commercial_partner"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs sm:text-base">
+                      Commercial Partner (if any)
+                    </FormLabel>
+                    <FormControl className="text-xs sm:text-base">
+                      <Input
+                        placeholder="Commercial Partner (if any)"
                         {...field}
                       />
                     </FormControl>
@@ -295,121 +380,21 @@ export function Form4Trainings({
               />
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
-            {/* MAJOR FOCUS */}
-            <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
-                name="focus_area_outcomes"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Major Focus Area
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Major Focus Area" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
 
-            {/* AUDIENCE TYPE */}
-            <div className="w-full lg:w-[70%]">
-              <div className="mb-2 text-xs sm:text-base sm:font-medium">
-                Audience Type
-              </div>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button className="w-full" variant="outline">
-                    {selectedAudience.map((audience, index) => (
-                      <span
-                        key={index}
-                        className="m-1 p-1 border border-primary rounded-lg"
-                      >
-                        {audience}
-                      </span>
-                    ))}
-                    <span className="ml-1 rounded-md bg-primary text-primary-foreground">
-                      <ChevronDown size={20} />
-                    </span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56">
-                  <DropdownMenuLabel>Select SDG</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuCheckboxItem
-                    checked={selectedAudience.includes("Student")}
-                    onCheckedChange={() => checkAudienceChange("Student")}
-                  >
-                    Student
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={selectedAudience.includes("Faculty")}
-                    onCheckedChange={() => checkAudienceChange("Faculty")}
-                  >
-                    Faculty
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={selectedAudience.includes("Researchers")}
-                    onCheckedChange={() => checkAudienceChange("Researchers")}
-                  >
-                    Researchers
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={selectedAudience.includes("Community")}
-                    onCheckedChange={() => checkAudienceChange("Community")}
-                  >
-                    Community
-                  </DropdownMenuCheckboxItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          </div>
           <div className="flex flex-col lg:flex-row w-full gap-4">
-            {/* ORGANIZER */}
-            <div className="w-full lg:w-[30%]">
+            {/* sponsoring_agency_country */}
+            <div className="w-full">
               <FormField
                 control={form.control}
-                name="organizer"
+                name="patent_copy_file"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      Organizer
+                      Evidence File
                     </FormLabel>
                     <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Organizer" {...field} />
+                      <Input type="file" placeholder="Patent Copy" {...field} />
                     </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            {/* COUNTRY */}
-            <div className="w-full lg:w-[70%]">
-              <FormField
-                control={form.control}
-                name="audience_type"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Country
-                    </FormLabel>
-                    <Select onValueChange={field.onChange}>
-                      <FormControl className="text-xs sm:text-base">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Country" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent className="h-48">
-                        {countries.map((country, index) => (
-                          <SelectItem key={index} value={country.name}>
-                            {country.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
                     <FormMessage className="text-xs sm:text-base" />
                   </FormItem>
                 )}

@@ -32,7 +32,7 @@ import { toast } from "../ui/use-toast";
 //FORM VALIDATION
 const formSchema = validateForm9;
 
-export function Form9ResearchLinks({
+export function Form7LinksEstablished({
   id,
   userCookie,
 }: {

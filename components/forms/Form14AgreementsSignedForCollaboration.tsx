@@ -42,7 +42,7 @@ import { toast } from "../ui/use-toast";
 //FORM VALIDATION
 const formSchema = validateForm16;
 
-export function Form16AgreementSigned({
+export function Form14AgreementsSignedForCollaboration({
   id,
   userCookie,
 }: {

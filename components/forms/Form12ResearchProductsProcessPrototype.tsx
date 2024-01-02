@@ -40,7 +40,7 @@ import { toast } from "../ui/use-toast";
 //FORM VALIDATION
 const formSchema = validateForm14;
 
-export function Form14ResearchProductsProcess({
+export function Form12ResearchProductsProcessPrototype({
   id,
   userCookie,
 }: {

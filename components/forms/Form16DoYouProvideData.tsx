@@ -15,23 +15,16 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { validateForm20 } from "@/lib/validator";
+import { validateForm19 } from "@/lib/validator";
 import { useLayoutEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
 
 //FORM VALIDATION
-const formSchema = validateForm20;
+const formSchema = validateForm19;
 
-export function Form20LabFacilities({
+export function Form16DoYouProvideData({
   id,
   userCookie,
 }: {
@@ -62,10 +55,10 @@ export function Form20LabFacilities({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      lab_name: "",
-      equipment_type: "",
-      available_to_student: "",
-      available_to_community: "",
+      organization_name: "",
+      number_of_members: 0,
+      members_name: "",
+      objective: "",
     },
   });
 
@@ -124,18 +117,16 @@ export function Form20LabFacilities({
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <div className="flex flex-col lg:flex-row w-full gap-4">
-            {/* LAB NAME */}
+            {/* ORGANIZATION NAME */}
             <div className="w-full lg:w-[30%]">
               <FormField
                 control={form.control}
-                name="lab_name"
+                name="organization_name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Lab Name
-                    </FormLabel>
+                    <FormLabel className="text-xs sm:text-base">Date</FormLabel>
                     <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Lab Name" {...field} />
+                      <Input type="date" placeholder="Date" {...field} />
                     </FormControl>
                     <FormMessage className="text-xs sm:text-base" />
                   </FormItem>
@@ -143,18 +134,18 @@ export function Form20LabFacilities({
               />
             </div>
 
-            {/* EQUIPMENT TYPE*/}
+            {/* NUMBER OF MEMBERS */}
             <div className="w-full lg:w-[35%]">
               <FormField
                 control={form.control}
-                name="equipment_type"
+                name="number_of_members"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      Equipment Type
+                      Data provided to
                     </FormLabel>
                     <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Equipment Type" {...field} />
+                      <Input placeholder="Data provided to " {...field} />
                     </FormControl>
                     <FormMessage className="text-xs sm:text-base" />
                   </FormItem>
@@ -162,30 +153,19 @@ export function Form20LabFacilities({
               />
             </div>
 
-            {/* AVAILALE TO STUDENT */}
+            {/* MEMBERS NAME */}
             <div className="w-full lg:w-[35%]">
               <FormField
                 control={form.control}
-                name="available_to_student"
+                name="members_name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      Available to Students
+                      Program of Organization
                     </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      //   defaultValue={field.value}
-                    >
-                      <FormControl className="text-xs sm:text-base">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Value" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Yes">Yes</SelectItem>
-                        <SelectItem value="No">No</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <FormControl className="text-xs sm:text-base">
+                      <Input placeholder="Program of Organization" {...field} />
+                    </FormControl>
                     <FormMessage className="text-xs sm:text-base" />
                   </FormItem>
                 )}
@@ -193,40 +173,11 @@ export function Form20LabFacilities({
             </div>
           </div>
           <div className="flex flex-col lg:flex-row w-full gap-4">
-            {/* AVAILABLE TO COMMUNITY */}
-            <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
-                name="available_to_community"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Available to Community
-                    </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      //   defaultValue={field.value}
-                    >
-                      <FormControl className="text-xs sm:text-base">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Value" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Yes">Yes</SelectItem>
-                        <SelectItem value="No">No</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
             {/* PROOFS*/}
-            <div className="w-full lg:w-[70%]">
+            <div className="w-full lg:w-[35%]">
               <div className="mb-2">
                 <label htmlFor="" className="text-xs sm:text-base font-medium">
-                  Evidence
+                  Evidence (Email/Letter/Submission)
                 </label>
               </div>
               <input

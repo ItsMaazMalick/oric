@@ -25,7 +25,7 @@ import { Button } from "../ui/button";
 //FORM VALIDATION
 const formSchema = validateForm18;
 
-export function Form18ListMentorship({
+export function Form18MentorshipProgrammes({
   id,
   userCookie,
 }: {

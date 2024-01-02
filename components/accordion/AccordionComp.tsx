@@ -8,27 +8,30 @@ import {
 import { Button } from "../ui/button";
 import { ResearchPublicationsTable } from "../tables/ResearchPublicationsTable";
 import { useState } from "react";
-import { Form1Research } from "../forms/Form1Research";
+
+import { formTitles } from "@/constants/data";
+import { Form1ResearchPublications } from "../forms/Form1ResearchPublications";
 import { Form2BookAuthoredEdited } from "../forms/Form2BookAuthoredEdited";
 import { BookAuthoredEditedTable } from "../tables/BookAuthoredEditedTable";
 import { Form3ResearchProjects } from "../forms/Form3ResearchProjects";
 import { ResearchProjectsTable } from "../tables/ResearchProjectsTable";
-import { Form4Trainings } from "../forms/Form4Trainings";
-import { Form7MSPhdThesis } from "../forms/Form7MSPhdThesis";
-import { Form8PrivacyAdvocacy } from "../forms/Form8PrivacyAdvocacy";
-import { Form9ResearchLinks } from "../forms/Form9ResearchLinks";
-import { Form10ContractResearch } from "../forms/Form10ContractResearch";
-import { Form11CivicEngagementEvent } from "../forms/Form11CivicEngagementEvent";
-import { Form12ConsultancyContract } from "../forms/Form12ConsultancyContract";
-import { Form13PatentsTrademark } from "../forms/Form13PatentsTrademark";
-import { Form14ResearchProductsProcess } from "../forms/Form14ResearchProductsProcess";
-import { Form15ScienceArtsProduct } from "../forms/Form15ScienceArtsProduct";
-import { Form16AgreementSigned } from "../forms/Form16AgreementSigned";
-import { Form17ListOfCommunity } from "../forms/Form17ListOfCommunity";
-import { Form18ListMentorship } from "../forms/Form18ListMentorship";
-import { Form19ListStudent } from "../forms/Form19ListStudent";
-import { Form20LabFacilities } from "../forms/Form20LabFacilities";
-import { formTitles } from "@/constants/data";
+import { Form4TrainingsWorkshops } from "../forms/Form4TrainingsWorkshops";
+import { Form5ThesisFYPSupervised } from "../forms/Form5ThesisFYPSupervised";
+import { Form6PolicyAdvocacyORCaseStudies } from "../forms/Form6PolicyAdvocacyORCaseStudies";
+import { Form7LinksEstablished } from "../forms/Form7LinksEstablished";
+import { Form8ContractResearchAwarded } from "../forms/Form8ContractResearchAwarded";
+import { Form9CivicEngagementEvents } from "../forms/Form9CivicEngagementEvents";
+import { Form10ConsultancyContractsWithIndustry } from "../forms/Form10ConsultancyContractsWithIndustry";
+import { Form11PatentsTradeMarksDesignPatent } from "../forms/Form11PatentsTradeMarksDesignPatent";
+import { Form12ResearchProductsProcessPrototype } from "../forms/Form12ResearchProductsProcessPrototype";
+import { Form13ScienceArtsProducts } from "../forms/Form13ScienceArtsProducts";
+import { Form14AgreementsSignedForCollaboration } from "../forms/Form14AgreementsSignedForCollaboration";
+import { Form15NationalOrInternationalHonors } from "../forms/Form15NationalOrInternationalHonors";
+import { Form16DoYouProvideData } from "../forms/Form16DoYouProvideData";
+import { Form17CommunityWork } from "../forms/Form17CommunityWork";
+import { Form18MentorshipProgrammes } from "../forms/Form18MentorshipProgrammes";
+import { Form19StudentOrganizations } from "../forms/Form19StudentOrganizations";
+import { Form20FacilitiesLabsAccessible } from "../forms/Form20FacilitiesLabsAccessible";
 
 export function AccordionComp({
   id,
@@ -63,7 +66,7 @@ export function AccordionComp({
         </AccordionTrigger>
         <AccordionContent>
           <div className="p-4 border-2 border-primary rounded-lg">
-            <Form1Research id={id} userCookie={userCookie} />
+            <Form1ResearchPublications id={id} userCookie={userCookie} />
           </div>
           <div className="relative">
             <div className="absolute -top-14 left-24 sm:left-28 text-primary">
@@ -157,7 +160,7 @@ export function AccordionComp({
         </AccordionTrigger>
         <AccordionContent>
           <div className="p-4 border-2 border-primary rounded-lg">
-            <Form4Trainings id={id} userCookie={userCookie} />
+            <Form4TrainingsWorkshops id={id} userCookie={userCookie} />
           </div>
           <div className="relative">
             <div className="absolute -top-14 left-24 sm:left-28 text-primary">
@@ -190,7 +193,7 @@ export function AccordionComp({
         </AccordionTrigger>
         <AccordionContent>
           <div className="p-4 border-2 border-primary rounded-lg">
-            <Form7MSPhdThesis id={id} userCookie={userCookie} />
+            <Form5ThesisFYPSupervised id={id} userCookie={userCookie} />
           </div>
           <div className="relative">
             <div className="absolute -top-14 left-24 sm:left-28 text-primary">
@@ -222,7 +225,7 @@ export function AccordionComp({
         </AccordionTrigger>
         <AccordionContent>
           <div className="p-4 border-2 border-primary rounded-lg">
-            <Form8PrivacyAdvocacy id={id} userCookie={userCookie} />
+            <Form6PolicyAdvocacyORCaseStudies id={id} userCookie={userCookie} />
           </div>
           <div className="relative">
             <div className="absolute -top-14 left-24 sm:left-28 text-primary">
@@ -254,7 +257,7 @@ export function AccordionComp({
         </AccordionTrigger>
         <AccordionContent>
           <div className="p-4 border-2 border-primary rounded-lg">
-            <Form9ResearchLinks id={id} userCookie={userCookie} />
+            <Form7LinksEstablished id={id} userCookie={userCookie} />
           </div>
           <div className="relative">
             <div className="absolute -top-14 left-24 sm:left-28 text-primary">
@@ -286,7 +289,7 @@ export function AccordionComp({
         </AccordionTrigger>
         <AccordionContent>
           <div className="p-4 border-2 border-primary rounded-lg">
-            <Form10ContractResearch id={id} userCookie={userCookie} />
+            <Form8ContractResearchAwarded id={id} userCookie={userCookie} />
           </div>
           <div className="relative">
             <div className="absolute -top-14 left-24 sm:left-28 text-primary">
@@ -319,7 +322,7 @@ export function AccordionComp({
         </AccordionTrigger>
         <AccordionContent>
           <div className="p-4 border-2 border-primary rounded-lg">
-            <Form11CivicEngagementEvent id={id} userCookie={userCookie} />
+            <Form9CivicEngagementEvents id={id} userCookie={userCookie} />
           </div>
           <div className="relative">
             <div className="absolute -top-14 left-24 sm:left-28 text-primary">
@@ -352,7 +355,10 @@ export function AccordionComp({
         </AccordionTrigger>
         <AccordionContent>
           <div className="p-4 border-2 border-primary rounded-lg">
-            <Form12ConsultancyContract id={id} userCookie={userCookie} />
+            <Form10ConsultancyContractsWithIndustry
+              id={id}
+              userCookie={userCookie}
+            />
           </div>
           <div className="relative">
             <div className="absolute -top-14 left-24 sm:left-28 text-primary">
@@ -385,7 +391,10 @@ export function AccordionComp({
         </AccordionTrigger>
         <AccordionContent>
           <div className="p-4 border-2 border-primary rounded-lg">
-            <Form13PatentsTrademark id={id} userCookie={userCookie} />
+            <Form11PatentsTradeMarksDesignPatent
+              id={id}
+              userCookie={userCookie}
+            />
           </div>
           <div className="relative">
             <div className="absolute -top-14 left-24 sm:left-28 text-primary">
@@ -418,7 +427,10 @@ export function AccordionComp({
         </AccordionTrigger>
         <AccordionContent>
           <div className="p-4 border-2 border-primary rounded-lg">
-            <Form14ResearchProductsProcess id={id} userCookie={userCookie} />
+            <Form12ResearchProductsProcessPrototype
+              id={id}
+              userCookie={userCookie}
+            />
           </div>
           <div className="relative">
             <div className="absolute -top-14 left-24 sm:left-28 text-primary">
@@ -451,7 +463,7 @@ export function AccordionComp({
         </AccordionTrigger>
         <AccordionContent>
           <div className="p-4 border-2 border-primary rounded-lg">
-            <Form15ScienceArtsProduct id={id} userCookie={userCookie} />
+            <Form13ScienceArtsProducts id={id} userCookie={userCookie} />
           </div>
           <div className="relative">
             <div className="absolute -top-14 left-24 sm:left-28 text-primary">
@@ -484,7 +496,10 @@ export function AccordionComp({
         </AccordionTrigger>
         <AccordionContent>
           <div className="p-4 border-2 border-primary rounded-lg">
-            <Form16AgreementSigned id={id} userCookie={userCookie} />
+            <Form14AgreementsSignedForCollaboration
+              id={id}
+              userCookie={userCookie}
+            />
           </div>
           <div className="relative">
             <div className="absolute -top-14 left-24 sm:left-28 text-primary">
@@ -517,7 +532,10 @@ export function AccordionComp({
         </AccordionTrigger>
         <AccordionContent>
           <div className="p-4 border-2 border-primary rounded-lg">
-            <Form17ListOfCommunity id={id} userCookie={userCookie} />
+            <Form15NationalOrInternationalHonors
+              id={id}
+              userCookie={userCookie}
+            />
           </div>
           <div className="relative">
             <div className="absolute -top-14 left-24 sm:left-28 text-primary">
@@ -550,7 +568,7 @@ export function AccordionComp({
         </AccordionTrigger>
         <AccordionContent>
           <div className="p-4 border-2 border-primary rounded-lg">
-            <Form18ListMentorship id={id} userCookie={userCookie} />
+            <Form16DoYouProvideData id={id} userCookie={userCookie} />
           </div>
           <div className="relative">
             <div className="absolute -top-14 left-24 sm:left-28 text-primary">
@@ -582,7 +600,7 @@ export function AccordionComp({
         </AccordionTrigger>
         <AccordionContent>
           <div className="p-4 border-2 border-primary rounded-lg">
-            <Form19ListStudent id={id} userCookie={userCookie} />
+            <Form17CommunityWork id={id} userCookie={userCookie} />
           </div>
           <div className="relative">
             <div className="absolute -top-14 left-24 sm:left-28 text-primary">
@@ -614,7 +632,71 @@ export function AccordionComp({
         </AccordionTrigger>
         <AccordionContent>
           <div className="p-4 border-2 border-primary rounded-lg">
-            <Form20LabFacilities id={id} userCookie={userCookie} />
+            <Form18MentorshipProgrammes id={id} userCookie={userCookie} />
+          </div>
+          <div className="relative">
+            <div className="absolute -top-14 left-24 sm:left-28 text-primary">
+              <Button
+                className="text-xs sm:text-base font-bold underline"
+                variant={"ghost"}
+                onClick={handleOpen}
+              >
+                {isShow ? "Hide" : "Show"}&nbsp;Records
+              </Button>
+            </div>
+          </div>
+          {isShow && <div className="w-full mt-4 border-t-2 border-primary" />}
+          {isShow && (
+            <div className="h-[400px] overflow-y-auto overflow-x-visible">
+              <ResearchPublicationsTable id={id} userCookie={userCookie} />
+            </div>
+          )}
+          {isShow && <div className="w-full mt-4 border-t-2 border-primary" />}
+        </AccordionContent>
+      </AccordionItem>
+      {/* 20 - LAB FACILITIES */}
+      <AccordionItem value="item-19">
+        <AccordionTrigger
+          onClick={handleClose}
+          className="font-bold text-left text-primary hover:text-secondary"
+        >
+          {formTitles[18]}
+        </AccordionTrigger>
+        <AccordionContent>
+          <div className="p-4 border-2 border-primary rounded-lg">
+            <Form19StudentOrganizations id={id} userCookie={userCookie} />
+          </div>
+          <div className="relative">
+            <div className="absolute -top-14 left-24 sm:left-28 text-primary">
+              <Button
+                className="text-xs sm:text-base font-bold underline"
+                variant={"ghost"}
+                onClick={handleOpen}
+              >
+                {isShow ? "Hide" : "Show"}&nbsp;Records
+              </Button>
+            </div>
+          </div>
+          {isShow && <div className="w-full mt-4 border-t-2 border-primary" />}
+          {isShow && (
+            <div className="h-[400px] overflow-y-auto overflow-x-visible">
+              <ResearchPublicationsTable id={id} userCookie={userCookie} />
+            </div>
+          )}
+          {isShow && <div className="w-full mt-4 border-t-2 border-primary" />}
+        </AccordionContent>
+      </AccordionItem>
+      {/* 20 - LAB FACILITIES */}
+      <AccordionItem value="item-20">
+        <AccordionTrigger
+          onClick={handleClose}
+          className="font-bold text-left text-primary hover:text-secondary"
+        >
+          {formTitles[19]}
+        </AccordionTrigger>
+        <AccordionContent>
+          <div className="p-4 border-2 border-primary rounded-lg">
+            <Form20FacilitiesLabsAccessible id={id} userCookie={userCookie} />
           </div>
           <div className="relative">
             <div className="absolute -top-14 left-24 sm:left-28 text-primary">

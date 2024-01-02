@@ -41,7 +41,7 @@ import { toast } from "../ui/use-toast";
 //FORM VALIDATION
 const formSchema = validateForm15;
 
-export function Form15ScienceArtsProduct({
+export function Form13ScienceArtsProducts({
   id,
   userCookie,
 }: {

@@ -15,16 +15,23 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { validateForm17, validateForm18 } from "@/lib/validator";
+import { validateForm20 } from "@/lib/validator";
 import { useLayoutEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 //FORM VALIDATION
-const formSchema = validateForm17;
+const formSchema = validateForm20;
 
-export function Form17ListOfCommunity({
+export function Form20FacilitiesLabsAccessible({
   id,
   userCookie,
 }: {
@@ -55,11 +62,10 @@ export function Form17ListOfCommunity({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      community_type: "",
-      title: "",
-      proofs: "",
-      date: "",
-      picture_file: "",
+      lab_name: "",
+      equipment_type: "",
+      available_to_student: "",
+      available_to_community: "",
     },
   });
 
@@ -118,71 +124,18 @@ export function Form17ListOfCommunity({
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <div className="flex flex-col lg:flex-row w-full gap-4">
-            {/* PROGRAM NAME */}
+            {/* LAB NAME */}
             <div className="w-full lg:w-[30%]">
               <FormField
                 control={form.control}
-                name="date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">Date</FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input type="date" placeholder="Date" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="community_type"
+                name="lab_name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      Applicant's Role
+                      Lab Name
                     </FormLabel>
                     <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Applicant's Role" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            {/* PROGRAM NAME */}
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="community_type"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Community Type
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Community Type" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
-            {/* NUMBER OF STUDENTS */}
-            <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Title
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Title" {...field} />
+                      <Input placeholder="Lab Name" {...field} />
                     </FormControl>
                     <FormMessage className="text-xs sm:text-base" />
                   </FormItem>
@@ -190,22 +143,98 @@ export function Form17ListOfCommunity({
               />
             </div>
 
-            {/* NUMBER OF STUDENTS */}
-            <div className="w-full lg:w-[70%]">
+            {/* EQUIPMENT TYPE*/}
+            <div className="w-full lg:w-[35%]">
               <FormField
                 control={form.control}
-                name="picture_file"
+                name="equipment_type"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      Evidence
+                      Equipment Type
                     </FormLabel>
                     <FormControl className="text-xs sm:text-base">
-                      <Input type="file" placeholder="Evidence" {...field} />
+                      <Input placeholder="Equipment Type" {...field} />
                     </FormControl>
                     <FormMessage className="text-xs sm:text-base" />
                   </FormItem>
                 )}
+              />
+            </div>
+
+            {/* AVAILALE TO STUDENT */}
+            <div className="w-full lg:w-[35%]">
+              <FormField
+                control={form.control}
+                name="available_to_student"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs sm:text-base">
+                      Available to Students
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      //   defaultValue={field.value}
+                    >
+                      <FormControl className="text-xs sm:text-base">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Value" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Yes">Yes</SelectItem>
+                        <SelectItem value="No">No</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage className="text-xs sm:text-base" />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+          <div className="flex flex-col lg:flex-row w-full gap-4">
+            {/* AVAILABLE TO COMMUNITY */}
+            <div className="w-full lg:w-[30%]">
+              <FormField
+                control={form.control}
+                name="available_to_community"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs sm:text-base">
+                      Available to Community
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      //   defaultValue={field.value}
+                    >
+                      <FormControl className="text-xs sm:text-base">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Value" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Yes">Yes</SelectItem>
+                        <SelectItem value="No">No</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage className="text-xs sm:text-base" />
+                  </FormItem>
+                )}
+              />
+            </div>
+            {/* PROOFS*/}
+            <div className="w-full lg:w-[70%]">
+              <div className="mb-2">
+                <label htmlFor="" className="text-xs sm:text-base font-medium">
+                  Evidence
+                </label>
+              </div>
+              <input
+                className="w-full p-2 rounded-md border"
+                type="file"
+                onChange={(e: any) => setFile(e.target.files?.[0])}
+                name=""
+                id=""
               />
             </div>
           </div>

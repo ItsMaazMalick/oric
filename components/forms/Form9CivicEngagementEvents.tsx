@@ -22,17 +22,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { years } from "@/constants/data";
-import { validateForm8 } from "@/lib/validator";
+import { countries, years } from "@/constants/data";
+import {
+  validateForm10,
+  validateForm11,
+  validateForm3,
+  validateForm9,
+} from "@/lib/validator";
 import { useLayoutEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
 
 //FORM VALIDATION
-const formSchema = validateForm8;
+const formSchema = validateForm11;
 
-export function Form8PrivacyAdvocacy({
+export function Form9CivicEngagementEvents({
   id,
   userCookie,
 }: {
@@ -63,16 +68,17 @@ export function Form8PrivacyAdvocacy({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      title_of_event: "",
+      components_address: "",
+      outcomes: "",
+      collaboration_developed: "",
       date: "",
-      name_government_body: "",
-      pi_name: "",
-      pi_designation: "",
-      pi_department: "",
-      area_of_advocated: "",
-      brief: "",
-      coalition_partners: "",
-      verification_status: "",
-      advocacy_tools: "",
+      name_of_csos: "",
+      name_of_sponsoring_agency: "",
+      event_status: "",
+      report_file: "",
+      remarks: "",
+      brief_report_file: "",
     },
   });
 
@@ -144,28 +150,30 @@ export function Form8PrivacyAdvocacy({
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <div className="flex flex-col lg:flex-row w-full gap-4">
-            {/* YEAR*/}
+            {/* pi_name */}
             <div className="w-full lg:w-[30%]">
               <FormField
                 control={form.control}
-                name="date"
+                name="event_status"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Year.
-                    </FormLabel>
-                    <Select onValueChange={field.onChange}>
+                    <FormLabel className="text-xs sm:text-base">Type</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      //   defaultValue={field.value}
+                    >
                       <FormControl className="text-xs sm:text-base">
                         <SelectTrigger>
-                          <SelectValue placeholder="Select Year" />
+                          <SelectValue placeholder="Select type" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent className="h-48">
-                        {years.map((year) => (
-                          <SelectItem key={year.id} value={year.name}>
-                            {year.name}
-                          </SelectItem>
-                        ))}
+                      <SelectContent>
+                        <SelectItem value="Civic Engagement">
+                          Civic Engagement
+                        </SelectItem>
+                        <SelectItem value="Issue of Public Concern">
+                          Issue of Public Concern
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage className="text-xs sm:text-base" />
@@ -173,100 +181,15 @@ export function Form8PrivacyAdvocacy({
                 )}
               />
             </div>
-
-            {/* NAME OF GOVERNMENT BODY */}
+            {/* co_pi_university */}
             <div className="w-full lg:w-[35%]">
               <FormField
                 control={form.control}
-                name="name_government_body"
+                name="event_status"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      Name of Government body presented
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input
-                        placeholder="Name of Government body presented"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {/* PI NAME */}
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="pi_name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Name of Researcher
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Name of Researcher" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
-            {/* PI DESIGNATION */}
-            <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
-                name="pi_designation"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Designation of Researcher
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input
-                        placeholder="Designation of Researcher"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            {/* PI DEPARTMENT */}
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="pi_department"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Department of Researcher
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input
-                        placeholder="Department of Researcher"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            {/* AREA ADVOCATED */}
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="area_of_advocated"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Area Advocated
+                      Role of Applicant
                     </FormLabel>
                     <Select
                       onValueChange={field.onChange}
@@ -274,43 +197,15 @@ export function Form8PrivacyAdvocacy({
                     >
                       <FormControl className="text-xs sm:text-base">
                         <SelectTrigger>
-                          <SelectValue placeholder="Select value" />
+                          <SelectValue placeholder="Select Role" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent className="h-48">
-                        <SelectItem value="Political">Political</SelectItem>
-                        <SelectItem value="Law & Order">Law & Order</SelectItem>
-                        <SelectItem value="Economic Development">
-                          Economic Development
+                      <SelectContent>
+                        <SelectItem value="Organizer">Organizer</SelectItem>
+                        <SelectItem value="Participant">Participant</SelectItem>
+                        <SelectItem value="Resource Person">
+                          Resource Person
                         </SelectItem>
-                        <SelectItem value="Social Progress">
-                          Social Progress
-                        </SelectItem>
-                        <SelectItem value="">Climate Change</SelectItem>
-                        <SelectItem value="">Environment</SelectItem>
-                        <SelectItem value="">Water</SelectItem>
-                        <SelectItem value="">Energy</SelectItem>
-                        <SelectItem value="Sustainability">
-                          Sustainability
-                        </SelectItem>
-                        <SelectItem value="Gender">Gender</SelectItem>
-                        <SelectItem value="Education">Education</SelectItem>
-                        <SelectItem value="Interfaith Harmony">
-                          Interfaith Harmony
-                        </SelectItem>
-                        <SelectItem value="Any Other">
-                          Mass Communication
-                        </SelectItem>
-                        <SelectItem value="Agricultural">
-                          Agricultural
-                        </SelectItem>
-                        <SelectItem value="Technology">Technology</SelectItem>
-                        <SelectItem value="Management">Management</SelectItem>
-                        <SelectItem value="Governance">Governance</SelectItem>
-                        <SelectItem value="Social Issues">
-                          Social Issues
-                        </SelectItem>
-                        <SelectItem value="Any Other">Any Other</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage className="text-xs sm:text-base" />
@@ -318,39 +213,19 @@ export function Form8PrivacyAdvocacy({
                 )}
               />
             </div>
-          </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
-            {/* BRIEF */}
-            <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
-                name="brief"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Brief
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Brief" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            {/* COALITION PARTNER */}
+            {/* thematic_area */}
             <div className="w-full lg:w-[35%]">
               <FormField
                 control={form.control}
-                name="coalition_partners"
+                name="title_of_event"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      Partners in Advocacy Study
+                      Title of Event / Initiative
                     </FormLabel>
                     <FormControl className="text-xs sm:text-base">
                       <Input
-                        placeholder="Partners in Advocacy Study"
+                        placeholder="Title of Event / Initiative"
                         {...field}
                       />
                     </FormControl>
@@ -359,15 +234,36 @@ export function Form8PrivacyAdvocacy({
                 )}
               />
             </div>
-            {/* ADVOCACY TOOLS */}
-            <div className="w-full lg:w-[35%]">
+          </div>
+          <div className="flex flex-col lg:flex-row w-full gap-4">
+            {/* title_of_research */}
+            <div className="w-full lg:w-[30%]">
               <FormField
                 control={form.control}
-                name="advocacy_tools"
+                name="components_address"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      Advocacy Tools Adopted
+                      Community Involved
+                    </FormLabel>
+                    <FormControl className="text-xs sm:text-base">
+                      <Input placeholder="Community Involved" {...field} />
+                    </FormControl>
+                    <FormMessage className="text-xs sm:text-base" />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            {/* pi_name */}
+            <div className="w-full lg:w-[35%]">
+              <FormField
+                control={form.control}
+                name="outcomes"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs sm:text-base">
+                      Outcomes
                     </FormLabel>
                     <Select
                       onValueChange={field.onChange}
@@ -379,11 +275,15 @@ export function Form8PrivacyAdvocacy({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="Briefings">Briefings</SelectItem>
-                        <SelectItem value="Meetings">Meetings</SelectItem>
-                        <SelectItem value="Websites">Websites</SelectItem>
-                        <SelectItem value="Social Media Debates">
-                          Social Media Debates
+                        <SelectItem value="Case Study">Case Study</SelectItem>
+                        <SelectItem value="Policy Advice">
+                          Policy Advice
+                        </SelectItem>
+                        <SelectItem value="Outreach Event">
+                          Outreach Event
+                        </SelectItem>
+                        <SelectItem value="Capacity Building">
+                          Capacity Building
                         </SelectItem>
                         <SelectItem value="Any Other">Any Other</SelectItem>
                       </SelectContent>
@@ -393,21 +293,103 @@ export function Form8PrivacyAdvocacy({
                 )}
               />
             </div>
+            {/* pi_department */}
+            <div className="w-full lg:w-[35%]">
+              <FormField
+                control={form.control}
+                name="date"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs sm:text-base">Date</FormLabel>
+                    <FormControl className="text-xs sm:text-base">
+                      <Input type="date" placeholder="Date" {...field} />
+                    </FormControl>
+                    <FormMessage className="text-xs sm:text-base" />
+                  </FormItem>
+                )}
+              />
+            </div>
           </div>
           <div className="flex flex-col lg:flex-row w-full gap-4">
-            {/* POLICY FILE */}
-            <div className="w-full">
-              <div className="mb-2">
-                <label htmlFor="" className="text-xs sm:text-base font-medium">
-                  Policy / Case Study brief copy
-                </label>
-              </div>
-              <input
-                className="w-full p-2 rounded-md border"
-                type="file"
-                onChange={(e: any) => setFile(e.target.files?.[0])}
-                name=""
-                id=""
+            {/* co_pi_university */}
+            <div className="w-full lg:w-[30%]">
+              <FormField
+                control={form.control}
+                name="event_status"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs sm:text-base">
+                      Collaborating Agency
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      //   defaultValue={field.value}
+                    >
+                      <FormControl className="text-xs sm:text-base">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select value" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Local Authority">
+                          Local Authority
+                        </SelectItem>
+                        <SelectItem value="Government Department">
+                          Government Department
+                        </SelectItem>
+                        <SelectItem value="Civil Society Organizations">
+                          Civil Society Organizations
+                        </SelectItem>
+                        <SelectItem value="NGO">NGO</SelectItem>
+                        <SelectItem value="Any Other">Any Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage className="text-xs sm:text-base" />
+                  </FormItem>
+                )}
+              />
+            </div>
+            {/* co_pi_university */}
+            <div className="w-full lg:w-[35%]">
+              <FormField
+                control={form.control}
+                name="event_status"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs sm:text-base">
+                      Collaborating Agency Name
+                    </FormLabel>
+                    <FormControl className="text-xs sm:text-base">
+                      <Input
+                        placeholder="Collaborating Agency Name"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-xs sm:text-base" />
+                  </FormItem>
+                )}
+              />
+            </div>
+            {/* sponsoring_agency_country */}
+            <div className="w-full lg:w-[35%]">
+              <FormField
+                control={form.control}
+                name="brief_report_file"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs sm:text-base">
+                      Brief Report with Pictures
+                    </FormLabel>
+                    <FormControl className="text-xs sm:text-base">
+                      <Input
+                        type="file"
+                        placeholder="Brief Report"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-xs sm:text-base" />
+                  </FormItem>
+                )}
               />
             </div>
           </div>

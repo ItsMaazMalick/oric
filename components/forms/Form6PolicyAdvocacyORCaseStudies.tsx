@@ -7,18 +7,14 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { validateForm12 } from "@/lib/validator";
-import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useLayoutEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "../ui/use-toast";
 import {
   Select,
   SelectContent,
@@ -26,12 +22,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { countries } from "@/constants/data";
+import { years } from "@/constants/data";
+import { validateForm8 } from "@/lib/validator";
+import { useLayoutEffect, useState } from "react";
+import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { toast } from "../ui/use-toast";
 
 //FORM VALIDATION
-const formSchema = validateForm12;
+const formSchema = validateForm8;
 
-export function Form12ConsultancyContract({
+export function Form6PolicyAdvocacyORCaseStudies({
   id,
   userCookie,
 }: {
@@ -41,7 +42,6 @@ export function Form12ConsultancyContract({
   const [loading, setLoading] = useState(false);
   const [books, setBooks] = useState([]);
   const [file, setFile] = useState();
-  const [role, setRole] = useState("");
 
   useLayoutEffect(() => {
     const fetchBooks = async () => {
@@ -63,20 +63,16 @@ export function Form12ConsultancyContract({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title_of_project: "",
+      date: "",
+      name_government_body: "",
       pi_name: "",
       pi_designation: "",
       pi_department: "",
-      company_name: "",
-      company_country: "",
-      contract_value: 0,
-      start_date: "",
-      end_date: "",
-      type_of_consultancy: "",
-      key_deliverable_file: "",
-      oric_percentage: 0,
-      remarks: "",
-      annex_page_ref_file: "",
+      area_of_advocated: "",
+      brief: "",
+      coalition_partners: "",
+      verification_status: "",
+      advocacy_tools: "",
     },
   });
 
@@ -148,105 +144,26 @@ export function Form12ConsultancyContract({
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <div className="flex flex-col lg:flex-row w-full gap-4">
-            {/* sponsoring_agency_address */}
+            {/* YEAR*/}
             <div className="w-full lg:w-[30%]">
               <FormField
                 control={form.control}
-                name="type_of_consultancy"
+                name="date"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      Consultancy Type
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Consultancy Type" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            {/* thematic_area */}
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="title_of_project"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Title of Consultancy Project
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input
-                        placeholder="Title of Consultancy Project"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {/* ROLE */}
-
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="title_of_project"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Applicant Role
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Applicant Role" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
-            {/* pi_department */}
-            <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
-                name="company_name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Company Name
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Company Name" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            {/* co_pi_designation */}
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="company_country"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Company Country
+                      Year.
                     </FormLabel>
                     <Select onValueChange={field.onChange}>
                       <FormControl className="text-xs sm:text-base">
                         <SelectTrigger>
-                          <SelectValue placeholder="Select Country" />
+                          <SelectValue placeholder="Select Year" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="h-48">
-                        {countries.map((country, index) => (
-                          <SelectItem key={index} value={country.name}>
-                            {country.name}
+                        {years.map((year) => (
+                          <SelectItem key={year.id} value={year.name}>
+                            {year.name}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -257,20 +174,19 @@ export function Form12ConsultancyContract({
               />
             </div>
 
-            {/* co_pi_department */}
+            {/* NAME OF GOVERNMENT BODY */}
             <div className="w-full lg:w-[35%]">
               <FormField
                 control={form.control}
-                name="contract_value"
+                name="name_government_body"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      Contract Value (Rs)
+                      Name of Government body presented
                     </FormLabel>
                     <FormControl className="text-xs sm:text-base">
                       <Input
-                        type="number"
-                        placeholder="Contract Value (Rs)"
+                        placeholder="Name of Government body presented"
                         {...field}
                       />
                     </FormControl>
@@ -279,57 +195,19 @@ export function Form12ConsultancyContract({
                 )}
               />
             </div>
-          </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
-            {/* co_pi_university */}
-            <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
-                name="start_date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Start Date
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input type="date" placeholder="Start Date" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            {/* sponsoring_agency_name */}
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="end_date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      End Date
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input type="date" placeholder="End Date" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
 
-            {/* sponsoring_agency_country */}
+            {/* PI NAME */}
             <div className="w-full lg:w-[35%]">
               <FormField
                 control={form.control}
-                name="key_deliverable_file"
+                name="pi_name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      Key Deliverables
+                      Name of Researcher
                     </FormLabel>
                     <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Key Deliverables" {...field} />
+                      <Input placeholder="Name of Researcher" {...field} />
                     </FormControl>
                     <FormMessage className="text-xs sm:text-base" />
                   </FormItem>
@@ -338,40 +216,198 @@ export function Form12ConsultancyContract({
             </div>
           </div>
           <div className="flex flex-col lg:flex-row w-full gap-4">
-            {/* sponsoring_agency_address */}
+            {/* PI DESIGNATION */}
             <div className="w-full lg:w-[30%]">
               <FormField
                 control={form.control}
-                name="remarks"
+                name="pi_designation"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      Remarks (if any)
+                      Designation of Researcher
                     </FormLabel>
                     <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Remarks (if any)" {...field} />
+                      <Input
+                        placeholder="Designation of Researcher"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage className="text-xs sm:text-base" />
                   </FormItem>
                 )}
               />
             </div>
-            {/* sponsoring_agency_country */}
-            <div className="w-full lg:w-[70%]">
+            {/* PI DEPARTMENT */}
+            <div className="w-full lg:w-[35%]">
               <FormField
                 control={form.control}
-                name="annex_page_ref_file"
+                name="pi_department"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      Copy of Contract
+                      Department of Researcher
                     </FormLabel>
                     <FormControl className="text-xs sm:text-base">
-                      <Input type="file" placeholder="Proofs" {...field} />
+                      <Input
+                        placeholder="Department of Researcher"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage className="text-xs sm:text-base" />
                   </FormItem>
                 )}
+              />
+            </div>
+            {/* AREA ADVOCATED */}
+            <div className="w-full lg:w-[35%]">
+              <FormField
+                control={form.control}
+                name="area_of_advocated"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs sm:text-base">
+                      Area Advocated
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      //   defaultValue={field.value}
+                    >
+                      <FormControl className="text-xs sm:text-base">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select value" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent className="h-48">
+                        <SelectItem value="Political">Political</SelectItem>
+                        <SelectItem value="Law & Order">Law & Order</SelectItem>
+                        <SelectItem value="Economic Development">
+                          Economic Development
+                        </SelectItem>
+                        <SelectItem value="Social Progress">
+                          Social Progress
+                        </SelectItem>
+                        <SelectItem value="">Climate Change</SelectItem>
+                        <SelectItem value="">Environment</SelectItem>
+                        <SelectItem value="">Water</SelectItem>
+                        <SelectItem value="">Energy</SelectItem>
+                        <SelectItem value="Sustainability">
+                          Sustainability
+                        </SelectItem>
+                        <SelectItem value="Gender">Gender</SelectItem>
+                        <SelectItem value="Education">Education</SelectItem>
+                        <SelectItem value="Interfaith Harmony">
+                          Interfaith Harmony
+                        </SelectItem>
+                        <SelectItem value="Any Other">
+                          Mass Communication
+                        </SelectItem>
+                        <SelectItem value="Agricultural">
+                          Agricultural
+                        </SelectItem>
+                        <SelectItem value="Technology">Technology</SelectItem>
+                        <SelectItem value="Management">Management</SelectItem>
+                        <SelectItem value="Governance">Governance</SelectItem>
+                        <SelectItem value="Social Issues">
+                          Social Issues
+                        </SelectItem>
+                        <SelectItem value="Any Other">Any Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage className="text-xs sm:text-base" />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+          <div className="flex flex-col lg:flex-row w-full gap-4">
+            {/* BRIEF */}
+            <div className="w-full lg:w-[30%]">
+              <FormField
+                control={form.control}
+                name="brief"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs sm:text-base">
+                      Brief
+                    </FormLabel>
+                    <FormControl className="text-xs sm:text-base">
+                      <Input placeholder="Brief" {...field} />
+                    </FormControl>
+                    <FormMessage className="text-xs sm:text-base" />
+                  </FormItem>
+                )}
+              />
+            </div>
+            {/* COALITION PARTNER */}
+            <div className="w-full lg:w-[35%]">
+              <FormField
+                control={form.control}
+                name="coalition_partners"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs sm:text-base">
+                      Partners in Advocacy Study
+                    </FormLabel>
+                    <FormControl className="text-xs sm:text-base">
+                      <Input
+                        placeholder="Partners in Advocacy Study"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-xs sm:text-base" />
+                  </FormItem>
+                )}
+              />
+            </div>
+            {/* ADVOCACY TOOLS */}
+            <div className="w-full lg:w-[35%]">
+              <FormField
+                control={form.control}
+                name="advocacy_tools"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs sm:text-base">
+                      Advocacy Tools Adopted
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      //   defaultValue={field.value}
+                    >
+                      <FormControl className="text-xs sm:text-base">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select value" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Briefings">Briefings</SelectItem>
+                        <SelectItem value="Meetings">Meetings</SelectItem>
+                        <SelectItem value="Websites">Websites</SelectItem>
+                        <SelectItem value="Social Media Debates">
+                          Social Media Debates
+                        </SelectItem>
+                        <SelectItem value="Any Other">Any Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage className="text-xs sm:text-base" />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+          <div className="flex flex-col lg:flex-row w-full gap-4">
+            {/* POLICY FILE */}
+            <div className="w-full">
+              <div className="mb-2">
+                <label htmlFor="" className="text-xs sm:text-base font-medium">
+                  Policy / Case Study brief copy
+                </label>
+              </div>
+              <input
+                className="w-full p-2 rounded-md border"
+                type="file"
+                onChange={(e: any) => setFile(e.target.files?.[0])}
+                name=""
+                id=""
               />
             </div>
           </div>
