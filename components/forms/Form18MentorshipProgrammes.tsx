@@ -65,7 +65,6 @@ export function Form18MentorshipProgrammes({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      console.log(values);
       if (nill) {
         setLoading(true);
         toast({ variant: "default", title: "Please wait..." });

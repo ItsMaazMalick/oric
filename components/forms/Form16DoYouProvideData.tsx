@@ -174,7 +174,7 @@ export function Form16DoYouProvideData({
           </div>
           <div className="flex flex-col lg:flex-row w-full gap-4">
             {/* PROOFS*/}
-            <div className="w-full lg:w-[35%]">
+            <div className="w-full">
               <div className="mb-2">
                 <label htmlFor="" className="text-xs sm:text-base font-medium">
                   Evidence (Email/Letter/Submission)

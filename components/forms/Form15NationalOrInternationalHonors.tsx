@@ -195,7 +195,7 @@ export function Form15NationalOrInternationalHonors({
               />
             </div>
             {/* PROOFS*/}
-            <div className="w-full lg:w-[35%]">
+            <div className="w-full lg:w-[70%]">
               <div className="mb-2">
                 <label htmlFor="" className="text-xs sm:text-base font-medium">
                   Evidence
