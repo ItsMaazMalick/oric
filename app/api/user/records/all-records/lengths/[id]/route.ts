@@ -69,6 +69,7 @@ export async function GET(
         0,
         0,
         0,
+        0,
       ];
       return NextResponse.json({ status: 200, success: true, lengths });
     }

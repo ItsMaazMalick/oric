@@ -31,7 +31,6 @@ import { Form16DoYouProvideData } from "../forms/Form16DoYouProvideData";
 import { Form17CommunityWork } from "../forms/Form17CommunityWork";
 import { Form18MentorshipProgrammes } from "../forms/Form18MentorshipProgrammes";
 import { Form19StudentOrganizations } from "../forms/Form19StudentOrganizations";
-import { Form20FacilitiesLabsAccessible } from "../forms/Form20FacilitiesLabsAccessible";
 
 export function AccordionComp({
   id,
@@ -665,38 +664,6 @@ export function AccordionComp({
         <AccordionContent>
           <div className="p-4 border-2 border-primary rounded-lg">
             <Form19StudentOrganizations id={id} userCookie={userCookie} />
-          </div>
-          <div className="relative">
-            <div className="absolute -top-14 left-24 sm:left-28 text-primary">
-              <Button
-                className="text-xs sm:text-base font-bold underline"
-                variant={"ghost"}
-                onClick={handleOpen}
-              >
-                {isShow ? "Hide" : "Show"}&nbsp;Records
-              </Button>
-            </div>
-          </div>
-          {isShow && <div className="w-full mt-4 border-t-2 border-primary" />}
-          {isShow && (
-            <div className="h-[400px] overflow-y-auto overflow-x-visible">
-              <ResearchPublicationsTable id={id} userCookie={userCookie} />
-            </div>
-          )}
-          {isShow && <div className="w-full mt-4 border-t-2 border-primary" />}
-        </AccordionContent>
-      </AccordionItem>
-      {/* 20 - LAB FACILITIES */}
-      <AccordionItem value="item-20">
-        <AccordionTrigger
-          onClick={handleClose}
-          className="font-bold text-left text-primary hover:text-secondary"
-        >
-          {formTitles[19]}
-        </AccordionTrigger>
-        <AccordionContent>
-          <div className="p-4 border-2 border-primary rounded-lg">
-            <Form20FacilitiesLabsAccessible id={id} userCookie={userCookie} />
           </div>
           <div className="relative">
             <div className="absolute -top-14 left-24 sm:left-28 text-primary">

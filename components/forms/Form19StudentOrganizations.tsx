@@ -20,6 +20,13 @@ import { useLayoutEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 //FORM VALIDATION
 const formSchema = validateForm19;
@@ -179,8 +186,40 @@ export function Form19StudentOrganizations({
             </div>
           </div>
           <div className="flex flex-col lg:flex-row w-full gap-4">
-            {/* OBJECTIVE */}
             <div className="w-full lg:w-[30%]">
+              <FormField
+                control={form.control}
+                name="objective"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs sm:text-base">
+                      Role of Applicant
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      //   defaultValue={field.value}
+                    >
+                      <FormControl className="text-xs sm:text-base">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Role" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Focal Person">
+                          Focal Person
+                        </SelectItem>
+                        <SelectItem value="Coordinator">Coordinator</SelectItem>
+                        <SelectItem value="Member">Member</SelectItem>
+                        <SelectItem value="Any Other">Any Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage className="text-xs sm:text-base" />
+                  </FormItem>
+                )}
+              />
+            </div>
+            {/* OBJECTIVE */}
+            <div className="w-full lg:w-[35%]">
               <FormField
                 control={form.control}
                 name="objective"
@@ -215,7 +254,9 @@ export function Form19StudentOrganizations({
               />
             </div>
             {/* PROOFS*/}
-            <div className="w-full lg:w-[35%]">
+          </div>
+          <div className="flex flex-col lg:flex-row w-full gap-4">
+            <div className="w-full">
               <div className="mb-2">
                 <label htmlFor="" className="text-xs sm:text-base font-medium">
                   Evidence

@@ -966,7 +966,6 @@ export const formTitles = [
   "17. Community Work",
   "18. Mentorship Programmes",
   "19. Student Organizations / Associations / Clubs / Alumni Groups",
-  "20. Facilities / Labs Accessible to Students / Community",
 ];
 
 // FACULTIES

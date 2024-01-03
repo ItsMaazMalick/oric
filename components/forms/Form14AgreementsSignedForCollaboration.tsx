@@ -318,10 +318,10 @@ export function Form14AgreementsSignedForCollaboration({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
-                      Key Initiatives
+                      Areas of Focus
                     </FormLabel>
                     <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Key Initiatives" {...field} />
+                      <Input placeholder="Areas of Focus" {...field} />
                     </FormControl>
                     <FormMessage className="text-xs sm:text-base" />
                   </FormItem>
