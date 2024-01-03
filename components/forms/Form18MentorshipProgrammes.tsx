@@ -275,24 +275,25 @@ export function Form18MentorshipProgrammes({
                     )}
                   />
                 </div>
-              </div>
-              <div className="w-full lg:w-[70%]">
-                <div className="mb-2">
-                  <label
-                    htmlFor=""
-                    className="text-xs sm:text-base font-medium"
-                  >
-                    Evidence
-                  </label>
+                <div className="w-full lg:w-[70%]">
+                  <div className="mb-2">
+                    <label
+                      htmlFor=""
+                      className="text-xs sm:text-base font-medium"
+                    >
+                      Evidence
+                    </label>
+                  </div>
+                  <input
+                    className="w-full p-2 rounded-md border"
+                    type="file"
+                    onChange={(e: any) => setEvidence(e.target.files?.[0])}
+                    name=""
+                    id=""
+                  />
                 </div>
-                <input
-                  className="w-full p-2 rounded-md border"
-                  type="file"
-                  onChange={(e: any) => setEvidence(e.target.files?.[0])}
-                  name=""
-                  id=""
-                />
               </div>
+
               <div className="">
                 <Button
                   disabled={loading}
