@@ -1,7 +1,6 @@
 import Footer from "@/components/footer/Footer";
 import Logout from "@/components/logout/UserLogout";
 import AdminMobileNavbar from "@/components/navigation/AdminMobileNavbar";
-import MobileNavLinks from "@/components/navigation/MobileNavLinks";
 import { NavLinks } from "@/components/navigation/NavLinks";
 import {
   Tooltip,
