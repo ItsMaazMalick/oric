@@ -9,12 +9,14 @@ export default function AdminMobileNavLinks() {
   return (
     <>
       {faculties.map((faculty) => (
-        <>
-          <DropdownMenuItem key={faculty.id}>
-            <Link href={`/dashboard/${faculty.href}`}>{faculty.title}</Link>
-          </DropdownMenuItem>
+        <div key={faculty.id}>
+          <Link href={`/dashboard/${faculty.href}`}>
+            <DropdownMenuItem className="cursor-pointer">
+              {faculty.title}
+            </DropdownMenuItem>
+          </Link>
           <DropdownMenuSeparator />
-        </>
+        </div>
       ))}
     </>
   );
