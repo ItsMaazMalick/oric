@@ -21,11 +21,15 @@ export default function AdminMobileNavbar() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <Link href={"/dashboard"}>
+        {/* <Link href={"/dashboard"}>
           <DropdownMenuLabel>Home</DropdownMenuLabel>
-        </Link>
+        </Link> */}
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
+          <Link href={`/dashboard`}>
+            <DropdownMenuItem className="cursor-pointer">Home</DropdownMenuItem>
+          </Link>
+          <DropdownMenuSeparator />
           <AdminMobileNavLinks />
         </DropdownMenuGroup>
       </DropdownMenuContent>
