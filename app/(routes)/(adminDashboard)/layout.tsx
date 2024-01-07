@@ -1,5 +1,6 @@
 import Footer from "@/components/footer/Footer";
 import Logout from "@/components/logout/UserLogout";
+import AdminMobileNavbar from "@/components/navigation/AdminMobileNavbar";
 import MobileNavLinks from "@/components/navigation/MobileNavLinks";
 import { NavLinks } from "@/components/navigation/NavLinks";
 import {
@@ -20,7 +21,8 @@ export default function AdminDashboardLayout({
       <div className="w-full bg-primary-foreground h-14 mb-2 flex justify-between items-center px-2 shadow-md sticky top-0 z-50">
         {/* MOBILE NAV LINKS */}
         <div className="block md:hidden">
-          <MobileNavLinks />
+          {/* <MobileNavLinks /> */}
+          <AdminMobileNavbar />
         </div>
         {/* HOME */}
         <Link href={"/"}>

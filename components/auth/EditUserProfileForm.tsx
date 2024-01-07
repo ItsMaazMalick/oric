@@ -35,30 +35,12 @@ const formSchema = userValidation;
 const EditUserProfileForm = ({ user }: any) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [cnic, setCnic] = useState(user.cnic);
-  const [isValidCnic, setIsValidCnic] = useState(true);
   const [faculty, setFaculty] = useState([]);
   const [department, setDepartment] = useState<
     Array<{ id: number; title: string; href: string }>
   >([]);
   const [dept, setDept] = useState(user.department);
   const [fact, setFact] = useState(user.faculty);
-
-  //CNIC Validation
-  const validateCnic = (inputCnic: any) => {
-    const cnicRegex = /^\d{5}-\d{7}-\d$/;
-    return cnicRegex.test(inputCnic);
-  };
-  const handleCnicChange = (event: any) => {
-    let value = event.target.value;
-    if (value.length === 5) {
-      value = value + "-";
-    } else if (value.length === 13) {
-      value = value + "-";
-    }
-    setCnic(value);
-    setIsValidCnic(validateCnic(value));
-  };
 
   // Handle Faculty
   const handleFaculty = (e: any) => {
@@ -94,8 +76,6 @@ const EditUserProfileForm = ({ user }: any) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       if (
-        // !email ||
-        !cnic ||
         !values.name ||
         !values.dob ||
         !values.password ||
@@ -119,8 +99,6 @@ const EditUserProfileForm = ({ user }: any) => {
           },
           body: JSON.stringify({
             name: values.name,
-            // email,
-            cnic,
             dob: values.dob,
             password: values.password,
             gender: values.gender,
@@ -225,18 +203,11 @@ const EditUserProfileForm = ({ user }: any) => {
               <Input
                 disabled
                 className="text-xs md:text-base"
-                value={cnic}
+                value={user.cnic}
                 // onChange={handleCnicChange}
                 type="text"
                 placeholder="12345-1234567-1"
               />
-              {!isValidCnic && (
-                <div className="mt-2 text-xs md:text-base">
-                  <span className="text-destructive font-medium">
-                    Invalid CNIC
-                  </span>
-                </div>
-              )}
             </div>
             {/* </div>
           <div className="w-full flex flex-col lg:flex-row justify-center items-center gap-4"> */}
