@@ -132,7 +132,7 @@ export default function AdminDataTable({ data, index }: PageProps) {
               <ArrowUpDown size={15} className="ml-1" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align="end" className="h-48 overflow-y-auto">
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
