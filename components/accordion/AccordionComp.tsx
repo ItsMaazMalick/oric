@@ -130,9 +130,7 @@ export function AccordionComp({
             </div>
           </div>
           {isShow && <div className="w-full mt-4 border-t-2 border-primary" />}
-          {isShow && (
-            <BookAuthoredEditedTable id={id} userCookie={userCookie} />
-          )}
+          {isShow && <AdminDataTable data={books} index={2} />}
           {isShow && <div className="w-full mt-4 border-t-2 border-primary" />}
         </AccordionContent>
       </AccordionItem>
