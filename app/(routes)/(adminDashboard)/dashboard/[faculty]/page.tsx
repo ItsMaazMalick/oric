@@ -12,13 +12,17 @@ const Faculties = async ({ params }: { params: { faculty: string } }) => {
   console.log(books);
 
   const calculateLength = (department: string) => {
-    let totalLength = 0;
-    for (let i = 0; i < books.length; i++) {
-      totalLength += books[i].filter(
-        (book: any) => book.user.department === department
-      ).length;
+    try {
+      let totalLength = 0;
+      for (let i = 0; i < books.length; i++) {
+        totalLength += books[i].filter(
+          (book: any) => book.user.department === department
+        ).length;
+      }
+      return totalLength;
+    } catch (error) {
+      return 0;
     }
-    return totalLength;
   };
 
   const departments = faculty ? faculty.departments : [];

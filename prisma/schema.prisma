@@ -57,20 +57,6 @@ model User {
   updated_at                      DateTime                                 @updatedAt
 }
 
-// model UserBasicInformation {
-//   id              String   @id @default(uuid())
-//   user            User     @relation(fields: [user_id], references: [id])
-//   user_id         String   @unique
-//   gender          String
-//   department      String
-//   faculty         String
-//   phone_no        String
-//   cell_no         String
-//   research_domain String
-//   highest_degree  String
-//   created_at      DateTime @default(now())
-//   updated_at      DateTime @updatedAt
-// }
 
 // 1 - 
 model ResearchPublication {

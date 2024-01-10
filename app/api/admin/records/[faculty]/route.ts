@@ -63,14 +63,17 @@ export async function GET(
         bookAuthoredEdited,
         researchProjects,
       ];
+      console.log(books);
       return NextResponse.json({ status: 200, success: true, books });
     }
+
     return NextResponse.json({
       status: 400,
       success: false,
       message: "An error occured",
     });
   } catch (error) {
+    console.log(error);
     return NextResponse.json({
       status: 500,
       success: false,

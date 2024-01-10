@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "../ui/button";
 import { ResearchPublicationsTable } from "../tables/ResearchPublicationsTable";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { formTitles } from "@/constants/data";
 import { Form1ResearchPublications } from "../forms/Form1ResearchPublications";
@@ -31,6 +31,7 @@ import { Form16DoYouProvideData } from "../forms/Form16DoYouProvideData";
 import { Form17CommunityWork } from "../forms/Form17CommunityWork";
 import { Form18MentorshipProgrammes } from "../forms/Form18MentorshipProgrammes";
 import { Form19StudentOrganizations } from "../forms/Form19StudentOrganizations";
+import AdminDataTable from "../tables/AdminDataTable";
 
 export function AccordionComp({
   id,
@@ -40,6 +41,23 @@ export function AccordionComp({
   userCookie: string;
 }) {
   const [isShow, setIsShow] = useState(false);
+  const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    const getBooks = async () => {
+      const res = await fetch(`/api/user/records/research-publications/${id}`, {
+        cache: "no-store",
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userCookie}`,
+        },
+      });
+      const { books } = await res.json();
+      setBooks(books);
+    };
+    getBooks();
+  }, []);
 
   const handleOpen = () => {
     setIsShow((prev) => !prev);
@@ -81,7 +99,8 @@ export function AccordionComp({
           {isShow && <div className="w-full mt-4 border-t-2 border-primary" />}
           {isShow && (
             <div className="max-h-[400px] overflow-y-auto overflow-x-auto">
-              <ResearchPublicationsTable id={id} userCookie={userCookie} />
+              {/* <ResearchPublicationsTable id={id} userCookie={userCookie} /> */}
+              <AdminDataTable data={books} index={1} />
             </div>
           )}
           {isShow && <div className="w-full mt-4 border-t-2 border-primary" />}

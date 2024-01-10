@@ -17,7 +17,7 @@ export default function AdminDashboardLayout({
 }) {
   return (
     <div className={`w-full bg-grayBackground text-primary lg:px-28`}>
-      <div className="w-full bg-primary-foreground h-14 mb-2 flex justify-between items-center px-2 shadow-md sticky top-0 z-50">
+      <div className="w-full bg-primary-foreground h-[56px] mb-2 flex justify-between items-center px-2 shadow-md sticky top-0 z-50">
         {/* MOBILE NAV LINKS */}
         <div className="block md:hidden">
           {/* <MobileNavLinks /> */}
