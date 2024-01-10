@@ -19,7 +19,7 @@ export default function Home() {
             src={"/images/blog/main-image.jpg"}
             alt="ORIC"
             fill
-            objectFit="cover"
+            className="object-cover"
           />
           <div className="absolute bottom-1 left-1">
             <p className="text-2xl font-bold text-white p-2 bg-primary rounded-lg">

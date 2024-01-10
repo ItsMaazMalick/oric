@@ -33,8 +33,13 @@ const AdminDashboard = () => {
       </div>
       {/* <EditUserProfile /> */}
       {/* DASHBOARD */}
-      <div className="relative w-[100%] h-[300px] md:h-[400px] lg:h-[600px]">
-        <Image src={"/images/aiou-bg.jpg"} alt="ORIC" fill />
+      <div className="relative w-[100%] h-[310px] sm:h-[340px] lg:h-[373px]">
+        <Image
+          src={"/images/aiou-bg.jpg"}
+          alt="ORIC"
+          fill
+          className="object-cover"
+        />
       </div>
     </div>
   );

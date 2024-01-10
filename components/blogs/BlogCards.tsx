@@ -24,7 +24,7 @@ export default function BlogCards() {
           </div>
           {/* IMAGE */}
           <div className="relative w-96 h-60">
-            <Image src={blog.image} alt="Image" fill objectFit="cover" />
+            <Image src={blog.image} alt="Image" fill className="object-cover" />
           </div>
         </div>
       ))}
