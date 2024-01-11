@@ -1,30 +1,8 @@
 import Departments from "@/components/cards/Departments";
 import { faculties } from "@/constants/data";
 
-const Faculties = async ({ params }: { params: { faculty: string } }) => {
+const Faculties = ({ params }: { params: { faculty: string } }) => {
   const faculty = faculties.find((faculty) => faculty.href === params.faculty);
-
-  const res = await fetch(
-    `${process.env.PUBLIC_URL}/api/admin/records/${params.faculty}`,
-    { cache: "no-store" }
-  );
-  const { books } = await res.json();
-  console.log(books);
-
-  const calculateLength = (department: string) => {
-    try {
-      let totalLength = 0;
-      for (let i = 0; i < books.length; i++) {
-        totalLength += books[i].filter(
-          (book: any) => book.user.department === department
-        ).length;
-      }
-      return totalLength;
-    } catch (error) {
-      return 0;
-    }
-  };
-
   const departments = faculty ? faculty.departments : [];
   return (
     <div className="w-full p-2">
@@ -37,7 +15,6 @@ const Faculties = async ({ params }: { params: { faculty: string } }) => {
         {departments?.map((department) => (
           <Departments
             key={department.id}
-            total={calculateLength(department.href)}
             title={department.title}
             href={`/dashboard/${params.faculty}/${department.href}`}
           />
