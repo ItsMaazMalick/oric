@@ -1,16 +1,32 @@
 import { AccordionComp } from "@/components/accordion/AccordionComp";
 import EditUserProfile from "@/components/edit/EditUserProfile";
 import Logout from "@/components/logout/UserLogout";
-import Image from "next/image";
-import React from "react";
-import { redirect } from "next/navigation";
 import { getUserSession } from "@/lib/session";
 import { cookies } from "next/headers";
+import Image from "next/image";
+
+const getBooks = async (id: string, userCookie: string) => {
+  const res = await fetch(
+    `${process.env.PUBLIC_URL}/api/user/records/all-records/${id}`,
+    {
+      cache: "no-store",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userCookie}`,
+      },
+    }
+  );
+  const { books } = await res.json();
+  return books;
+};
 
 const AddBook = async () => {
   const session = await getUserSession();
   const cookieStore = cookies();
   const userCookie = cookieStore.get("auth-token")?.value || "";
+
+  const books = await getBooks(session?.id, userCookie);
 
   return (
     <div className="w-full">
@@ -42,7 +58,7 @@ const AddBook = async () => {
       </div>
       {/* ----------------- */}
       <div className="px-2 sm:px-8 py-2 bg-primary-foreground ring ring-slate-100 shadow-lg">
-        <AccordionComp id={session?.id} userCookie={userCookie} />
+        <AccordionComp id={session?.id} userCookie={userCookie} data={books} />
       </div>
     </div>
   );

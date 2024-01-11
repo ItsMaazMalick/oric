@@ -55,6 +55,21 @@ export async function GET(
         bookAuthoredEdited,
         researchProject,
         departmentTraining,
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
       ];
       return NextResponse.json({ status: 200, success: true, books });
     }
