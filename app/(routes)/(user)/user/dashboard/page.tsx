@@ -4,12 +4,10 @@ import { Button } from "@/components/ui/button";
 import { siteTitle } from "@/constants/basicInfo";
 import { formTitles } from "@/constants/data";
 import { userVerify } from "@/lib/verify";
-import { User2 } from "lucide-react";
 import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import React from "react";
 
 const UserDashboard = async () => {
   const cookieStore = cookies();

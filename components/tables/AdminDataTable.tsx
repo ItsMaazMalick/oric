@@ -116,7 +116,7 @@ export default function AdminDataTable({ data, index }: PageProps) {
 
   return (
     <div className="w-full p-2">
-      <div className="flex items-center py-4">
+      <div className="flex items-center py-4 gap-2">
         <Input
           placeholder="Filter Titles..."
           value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
@@ -128,7 +128,7 @@ export default function AdminDataTable({ data, index }: PageProps) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              Columns
+              <span className="hidden sm:inline">Columns</span>
               <ArrowUpDown size={15} className="ml-1" />
             </Button>
           </DropdownMenuTrigger>

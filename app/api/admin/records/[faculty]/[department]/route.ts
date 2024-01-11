@@ -60,6 +60,22 @@ export async function GET(
         researchPublications,
         bookAuthoredEdited,
         researchProjects,
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
       ];
       return NextResponse.json({ status: 200, success: true, books });
     }

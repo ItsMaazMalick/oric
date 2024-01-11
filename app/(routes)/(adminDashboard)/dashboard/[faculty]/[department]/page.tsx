@@ -1,5 +1,4 @@
 import AdminDataTable from "@/components/tables/AdminDataTable";
-import { Table1Header } from "@/components/tables/headers/TableHeaders";
 import {
   Accordion,
   AccordionContent,
