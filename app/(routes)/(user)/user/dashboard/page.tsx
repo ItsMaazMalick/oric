@@ -1,3 +1,4 @@
+import EditUserProfileButton from "@/components/button/EditUserProfileButton";
 import UserBooksCard from "@/components/cards/UserBooksCard";
 import Logout from "@/components/logout/UserLogout";
 import { Button } from "@/components/ui/button";
@@ -66,12 +67,10 @@ const UserDashboard = async () => {
         <div className="flex items-center gap-2">Dashboard</div>
         <div className="flex gap-4">
           <div className="hidden sm:flex">
-            <Link href={"/user/dashboard/edit-profile"}>
-              <Button className="bg-primary">Edit Profile</Button>
-            </Link>
+            <EditUserProfileButton />
           </div>
           <Link href={"/user/dashboard/add-record"}>
-            <Button className="bg-secondary">Add Record</Button>
+            <Button variant={"secondary"}>Add Record</Button>
           </Link>
         </div>
       </div>

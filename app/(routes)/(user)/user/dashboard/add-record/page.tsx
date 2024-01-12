@@ -1,4 +1,6 @@
 import { AccordionComp } from "@/components/accordion/AccordionComp";
+import BackButton from "@/components/button/BackButton";
+import EditUserProfileButton from "@/components/button/EditUserProfileButton";
 import EditUserProfile from "@/components/edit/EditUserProfile";
 import Logout from "@/components/logout/UserLogout";
 import { getUserSession } from "@/lib/session";
@@ -46,7 +48,12 @@ const AddBook = async () => {
           <Logout />
         </div>
       </div>
-      <EditUserProfile />
+      <div className="w-full h-14 flex justify-between items-center bg-primary border-b-2 border-t-2 border-primary-foreground mb-2 py-2 px-4 rounded-full">
+        <BackButton />
+        <div className="flex mr-2">
+          <EditUserProfileButton />
+        </div>
+      </div>
       <div>
         <p className="p-2 m-2">
           You are not required to submit a hard copy of the duly filled proforma
