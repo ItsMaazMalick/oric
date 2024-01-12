@@ -188,8 +188,13 @@ export default function AdminDataTable({ data, index }: PageProps) {
                 </TableRow>
               ))
             ) : (
-              <TableRow className="h-24">
-                <TableCell className="h-24 text-center">No results.</TableCell>
+              <TableRow className="h-[73px]">
+                <TableCell
+                  colSpan={table.getVisibleFlatColumns().length}
+                  className="text-center text-destructive font-bold"
+                >
+                  No results.
+                </TableCell>
               </TableRow>
             )}
           </TableBody>

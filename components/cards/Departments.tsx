@@ -1,11 +1,6 @@
-import { ArrowRight, ArrowUpRightSquare, Building } from "lucide-react";
+import { ArrowUpRightSquare, Building } from "lucide-react";
 import Link from "next/link";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "../ui/tooltip";
+import TooltipComponent from "../tooltip/TooltipComponent";
 
 const Departments = ({ title, href }: { title: string; href: string }) => {
   return (
@@ -21,18 +16,11 @@ const Departments = ({ title, href }: { title: string; href: string }) => {
             <Link href={href}>{title}</Link>
           </h3>
           <div className="flex justify-end">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Link className="font-bold" href={href}>
-                    <ArrowUpRightSquare />
-                  </Link>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Show Detail</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <TooltipComponent title="Show Detail">
+              <Link className="font-bold" href={href}>
+                <ArrowUpRightSquare />
+              </Link>
+            </TooltipComponent>
           </div>
         </div>
       </div>

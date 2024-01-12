@@ -2,12 +2,7 @@ import Footer from "@/components/footer/Footer";
 import Logout from "@/components/logout/UserLogout";
 import AdminMobileNavbar from "@/components/navigation/AdminMobileNavbar";
 import { NavLinks } from "@/components/navigation/NavLinks";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import TooltipComponent from "@/components/tooltip/TooltipComponent";
 import Link from "next/link";
 
 export default function AdminDashboardLayout({
@@ -34,18 +29,11 @@ export default function AdminDashboardLayout({
 
         {/* USER BUTTON */}
         <div className="flex gap-2">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <div className="w-10 h-10 bg-primary text-primary-foreground rounded-full flex justify-center items-center font-bold border">
-                  M
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Maaz Malick</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <TooltipComponent title="Maaz Malick">
+            <div className="w-10 h-10 bg-primary text-primary-foreground rounded-full flex justify-center items-center font-bold border">
+              M
+            </div>
+          </TooltipComponent>
 
           <Logout />
         </div>
