@@ -51,6 +51,7 @@ const UserLoginForm = (props: PageProps) => {
         form.reset();
       }
     } catch (error) {
+      console.log(error);
       setError("Something went wrong");
       // throw new Error("Something went wrong");
     }

@@ -57,7 +57,7 @@ export async function loginUser(formData: FormData) {
       { expiresIn: "1d" }
     );
     cookies().set("auth-token", token);
-    revalidatePath("/user/login");
+    revalidatePath("/user/dashboard");
     redirect("/user/dashboard");
   } catch (error) {
     throw new Error("Internal server error");
