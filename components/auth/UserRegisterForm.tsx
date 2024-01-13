@@ -1,5 +1,15 @@
 "use client";
-import React, { FormEvent, useState } from "react";
+import { registerUser } from "@/app/actions/user/auth";
+import { faculties } from "@/constants/data";
+import { userValidation } from "@/lib/validator";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import * as z from "zod";
+import FormSubmitButton from "../button/FormSubmitButton";
 import {
   Form,
   FormControl,
@@ -8,17 +18,7 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import { ArrowRight, Loader2 } from "lucide-react";
-import { toast } from "../ui/use-toast";
 import {
   Select,
   SelectContent,
@@ -26,14 +26,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { userValidation } from "@/lib/validator";
-import { faculties } from "@/constants/data";
 
 const formSchema = userValidation;
 
 const UserRegisterForm = () => {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [cnic, setCnic] = useState("");
   const [email, setEmail] = useState("");
@@ -104,71 +100,32 @@ const UserRegisterForm = () => {
     },
   });
 
+  const {
+    formState: { isSubmitting },
+  } = form;
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      if (
-        !email ||
-        !cnic ||
-        !values.name ||
-        !values.dob ||
-        !values.password ||
-        !values.confirm_password ||
-        !values.gender ||
-        !dept ||
-        !fact ||
-        !values.phone_no ||
-        !values.cell_no ||
-        !values.research_domain ||
-        !values.highest_degree
-      ) {
-        toast({ variant: "destructive", title: "All fields are required" });
-      } else {
-        setLoading(true);
-        toast({ variant: "default", title: "Please wait..." });
-        const res = await fetch(`/api/user/register`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            title: values.title,
-            name: values.name,
-            email,
-            cnic,
-            dob: values.dob,
-            password: values.password,
-            gender: values.gender,
-            department: dept,
-            faculty: fact,
-            phone_no: values.phone_no,
-            cell_no: values.cell_no,
-            research_domain: values.research_domain,
-            highest_degree: values.highest_degree,
-          }),
-        });
-        const data = await res.json();
-        if (data.success) {
-          form.reset();
-          toast({
-            variant: "success",
-            title: data.message,
-          });
-          router.refresh();
-          router.push("/user/login");
-        } else {
-          toast({
-            variant: "destructive",
-            title: data.message,
-          });
-          setLoading(false);
-        }
+      const formData = new FormData();
+      formData.append("title", values.title);
+      formData.append("name", values.name);
+      formData.append("email", email);
+      formData.append("cnic", cnic);
+      formData.append("dob", values.dob);
+      formData.append("password", values.password);
+      formData.append("gender", values.gender);
+      formData.append("department", dept);
+      formData.append("faculty", fact);
+      formData.append("phone_no", values.phone_no);
+      formData.append("cell_no", values.cell_no);
+      formData.append("research_domain", values.research_domain);
+      formData.append("highest_degree", values.highest_degree);
+      const res = await registerUser(formData);
+      if (res && res.status !== 201) {
+        // setError(res.message);
+        form.reset();
       }
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Something went wrong",
-      });
-    }
+    } catch (error) {}
   };
 
   return (
@@ -507,17 +464,12 @@ const UserRegisterForm = () => {
           )}
         />
         <div>
-          <Button
-            disabled={loading}
+          <FormSubmitButton
+            loading={isSubmitting}
             className="flex mx-auto bg-primary text-primary-foreground text-xs md:text-base"
-            type="submit"
           >
-            {loading ? (
-              <Loader2 className="mx-auto h-4 w-4 animate-spin" />
-            ) : (
-              `Register`
-            )}
-          </Button>
+            Register
+          </FormSubmitButton>
         </div>
       </form>
       <div className="flex my-2 justify-center gap-2 text-xs md:text-base">

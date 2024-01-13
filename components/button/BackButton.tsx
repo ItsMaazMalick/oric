@@ -1,14 +1,8 @@
 "use client";
-import { BsFillArrowLeftCircleFill } from "react-icons/bs";
-import Link from "next/link";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { RotateCcw } from "lucide-react";
 import { useRouter } from "next/navigation";
 import TooltipComponent from "../tooltip/TooltipComponent";
+import { Button } from "../ui/button";
 
 const BackButton = () => {
   const router = useRouter();
@@ -16,9 +10,9 @@ const BackButton = () => {
     <TooltipComponent title="Back">
       <div
         onClick={router.back}
-        className="text-2xl text-gray-300 hover:text-primary-foreground hover:text-3xl transition-all duration-300"
+        className="p-2 bg-primary hover:bg-secondary text-primary-foreground rounded-lg"
       >
-        <BsFillArrowLeftCircleFill />
+        <RotateCcw />
       </div>
     </TooltipComponent>
   );

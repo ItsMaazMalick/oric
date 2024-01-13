@@ -6,119 +6,34 @@ import {
 } from "@/components/ui/accordion";
 
 import { formTitles } from "@/constants/data";
-import { Form10ConsultancyContractsWithIndustry } from "../forms/Form10ConsultancyContractsWithIndustry";
-import { Form11PatentsTradeMarksDesignPatent } from "../forms/Form11PatentsTradeMarksDesignPatent";
-import { Form12ResearchProductsProcessPrototype } from "../forms/Form12ResearchProductsProcessPrototype";
-import { Form13ScienceArtsProducts } from "../forms/Form13ScienceArtsProducts";
-import { Form14AgreementsSignedForCollaboration } from "../forms/Form14AgreementsSignedForCollaboration";
-import { Form15NationalOrInternationalHonors } from "../forms/Form15NationalOrInternationalHonors";
-import { Form16DoYouProvideData } from "../forms/Form16DoYouProvideData";
-import { Form17CommunityWork } from "../forms/Form17CommunityWork";
-import { Form18MentorshipProgrammes } from "../forms/Form18MentorshipProgrammes";
-import { Form19StudentOrganizations } from "../forms/Form19StudentOrganizations";
-import { Form1ResearchPublications } from "../forms/Form1ResearchPublications";
-import { Form2BookAuthoredEdited } from "../forms/Form2BookAuthoredEdited";
-import { Form3ResearchProjects } from "../forms/Form3ResearchProjects";
-import { Form4TrainingsWorkshops } from "../forms/Form4TrainingsWorkshops";
-import { Form5ThesisFYPSupervised } from "../forms/Form5ThesisFYPSupervised";
-import { Form6PolicyAdvocacyORCaseStudies } from "../forms/Form6PolicyAdvocacyORCaseStudies";
-import { Form7LinksEstablished } from "../forms/Form7LinksEstablished";
-import { Form8ContractResearchAwarded } from "../forms/Form8ContractResearchAwarded";
-import { Form9CivicEngagementEvents } from "../forms/Form9CivicEngagementEvents";
-import AdminDataTable from "../tables/AdminDataTable";
 
-export function AccordionComp({
-  id,
-  userCookie,
-  data,
-}: {
-  id: string;
-  userCookie: string;
-  data: any;
-}) {
+import AdminDataTable from "../tables/AdminDataTable";
+import FormMain from "../forms/FormMain";
+
+export function AccordionComp({ data }: { data: any }) {
   return (
     <Accordion
       type="single"
       collapsible
       className="w-full text-sm sm:text-base"
     >
-      {data.map((book: any, index: number) => (
+      {formTitles.map((formTitle: any, index: number) => (
         <AccordionItem value={`item-${index + 1}`} key={index}>
           <AccordionTrigger
             // onClick={handleClose}
             className="font-bold text-left text-primary hover:text-secondary"
           >
-            {formTitles[index]}
+            {formTitle}
           </AccordionTrigger>
           <AccordionContent>
-            <div className="p-4 border-2 border-primary rounded-lg">
-              {index === 0 ? (
-                <Form1ResearchPublications id={id} userCookie={userCookie} />
-              ) : index === 1 ? (
-                <Form2BookAuthoredEdited id={id} userCookie={userCookie} />
-              ) : index === 2 ? (
-                <Form3ResearchProjects id={id} userCookie={userCookie} />
-              ) : index === 3 ? (
-                <Form4TrainingsWorkshops id={id} userCookie={userCookie} />
-              ) : index === 4 ? (
-                <Form5ThesisFYPSupervised id={id} userCookie={userCookie} />
-              ) : index === 5 ? (
-                <Form6PolicyAdvocacyORCaseStudies
-                  id={id}
-                  userCookie={userCookie}
-                />
-              ) : index === 6 ? (
-                <Form7LinksEstablished id={id} userCookie={userCookie} />
-              ) : index === 7 ? (
-                <Form8ContractResearchAwarded id={id} userCookie={userCookie} />
-              ) : index === 8 ? (
-                <Form9CivicEngagementEvents id={id} userCookie={userCookie} />
-              ) : index === 9 ? (
-                <Form10ConsultancyContractsWithIndustry
-                  id={id}
-                  userCookie={userCookie}
-                />
-              ) : index === 10 ? (
-                <Form11PatentsTradeMarksDesignPatent
-                  id={id}
-                  userCookie={userCookie}
-                />
-              ) : index === 11 ? (
-                <Form12ResearchProductsProcessPrototype
-                  id={id}
-                  userCookie={userCookie}
-                />
-              ) : index === 12 ? (
-                <Form13ScienceArtsProducts id={id} userCookie={userCookie} />
-              ) : index === 13 ? (
-                <Form14AgreementsSignedForCollaboration
-                  id={id}
-                  userCookie={userCookie}
-                />
-              ) : index === 14 ? (
-                <Form15NationalOrInternationalHonors
-                  id={id}
-                  userCookie={userCookie}
-                />
-              ) : index === 15 ? (
-                <Form16DoYouProvideData id={id} userCookie={userCookie} />
-              ) : index === 16 ? (
-                <Form17CommunityWork id={id} userCookie={userCookie} />
-              ) : index === 17 ? (
-                <Form18MentorshipProgrammes id={id} userCookie={userCookie} />
-              ) : (
-                <Form19StudentOrganizations id={id} userCookie={userCookie} />
-              )}
-            </div>
-            <div className="w-full mt-4 border-t-2 border-primary" />
+            <FormMain index={index} />
             <div className="max-h-[400px] overflow-y-auto overflow-x-auto">
-              <AdminDataTable data={book} index={1} />
+              <AdminDataTable data={data[index] ? data[index] : []} index={1} />
             </div>
             <div className="w-full mt-4 border-t-2 border-primary" />
           </AccordionContent>
         </AccordionItem>
       ))}
-      {/* 1 - PUBLISHED BOOKS */}
     </Accordion>
   );
 }

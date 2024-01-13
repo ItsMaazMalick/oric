@@ -1,5 +1,14 @@
 "use client";
-import React, { useState } from "react";
+import { loginUser } from "@/app/actions/user/auth";
+import { validateLogin } from "@/lib/validator";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import * as z from "zod";
+import FormSubmitButton from "../button/FormSubmitButton";
 import {
   Form,
   FormControl,
@@ -8,24 +17,16 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import { Loader2 } from "lucide-react";
-import { toast } from "../ui/use-toast";
-import { validateLogin } from "@/lib/validator";
+
+type PageProps = {
+  register: string;
+};
 
 const formSchema = validateLogin;
 
-const UserLoginForm = () => {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
+const UserLoginForm = (props: PageProps) => {
+  const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -35,49 +36,23 @@ const UserLoginForm = () => {
       password: "",
     },
   });
+  const {
+    formState: { isSubmitting },
+  } = form;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      if (!values.email || !values.password) {
-        toast({ variant: "destructive", title: "All fields are required" });
-      } else {
-        setLoading(true);
-        toast({
-          variant: "default",
-          title: `Please wait...`,
-        });
-        const res = await fetch(`/api/user/login`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: values.email,
-            password: values.password,
-          }),
-        });
-        const data = await res.json();
-        if (data.success) {
-          form.reset();
-          router.refresh();
-          router.push("/user/dashboard");
-          toast({
-            variant: "success",
-            title: data.message,
-          });
-        } else {
-          toast({
-            variant: "destructive",
-            title: data.message,
-          });
-          setLoading(false);
-        }
+      const formData = new FormData();
+      formData.append("email", values.email);
+      formData.append("password", values.password);
+      const res = await loginUser(formData);
+      if (res && res.status !== 200) {
+        setError(res.message);
+        form.reset();
       }
     } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Something went wrong",
-      });
+      setError("Something went wrong");
+      // throw new Error("Something went wrong");
     }
   };
 
@@ -94,6 +69,16 @@ const UserLoginForm = () => {
         </div>
         <h2 className="text-center text-primary">Login your account</h2>
       </div>
+      {props?.register && (
+        <div className="w-full mx-auto text-center mb-2 text-green-500">
+          <span>Account Registered Successfully.</span>
+        </div>
+      )}
+      {error && (
+        <div className="w-full mx-auto text-center mb-2 text-destructive">
+          <span>{error}</span>
+        </div>
+      )}
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         {/* Email */}
         <div className="w-full">
@@ -152,17 +137,12 @@ const UserLoginForm = () => {
         </div>
         <div>
           <div>
-            <Button
-              disabled={loading}
+            <FormSubmitButton
+              loading={isSubmitting}
               className="flex mx-auto bg-primary text-primary-foreground text-xs md:text-base"
-              type="submit"
             >
-              {loading ? (
-                <Loader2 className="mx-auto h-4 w-4 animate-spin" />
-              ) : (
-                "Login"
-              )}
-            </Button>
+              Login
+            </FormSubmitButton>
           </div>
         </div>
       </form>
