@@ -20,7 +20,7 @@ import {
 import { Input } from "../ui/input";
 
 type PageProps = {
-  register: string;
+  register?: string;
 };
 
 const formSchema = validateLogin;
