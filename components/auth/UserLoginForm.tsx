@@ -128,11 +128,11 @@ const UserLoginForm = (props: PageProps) => {
           <div className="absolute top-11 right-4 text-md cursor-pointer text-muted-foreground">
             {showPassword ? (
               <span onClick={() => setShowPassword((prev) => !prev)}>
-                <AiFillEyeInvisible />
+                <AiFillEye />
               </span>
             ) : (
               <span onClick={() => setShowPassword((prev) => !prev)}>
-                <AiFillEye />
+                <AiFillEyeInvisible />
               </span>
             )}
           </div>
