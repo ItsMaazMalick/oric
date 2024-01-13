@@ -1,8 +1,7 @@
 "use client";
-import { RotateCcw } from "lucide-react";
+import { Undo } from "lucide-react";
 import { useRouter } from "next/navigation";
 import TooltipComponent from "../tooltip/TooltipComponent";
-import { Button } from "../ui/button";
 
 const BackButton = () => {
   const router = useRouter();
@@ -12,7 +11,7 @@ const BackButton = () => {
         onClick={router.back}
         className="p-2 bg-primary hover:bg-secondary text-primary-foreground rounded-lg"
       >
-        <RotateCcw />
+        <Undo />
       </div>
     </TooltipComponent>
   );
