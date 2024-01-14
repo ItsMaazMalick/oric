@@ -1,5 +1,5 @@
 import prisma from "@/lib/db";
-import { userVerify } from "@/lib/verify";
+
 import { NextRequest, NextResponse } from "next/server";
 
 // READ
