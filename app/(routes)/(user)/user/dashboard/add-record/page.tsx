@@ -9,12 +9,12 @@ const AddBook = async () => {
   const cookieStore = cookies();
   const userCookie = cookieStore.get("auth-token")?.value || "";
 
-  const { books }: any = await allRecords(session.id, userCookie);
+  const { books }: any = await allRecords(session.id || "", userCookie);
 
   return (
     <div className="w-full">
       <div>
-        <div className="w-[50px] h-[50px] mt-4 ml-4">
+        <div className="mt-4 ml-4">
           <BackButton />
         </div>
         <p className="p-2 mx-2">

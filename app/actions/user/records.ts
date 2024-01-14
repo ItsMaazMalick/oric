@@ -3,6 +3,8 @@
 import prisma from "@/lib/db";
 import { userVerify } from "@/lib/verify";
 
+// ALL RECORDS
+// TODO
 export async function allRecords(id: string, userCookie: string) {
   if (!id || !userCookie) {
     return { status: 401, success: false, message: "Unauthorized" };

@@ -12,16 +12,14 @@ const UserDashboard = async () => {
   const userCookie = cookieStore.get("auth-token")?.value || "";
   const session = await getUserSession();
 
-  const { books }: any = await allRecords(session.id, userCookie);
+  const { books }: any = await allRecords(session.id || "", userCookie);
 
   return (
     <div className="w-full text-primary mb-4">
       <div className="w-full h-16 mt-2 flex justify-between items-center px-4 sm:px-10 font-bold">
-        <div className="flex items-center gap-2">Dashboard</div>
-        <div className="flex gap-4">
-          <div className="hidden sm:flex">
-            <EditUserProfileButton />
-          </div>
+        <div className="hidden sm:flex items-center gap-2">Dashboard</div>
+        <div className="flex w-full sm:w-auto justify-between gap-4">
+          <EditUserProfileButton />
           <Link href={"/user/dashboard/add-record"}>
             <Button variant={"secondary"}>Add Record</Button>
           </Link>

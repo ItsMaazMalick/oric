@@ -21,6 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} bg-grayBackground text-black`}>
+        {/* <MainHeader /> */}
         <main>{children}</main>
         {/* <Footer /> */}
         <Toaster />

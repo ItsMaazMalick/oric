@@ -1,8 +1,4 @@
 import UserLoginForm from "@/components/auth/UserLoginForm";
-import { getUserSession } from "@/lib/session";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import React from "react";
 
 const LoginPage = ({
   searchParams,

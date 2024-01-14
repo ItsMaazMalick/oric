@@ -397,9 +397,6 @@ const EditUserProfileForm = ({ user }: any) => {
           </div>
         </form>
       </Form>
-      <div className="w-12 h-12 mx-auto p-2 bg-secondary text-center rounded-xl mt-4">
-        <BackButton />
-      </div>
     </div>
   );
 };
