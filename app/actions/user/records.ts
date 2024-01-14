@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/lib/db";
-import { userVerify } from "@/lib/verify";
+import { getUser } from "./auth";
 
 // ALL RECORDS
 // TODO
@@ -9,7 +9,7 @@ export async function allRecords(id: string, userCookie: string) {
   if (!id || !userCookie) {
     return { status: 401, success: false, message: "Unauthorized" };
   }
-  const user = await userVerify(userCookie);
+  const user = await getUser(userCookie);
   if (!user) {
     return { status: 404, success: false, message: "User not found" };
   }

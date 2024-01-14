@@ -18,8 +18,8 @@ import { Form6PolicyAdvocacyORCaseStudies } from "../forms/Form6PolicyAdvocacyOR
 import { Form7LinksEstablished } from "../forms/Form7LinksEstablished";
 import { Form8ContractResearchAwarded } from "../forms/Form8ContractResearchAwarded";
 import { Form9CivicEngagementEvents } from "../forms/Form9CivicEngagementEvents";
-import { getUserSession } from "@/lib/session";
 import { cookies } from "next/headers";
+import { getUserSession } from "@/app/actions/session";
 
 export default async function FormMain({ index }: { index: number }) {
   const { id } = await getUserSession();
@@ -29,58 +29,61 @@ export default async function FormMain({ index }: { index: number }) {
     <>
       <div className="p-4 border-2 border-primary rounded-lg">
         {index === 0 ? (
-          <Form1ResearchPublications id={id} userCookie={userCookie} />
+          <Form1ResearchPublications id={id || ""} userCookie={userCookie} />
         ) : index === 1 ? (
-          <Form2BookAuthoredEdited id={id} userCookie={userCookie} />
+          <Form2BookAuthoredEdited id={id || ""} userCookie={userCookie} />
         ) : index === 2 ? (
-          <Form3ResearchProjects id={id} userCookie={userCookie} />
+          <Form3ResearchProjects id={id || ""} userCookie={userCookie} />
         ) : index === 3 ? (
-          <Form4TrainingsWorkshops id={id} userCookie={userCookie} />
+          <Form4TrainingsWorkshops id={id || ""} userCookie={userCookie} />
         ) : index === 4 ? (
-          <Form5ThesisFYPSupervised id={id} userCookie={userCookie} />
+          <Form5ThesisFYPSupervised id={id || ""} userCookie={userCookie} />
         ) : index === 5 ? (
-          <Form6PolicyAdvocacyORCaseStudies id={id} userCookie={userCookie} />
+          <Form6PolicyAdvocacyORCaseStudies
+            id={id || ""}
+            userCookie={userCookie}
+          />
         ) : index === 6 ? (
-          <Form7LinksEstablished id={id} userCookie={userCookie} />
+          <Form7LinksEstablished id={id || ""} userCookie={userCookie} />
         ) : index === 7 ? (
-          <Form8ContractResearchAwarded id={id} userCookie={userCookie} />
+          <Form8ContractResearchAwarded id={id || ""} userCookie={userCookie} />
         ) : index === 8 ? (
-          <Form9CivicEngagementEvents id={id} userCookie={userCookie} />
+          <Form9CivicEngagementEvents id={id || ""} userCookie={userCookie} />
         ) : index === 9 ? (
           <Form10ConsultancyContractsWithIndustry
-            id={id}
+            id={id || ""}
             userCookie={userCookie}
           />
         ) : index === 10 ? (
           <Form11PatentsTradeMarksDesignPatent
-            id={id}
+            id={id || ""}
             userCookie={userCookie}
           />
         ) : index === 11 ? (
           <Form12ResearchProductsProcessPrototype
-            id={id}
+            id={id || ""}
             userCookie={userCookie}
           />
         ) : index === 12 ? (
-          <Form13ScienceArtsProducts id={id} userCookie={userCookie} />
+          <Form13ScienceArtsProducts id={id || ""} userCookie={userCookie} />
         ) : index === 13 ? (
           <Form14AgreementsSignedForCollaboration
-            id={id}
+            id={id || ""}
             userCookie={userCookie}
           />
         ) : index === 14 ? (
           <Form15NationalOrInternationalHonors
-            id={id}
+            id={id || ""}
             userCookie={userCookie}
           />
         ) : index === 15 ? (
-          <Form16DoYouProvideData id={id} userCookie={userCookie} />
+          <Form16DoYouProvideData id={id || ""} userCookie={userCookie} />
         ) : index === 16 ? (
-          <Form17CommunityWork id={id} userCookie={userCookie} />
+          <Form17CommunityWork id={id || ""} userCookie={userCookie} />
         ) : index === 17 ? (
-          <Form18MentorshipProgrammes id={id} userCookie={userCookie} />
+          <Form18MentorshipProgrammes id={id || ""} userCookie={userCookie} />
         ) : (
-          <Form19StudentOrganizations id={id} userCookie={userCookie} />
+          <Form19StudentOrganizations id={id || ""} userCookie={userCookie} />
         )}
       </div>
       <div className="w-full mt-4 border-t-2 border-primary" />

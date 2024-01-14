@@ -1,5 +1,5 @@
+import { getUser } from "@/app/actions/user/auth";
 import prisma from "@/lib/db";
-import { userVerify } from "@/lib/verify";
 import { NextRequest, NextResponse } from "next/server";
 
 // READ
@@ -17,7 +17,7 @@ export async function GET(
       });
     }
     const token = authorizationHeader.replace("Bearer ", "");
-    const verifyToken = await userVerify(token);
+    const verifyToken = await getUser(token);
     if (!verifyToken) {
       return NextResponse.json({
         status: 401,
@@ -152,7 +152,7 @@ export async function DELETE(
       });
     }
     const token = authorizationHeader.replace("Bearer ", "");
-    const verifyToken = await userVerify(token);
+    const verifyToken = await getUser(token);
     if (!verifyToken) {
       return NextResponse.json({
         status: 401,

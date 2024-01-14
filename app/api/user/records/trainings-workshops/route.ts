@@ -1,5 +1,6 @@
+import { getUser } from "@/app/actions/user/auth";
 import prisma from "@/lib/db";
-import { userVerify } from "@/lib/verify";
+
 import { NextRequest, NextResponse } from "next/server";
 
 // POST - /api/user/books/trainings-workshops
@@ -89,7 +90,7 @@ export async function GET(req: NextRequest) {
       });
     }
     const token = authorizationHeader.replace("Bearer ", "");
-    const verifyToken = await userVerify(token);
+    const verifyToken = await getUser(token);
     if (!verifyToken) {
       return NextResponse.json({
         status: 401,

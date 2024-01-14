@@ -1,10 +1,8 @@
-import "./globals.css";
+import { Toaster } from "@/components/ui/toaster";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { Toaster } from "@/components/ui/toaster";
-import MainNavbar from "@/components/navigation/MainNavbar";
-import Footer from "@/components/footer/Footer";
-import MainHeader from "@/components/header/MainHeader";
+import "./globals.css";
+import Template from "./template";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} bg-grayBackground text-black`}>
         {/* <MainHeader /> */}
-        <main>{children}</main>
+        <Template>{children}</Template>
         {/* <Footer /> */}
         <Toaster />
       </body>

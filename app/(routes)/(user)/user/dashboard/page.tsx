@@ -1,9 +1,9 @@
+import { getUserSession } from "@/app/actions/session";
 import { allRecords } from "@/app/actions/user/records";
 import EditUserProfileButton from "@/components/button/EditUserProfileButton";
 import UserBooksCard from "@/components/cards/UserBooksCard";
 import { Button } from "@/components/ui/button";
 import { formTitles } from "@/constants/data";
-import { getUserSession } from "@/lib/session";
 import { cookies } from "next/headers";
 import Link from "next/link";
 

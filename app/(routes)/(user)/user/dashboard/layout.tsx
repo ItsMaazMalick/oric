@@ -1,6 +1,6 @@
+import { getUserSession } from "@/app/actions/session";
 import Footer from "@/components/footer/Footer";
 import UserHeader from "@/components/header/UserHeader";
-import { getUserSession } from "@/lib/session";
 
 import { redirect } from "next/navigation";
 

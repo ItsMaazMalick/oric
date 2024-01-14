@@ -1,14 +1,14 @@
 import { siteTitle } from "@/constants/basicInfo";
-import { userVerify } from "@/lib/verify";
 import { cookies } from "next/headers";
 import Image from "next/image";
 import UserLogout from "../logout/UserLogout";
 import TooltipComponent from "../tooltip/TooltipComponent";
+import { getUser } from "@/app/actions/user/auth";
 
 export default async function UserHeader() {
   const cookieStore = cookies();
   const userCookie = cookieStore.get("auth-token")?.value || "";
-  const user = await userVerify(userCookie);
+  const user = await getUser(userCookie);
   return (
     <>
       <div className="w-full h-5 bg-primary border-b-2 border-primary-foreground mb-2" />

@@ -1,6 +1,4 @@
-"use client";
 import Link from "next/link";
-import BackButton from "./BackButton";
 import { Button } from "../ui/button";
 
 const EditUserProfileButton = () => {

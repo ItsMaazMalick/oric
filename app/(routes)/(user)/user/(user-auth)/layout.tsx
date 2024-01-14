@@ -1,4 +1,4 @@
-import { getUserSession } from "@/lib/session";
+import { getUserSession } from "@/app/actions/session";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { redirect } from "next/navigation";

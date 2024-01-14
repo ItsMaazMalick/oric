@@ -145,3 +145,34 @@ export async function registerUser(formData: FormData) {
   });
   redirect("/user/login?register=true");
 }
+
+// GET SINGLE USER
+export async function getUser(token: string) {
+  if (!token) {
+    cookies()?.set("auth-token", "", { expires: new Date(0) });
+    return null;
+  }
+  const decodedToken = jwt.decode(token);
+  if (!decodedToken) {
+    cookies()?.set("auth-token", "", { expires: new Date(0) });
+    return null;
+  }
+  const { tokenData }: any = decodedToken;
+  if (!tokenData) {
+    cookies()?.set("auth-token", "", { expires: new Date(0) });
+    return null;
+  }
+  const id = tokenData.id;
+  if (!id) {
+    cookies()?.set("auth-token", "", { expires: new Date(0) });
+    return null;
+  }
+  const user = await prisma.user.findUnique({
+    where: { id },
+  });
+  if (!user) {
+    cookies()?.set("auth-token", "", { expires: new Date(0) });
+    return null;
+  }
+  return user;
+}

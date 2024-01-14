@@ -1,7 +1,8 @@
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
-import prisma from "./db";
+import prisma from "../../lib/db";
 
+// USER SESSION
 export const getUserSession = async () => {
   const cookieStore = cookies();
   const userCookie = cookieStore.get("auth-token")?.value || "";
@@ -35,5 +36,7 @@ export const getUserSession = async () => {
     status: 200,
     success: true,
     id: user.id,
+    name: user.name,
+    email: user.email,
   };
 };
