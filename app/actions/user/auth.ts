@@ -1,7 +1,6 @@
 "use server";
 
 import prisma from "@/lib/db";
-import { userVerify } from "@/lib/verify";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { revalidatePath } from "next/cache";
