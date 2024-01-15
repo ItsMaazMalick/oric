@@ -1,4 +1,4 @@
-import Logout from "@/components/logout/UserLogout";
+import Logout from "@/components/button/UserLogout";
 import { NavLinks } from "@/components/navigation/NavLinks";
 import { Button } from "@/components/ui/button";
 import {

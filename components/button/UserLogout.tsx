@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { Button } from "../ui/button";
 import { redirect } from "next/navigation";
+import AnimatedButton from "./AnimatedButton";
 
 export default function UserLogout() {
   const handleLogout = async () => {
@@ -10,9 +11,7 @@ export default function UserLogout() {
   };
   return (
     <form action={handleLogout}>
-      <Button type="submit" variant={"destructive"}>
-        Logout
-      </Button>
+      <AnimatedButton variant={"destructive"}>Logout</AnimatedButton>
     </form>
   );
 }

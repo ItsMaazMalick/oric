@@ -1,7 +1,7 @@
 import { siteTitle } from "@/constants/basicInfo";
 import { cookies } from "next/headers";
 import Image from "next/image";
-import UserLogout from "../logout/UserLogout";
+import UserLogout from "../button/UserLogout";
 import TooltipComponent from "../tooltip/TooltipComponent";
 import { getUser } from "@/app/actions/user/auth";
 

@@ -171,8 +171,8 @@ const EditUserProfileForm = ({ user }: any) => {
                       </FormControl>
                       <SelectContent>
                         <SelectItem value="Dr">Dr</SelectItem>
-                        <SelectItem value="">Dr</SelectItem>
-                        <SelectItem value="">Dr</SelectItem>
+                        <SelectItem value="Mr">Dr</SelectItem>
+                        <SelectItem value="Ms">Dr</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage className="text-xs sm:text-base" />
@@ -280,8 +280,8 @@ const EditUserProfileForm = ({ user }: any) => {
                 <option defaultValue={fact} value={fact}>
                   {fact.replaceAll("-", " ")}
                 </option>
-                {faculties.map((faculty) => (
-                  <option key={faculty.id} value={faculty.href}>
+                {faculties.map((faculty, index) => (
+                  <option key={index} value={faculty.href}>
                     {faculty.title}
                   </option>
                 ))}
@@ -301,13 +301,11 @@ const EditUserProfileForm = ({ user }: any) => {
                 <option defaultValue={dept} value={dept}>
                   {dept.replaceAll("-", " ")}
                 </option>
-                {department.map(
-                  (dept: { id: number; title: string; href: string }) => (
-                    <option key={dept.id} value={dept.href}>
-                      {dept.title}
-                    </option>
-                  )
-                )}
+                {department.map((dept: any, index: number) => (
+                  <option key={index} value={dept.href}>
+                    {dept.title}
+                  </option>
+                ))}
               </select>
             </div>
           </div>

@@ -1,5 +1,5 @@
 import Footer from "@/components/footer/Footer";
-import Logout from "@/components/logout/UserLogout";
+import Logout from "@/components/button/UserLogout";
 import AdminMobileNavbar from "@/components/navigation/AdminMobileNavbar";
 import { NavLinks } from "@/components/navigation/NavLinks";
 import TooltipComponent from "@/components/tooltip/TooltipComponent";

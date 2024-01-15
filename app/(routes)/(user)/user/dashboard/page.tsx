@@ -1,8 +1,8 @@
 import { getUserSession } from "@/app/actions/session";
 import { allRecords } from "@/app/actions/user/records";
+import AnimatedButton from "@/components/button/AnimatedButton";
 import EditUserProfileButton from "@/components/button/EditUserProfileButton";
 import UserBooksCard from "@/components/cards/UserBooksCard";
-import { Button } from "@/components/ui/button";
 import { formTitles } from "@/constants/data";
 import { cookies } from "next/headers";
 import Link from "next/link";
@@ -21,8 +21,11 @@ const UserDashboard = async () => {
         <div className="flex w-full sm:w-auto justify-between gap-4">
           <EditUserProfileButton />
           <Link href={"/user/dashboard/add-record"}>
-            <Button variant={"secondary"}>Add Record</Button>
+            <AnimatedButton variant={"secondary"}>Add Record</AnimatedButton>
           </Link>
+          {/* <Link href={"/user/dashboard/add-record"}>
+            <Button variant={"secondary"}>Add Record</Button>
+          </Link> */}
         </div>
       </div>
       {/* CARDS */}
