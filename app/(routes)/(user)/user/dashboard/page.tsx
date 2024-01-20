@@ -23,13 +23,9 @@ const UserDashboard = async () => {
           <Link href={"/user/dashboard/add-record"}>
             <AnimatedButton variant={"secondary"}>Add Record</AnimatedButton>
           </Link>
-          {/* <Link href={"/user/dashboard/add-record"}>
-            <Button variant={"secondary"}>Add Record</Button>
-          </Link> */}
         </div>
       </div>
       {/* CARDS */}
-      {/* <div className="mt-4 w-full flex flex-col gap-4 p-3"> */}
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-4 p-4">
         {formTitles.map((title, index) => (
           <UserBooksCard

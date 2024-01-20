@@ -1,27 +1,25 @@
+"use server";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 import prisma from "../../lib/db";
 
+// OK:
 // USER SESSION
 export const getUserSession = async () => {
   const cookieStore = cookies();
   const userCookie = cookieStore.get("auth-token")?.value || "";
-
   if (!userCookie) {
     return { status: 401, success: false, message: "Unauthorized" };
   }
-  // Make a fetch request to your API route
   const decodedToken = jwt.decode(userCookie);
   if (!decodedToken) {
     return { status: 401, success: false, message: "Unauthorized" };
   }
   const { tokenData }: any = decodedToken;
-
   if (!tokenData) {
     return { status: 401, success: false, message: "Unauthorized" };
   }
   const id = tokenData.id;
-
   if (!id) {
     return { status: 401, success: false, message: "Unauthorized" };
   }

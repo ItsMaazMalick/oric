@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
+// OK:
 // LOGIN USER
 export async function loginUser(formData: FormData) {
   const email = formData.get("email") as string;
@@ -59,6 +60,7 @@ export async function loginUser(formData: FormData) {
   redirect("/user/dashboard");
 }
 
+// OK:
 // REGISTER USER
 export async function registerUser(formData: FormData) {
   const title = formData.get("title") as string;
@@ -145,6 +147,7 @@ export async function registerUser(formData: FormData) {
   redirect("/user/login?register=true");
 }
 
+// OK:
 // GET SINGLE USER
 export async function getUser(token: string) {
   if (!token) {

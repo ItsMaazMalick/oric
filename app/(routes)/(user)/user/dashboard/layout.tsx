@@ -9,9 +9,13 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getUserSession();
-  if (!session?.success) {
-    redirect("/user/login");
+  try {
+    const session = await getUserSession();
+    if (!session?.success) {
+      redirect("/user/login");
+    }
+  } catch (error) {
+    throw new Error("Something went wrong");
   }
 
   return (
