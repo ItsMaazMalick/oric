@@ -31,7 +31,7 @@ const UserDashboard = async () => {
           <UserBooksCard
             key={index}
             title={title}
-            total={books[index] ? books[index].length : 0}
+            total={books && books[index] ? books[index].length : 0}
           />
         ))}
       </div>

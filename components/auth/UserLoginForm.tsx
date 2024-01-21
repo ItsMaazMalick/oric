@@ -37,9 +37,6 @@ const UserLoginForm = (props: PageProps) => {
       password: "",
     },
   });
-  const {
-    formState: { isSubmitting },
-  } = form;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -140,7 +137,7 @@ const UserLoginForm = (props: PageProps) => {
         <div>
           <div>
             <FormSubmitButton
-              loading={isSubmitting}
+              loading={form.formState.isSubmitting}
               className="flex mx-auto bg-primary text-primary-foreground text-xs md:text-base"
             >
               Login

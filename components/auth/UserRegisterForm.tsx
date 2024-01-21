@@ -100,10 +100,6 @@ const UserRegisterForm = () => {
     },
   });
 
-  const {
-    formState: { isSubmitting },
-  } = form;
-
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const formData = new FormData();
@@ -465,7 +461,7 @@ const UserRegisterForm = () => {
         />
         <div>
           <FormSubmitButton
-            loading={isSubmitting}
+            loading={form.formState.isSubmitting}
             className="flex mx-auto bg-primary text-primary-foreground text-xs md:text-base"
           >
             Register
