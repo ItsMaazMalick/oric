@@ -63,7 +63,7 @@ const UserLoginForm = (props: PageProps) => {
         <h2 className="text-center text-primary">Login your account</h2>
       </div>
       {props?.register && (
-        <div className="w-full mx-auto mb-2 text-center text-green-500">
+        <div className="w-full mx-auto mb-2 text-sm text-center text-green-500 md:text-base">
           <span>Account Registered Successfully.</span>
         </div>
       )}

@@ -33,12 +33,12 @@ export default function SelectInput({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="text-xs sm:text-base">{label}</FormLabel>
+          <FormLabel className="text-xs md:text-base">{label}</FormLabel>
           <Select
             onValueChange={field.onChange}
             //   defaultValue={field.value}
           >
-            <FormControl className="text-xs sm:text-base">
+            <FormControl className="text-xs md:text-base">
               <SelectTrigger>
                 <SelectValue placeholder={`Select ${label}`} />
               </SelectTrigger>

@@ -151,7 +151,9 @@ const UserRegisterForm = () => {
           </div>
           {/* Email */}
           <div className="w-full lg:w-[30%]">
-            <div className="mb-2">Email</div>
+            <div className="mb-2 text-xs md:text-base md:font-medium">
+              Email
+            </div>
             <Input
               className="text-xs md:text-base"
               value={email}
@@ -169,7 +171,7 @@ const UserRegisterForm = () => {
           </div>
           {/* CNIC */}
           <div className="w-full lg:w-[20%]">
-            <div className="mb-2">CNIC</div>
+            <div className="mb-2 text-xs md:text-base md:font-medium">CNIC</div>
             <Input
               className="text-xs md:text-base"
               value={cnic}
@@ -261,13 +263,13 @@ const UserRegisterForm = () => {
           </div>
           {/* FACULTY */}
           <div className="w-full lg:w-[40%]">
-            <div className="mb-2 text-xs sm:text-base sm:font-medium">
+            <div className="mb-2 text-xs md:text-base md:font-medium">
               Faculty
             </div>
             <select
               name=""
               id=""
-              className="w-full p-2 mb-3 text-xs border rounded-md sm:text-base"
+              className="w-full p-2 mb-3 text-xs border rounded-md md:text-base"
               onChange={handleFaculty}
             >
               <option value="">Select faculty</option>
@@ -280,14 +282,14 @@ const UserRegisterForm = () => {
           </div>
           {/* DEPARTMENT */}
           <div className="w-full lg:w-[30%]">
-            <div className="mb-2 text-xs sm:text-base sm:font-medium">
+            <div className="mb-2 text-xs md:text-base md:font-medium">
               Department
             </div>
             <select
               name=""
               id=""
               onChange={handleDepartmentChange}
-              className="w-full p-2 mb-3 text-xs border rounded-md sm:text-base"
+              className="w-full p-2 mb-3 text-xs border rounded-md md:text-base"
             >
               <option value="">Select department</option>
               {department.map(
