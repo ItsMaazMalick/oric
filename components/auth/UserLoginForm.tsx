@@ -106,6 +106,11 @@ const UserLoginForm = (props: PageProps) => {
             )}
           </div>
         </div>
+        <Link href={"/user/forget-password"} className="w-full text-sm">
+          <span className="flex justify-end mt-1 text-blue-600">
+            Forget Password?
+          </span>
+        </Link>
         <div>
           <div>
             <FormSubmitButton
