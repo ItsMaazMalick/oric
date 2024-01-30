@@ -157,8 +157,8 @@ export function ResearchProjectsModel3({
                       </FormControl>
                       <SelectContent className="h-48">
                         {years.map((year) => (
-                          <SelectItem key={year.id} value={year.name}>
-                            {year.name}
+                          <SelectItem key={year} value={year}>
+                            {year}
                           </SelectItem>
                         ))}
                       </SelectContent>

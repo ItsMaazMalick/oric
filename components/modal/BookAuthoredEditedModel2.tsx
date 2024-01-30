@@ -152,8 +152,8 @@ export function BookAuthoredEditedModel2({
                         </FormControl>
                         <SelectContent className="h-48">
                           {years.map((year) => (
-                            <SelectItem key={year.id} value={year.name}>
-                              {year.name}
+                            <SelectItem key={year} value={year}>
+                              {year}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -242,8 +242,8 @@ export function BookAuthoredEditedModel2({
                       </FormControl>
                       <SelectContent className="h-48">
                         {countries.map((country, index) => (
-                          <SelectItem key={index} value={country.name}>
-                            {country.name}
+                          <SelectItem key={index} value={country}>
+                            {country}
                           </SelectItem>
                         ))}
                       </SelectContent>

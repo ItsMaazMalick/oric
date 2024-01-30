@@ -159,13 +159,13 @@ export function ResearchModal1({
                     disabled={option !== "edit"}
                     name=""
                     id=""
-                    className="w-full p-2 border rounded-md text-xs sm:text-sm"
+                    className="w-full p-2 text-xs border rounded-md sm:text-sm"
                     defaultValue={year}
                     onChange={handleYearChange}
                   >
                     {years.map((year) => (
-                      <option key={year.id} value={year.name}>
-                        {year.name}
+                      <option key={year} value={year}>
+                        {year}
                       </option>
                     ))}
                   </select>
@@ -190,8 +190,8 @@ export function ResearchModal1({
                       </FormControl>
                       <SelectContent className="h-48">
                         {countries.map((country, index) => (
-                          <SelectItem key={index} value={country.name}>
-                            {country.name}
+                          <SelectItem key={index} value={country}>
+                            {country}
                           </SelectItem>
                         ))}
                       </SelectContent>
