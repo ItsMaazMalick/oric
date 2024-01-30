@@ -4,38 +4,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { useForm } from "react-hook-form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
+import { Form } from "@/components/ui/form";
 import { SDG, years } from "@/constants/data";
 import { validateForm3 } from "@/lib/validator";
-import { useLayoutEffect, useState } from "react";
-import { ChevronDown, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useLayoutEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import MultiSelectInput from "../InputFields/MultiSelectInput";
+import SelectInput from "../InputFields/selectInput";
+import TextInput from "../InputFields/textInput";
 import { toast } from "../ui/use-toast";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 //FORM VALIDATION
 const formSchema = validateForm3;
@@ -48,25 +27,7 @@ export function Form3ResearchProjects({
   userCookie: string;
 }) {
   const [loading, setLoading] = useState(false);
-  const [books, setBooks] = useState([]);
   const [file, setFile] = useState();
-  const [selectedSdg, setSelectedSdg] = useState<string[]>([]);
-
-  useLayoutEffect(() => {
-    const fetchBooks = async () => {
-      const res = await fetch(`/api/user/records/research-publications`, {
-        cache: "no-store",
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userCookie}`,
-        },
-      });
-      const { books } = await res.json();
-      setBooks(books);
-    };
-    fetchBooks();
-  }, []);
 
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -153,423 +114,176 @@ export function Form3ResearchProjects({
     }
   };
 
-  const checkSdgChange = (sdgName: string) => {
-    setSelectedSdg((prevSelected: any) => {
-      if (prevSelected.includes(sdgName)) {
-        return prevSelected.filter((name: any) => name !== sdgName);
-      } else {
-        return [...prevSelected, sdgName];
-      }
-    });
-  };
-
   return (
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* YEAR*/}
             <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
+              <SelectInput
+                label="Year"
                 name="date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Year.
-                    </FormLabel>
-                    <Select onValueChange={field.onChange}>
-                      <FormControl className="text-xs sm:text-base">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Year" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent className="h-48">
-                        {years.map((year) => (
-                          <SelectItem key={year.id} value={year.name}>
-                            {year.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
+                items={years}
               />
             </div>
 
             {/* FUNDING AGENCY */}
             <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
+              <TextInput
+                label="Funding Agency"
                 name="funding_agency"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Funding Agency
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Funding Agency" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
               />
             </div>
 
             {/* RESEARCH NAME */}
             <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
+              <TextInput
+                label="Name of Research Grant"
                 name="name_of_research"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Name of Research Grant
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Name of Research Grant" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
               />
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* STATUS */}
             <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
+              <SelectInput
+                label="Status"
                 name="status"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Status
-                    </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      //   defaultValue={field.value}
-                    >
-                      <FormControl className="text-xs sm:text-base">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Status" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Submitted">Submitted</SelectItem>
-                        <SelectItem value="Approved">Approved</SelectItem>
-                        <SelectItem value="Completed">Completed</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
+                items={["Approved", "Completed", "Submitted"]}
               />
             </div>
             {/* TYPE */}
             <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
+              <SelectInput
+                label="Type"
                 name="type"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">Type</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      //   defaultValue={field.value}
-                    >
-                      <FormControl className="text-xs sm:text-base">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Type" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="National">National</SelectItem>
-                        <SelectItem value="International">
-                          International
-                        </SelectItem>
-                        <SelectItem value="Internal">Internal</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
+                items={["National", "International", "Internal"]}
               />
             </div>
             {/* ROLE */}
             <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
+              <SelectInput
+                label="Application Role"
                 name="role"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Application Role
-                    </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      //   defaultValue={field.value}
-                    >
-                      <FormControl className="text-xs sm:text-base">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Role" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="PI">PI</SelectItem>
-                        <SelectItem value="Co-PI">Co-PI</SelectItem>
-                        <SelectItem value="Consultant">Consultant</SelectItem>
-                        <SelectItem value="Collaborator">
-                          Collaborator
-                        </SelectItem>
-                        <SelectItem value="Team Lead">Team Lead</SelectItem>
-                        <SelectItem value="Team Member">Team Member</SelectItem>
-                        <SelectItem value="Any Other">Any Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
+                items={[
+                  "PI",
+                  "Co-PI",
+                  "Consultant",
+                  "Collaborator",
+                  "Team Lead",
+                  "Team Member",
+                  "Any Other",
+                ]}
               />
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* GRANT AMOUNT */}
             <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
+              <TextInput
+                label="Grant Amount (Rs)"
                 name="grant_amount"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Grant Amount (Rs)
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input
-                        type="number"
-                        placeholder="Grant Amount (Rs)"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                type="number"
+                control={form.control}
               />
             </div>
             {/* TITLE */}
             <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
+              <TextInput
+                label="Title of Research Project"
                 name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Title of Research Project
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input
-                        placeholder="Title of Research Project"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
               />
             </div>
             {/* START DATE */}
             <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
+              <TextInput
+                label="Start Date"
                 name="start_date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Start Date
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input type="date" placeholder="Start Date" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                type="date"
+                control={form.control}
               />
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* END DATE */}
             <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
+              <TextInput
+                label="End Date"
                 name="end_date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      End Date
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input type="date" placeholder="End Date" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                type="date"
+                control={form.control}
               />
             </div>
             {/* TOTAL FUNDING */}
             <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
+              <TextInput
+                label="Total Funding (Rs)"
                 name="total_funding"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Total Funding (Rs)
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input
-                        type="number"
-                        placeholder="Total Funding (Rs)"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                type="number"
+                control={form.control}
               />
             </div>
             {/* COLLABORATING PARTNER */}
             <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
+              <TextInput
+                label="Collaborating Partner"
                 name="collaborating_partner"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Collaborating Partner
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Collaborating Partner" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
               />
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* CO-FUNDING PARTNER */}
             <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
+              <TextInput
+                label="Co-Funding Partner"
                 name="co_funding_partner"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Co-Funding Partner
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Co-Funding Partner" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
               />
             </div>
             {/* COMPLETION*/}
             <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
+              <SelectInput
+                label="Completion"
                 name="completion"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Completion
-                    </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      //   defaultValue={field.value}
-                    >
-                      <FormControl className="text-xs sm:text-base">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Value" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Applied">Applied</SelectItem>
-                        <SelectItem value="Completed">Completed</SelectItem>
-                        <SelectItem value="Ongoing">Ongoing</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
+                items={["Applied", "Completed", "Ongoing"]}
               />
             </div>
             {/* REMARKS*/}
             <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
+              <TextInput
+                label="Remarks (if any)"
                 name="remarks"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Remarks (if any)
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Remarks" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
               />
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             <div className="w-full lg:w-[50%]">
-              <div className="mb-2 text-xs sm:text-base sm:font-medium">
-                Addressing any SDG
-              </div>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button className="w-full" variant="outline">
-                    {selectedSdg.map((sdg, index) => (
-                      <span
-                        key={index}
-                        className="m-1 p-1 border border-primary rounded-lg"
-                      >
-                        {sdg}
-                      </span>
-                    ))}
-                    <span className="ml-1 rounded-md bg-primary text-primary-foreground">
-                      <ChevronDown size={20} />
-                    </span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56 h-64 overflow-y-auto">
-                  <DropdownMenuLabel>Select SDG</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  {SDG.map((sdg, index: number) => (
-                    <DropdownMenuCheckboxItem
-                      key={index}
-                      checked={selectedSdg.includes(sdg.name)}
-                      onCheckedChange={() => checkSdgChange(sdg.name)}
-                    >
-                      {sdg.name}
-                    </DropdownMenuCheckboxItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <MultiSelectInput
+                label="Addressing any SDG"
+                name="SDG"
+                data={SDG}
+              />
             </div>
             {/* ANNEX FILE */}
             <div className="w-full lg:w-[50%]">
               <div className="mb-2">
-                <label htmlFor="" className="text-xs sm:text-base font-medium">
+                <label htmlFor="" className="text-xs font-medium sm:text-base">
                   Submission Proof / Award Letter / Completion Certificate
                 </label>
               </div>
               <input
-                className="w-full p-2 rounded-md border"
+                className="w-full p-2 border rounded-md"
                 type="file"
                 onChange={(e: any) => setFile(e.target.files?.[0])}
                 name=""
@@ -577,7 +291,6 @@ export function Form3ResearchProjects({
               />
             </div>
           </div>
-
           <div className="">
             <Button
               disabled={loading}
@@ -585,7 +298,7 @@ export function Form3ResearchProjects({
               className="text-xs sm:text-base"
             >
               {loading ? (
-                <Loader2 className="mx-auto h-4 w-4 animate-spin" />
+                <Loader2 className="w-4 h-4 mx-auto animate-spin" />
               ) : (
                 "Submit"
               )}

@@ -38,6 +38,7 @@ import { useLayoutEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
+import SelectInput from "../InputFields/selectInput";
 
 //FORM VALIDATION
 const formSchema = validateForm16;
@@ -155,7 +156,7 @@ export function Form14AgreementsSignedForCollaboration({
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* thematic_area */}
             <div className="w-full lg:w-[30%]">
               <FormField
@@ -241,7 +242,7 @@ export function Form14AgreementsSignedForCollaboration({
               />
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* pi_name */}
             <div className="w-full lg:w-[30%]">
               <FormField
@@ -263,31 +264,11 @@ export function Form14AgreementsSignedForCollaboration({
 
             {/* pi_designation */}
             <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
+              <SelectInput
+                label="Collaborating Agency Country"
                 name="host_address"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Collaborating Agency Country
-                    </FormLabel>
-                    <Select onValueChange={field.onChange}>
-                      <FormControl className="text-xs sm:text-base">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Country" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent className="h-48">
-                        {countries.map((country, index) => (
-                          <SelectItem key={index} value={country.name}>
-                            {country.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
+                items={countries}
               />
             </div>
             {/* co_pi_designation */}
@@ -309,7 +290,7 @@ export function Form14AgreementsSignedForCollaboration({
               />
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* co_pi_department */}
             <div className="w-full lg:w-[30%]">
               <FormField
@@ -356,7 +337,7 @@ export function Form14AgreementsSignedForCollaboration({
               className="text-xs sm:text-base"
             >
               {loading ? (
-                <Loader2 className="mx-auto h-4 w-4 animate-spin" />
+                <Loader2 className="w-4 h-4 mx-auto animate-spin" />
               ) : (
                 "Submit"
               )}

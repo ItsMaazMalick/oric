@@ -28,6 +28,7 @@ import { useLayoutEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
+import SelectInput from "../InputFields/selectInput";
 
 //FORM VALIDATION
 const formSchema = validateForm8;
@@ -143,34 +144,14 @@ export function Form6PolicyAdvocacyORCaseStudies({
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* YEAR*/}
             <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
+              <SelectInput
+                label="Year."
                 name="date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Year.
-                    </FormLabel>
-                    <Select onValueChange={field.onChange}>
-                      <FormControl className="text-xs sm:text-base">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Year" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent className="h-48">
-                        {years.map((year) => (
-                          <SelectItem key={year.id} value={year.name}>
-                            {year.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
+                items={years}
               />
             </div>
 
@@ -215,7 +196,7 @@ export function Form6PolicyAdvocacyORCaseStudies({
               />
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* PI DESIGNATION */}
             <div className="w-full lg:w-[30%]">
               <FormField
@@ -319,7 +300,7 @@ export function Form6PolicyAdvocacyORCaseStudies({
               />
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* BRIEF */}
             <div className="w-full lg:w-[30%]">
               <FormField
@@ -394,16 +375,16 @@ export function Form6PolicyAdvocacyORCaseStudies({
               />
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* POLICY FILE */}
             <div className="w-full">
               <div className="mb-2">
-                <label htmlFor="" className="text-xs sm:text-base font-medium">
+                <label htmlFor="" className="text-xs font-medium sm:text-base">
                   Policy / Case Study brief copy
                 </label>
               </div>
               <input
-                className="w-full p-2 rounded-md border"
+                className="w-full p-2 border rounded-md"
                 type="file"
                 onChange={(e: any) => setFile(e.target.files?.[0])}
                 name=""
@@ -419,7 +400,7 @@ export function Form6PolicyAdvocacyORCaseStudies({
               className="text-xs sm:text-base"
             >
               {loading ? (
-                <Loader2 className="mx-auto h-4 w-4 animate-spin" />
+                <Loader2 className="w-4 h-4 mx-auto animate-spin" />
               ) : (
                 "Submit"
               )}

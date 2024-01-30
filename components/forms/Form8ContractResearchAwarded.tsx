@@ -28,6 +28,7 @@ import { useLayoutEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
+import SelectInput from "../InputFields/selectInput";
 
 //FORM VALIDATION
 const formSchema = validateForm10;
@@ -152,7 +153,7 @@ export function Form8ContractResearchAwarded({
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* location_scope */}
             <div className="w-full lg:w-[30%]">
               <FormField
@@ -186,31 +187,11 @@ export function Form8ContractResearchAwarded({
             </div>
             {/* sponsoring_agency_country */}
             <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
+              <SelectInput
+                label="Sponsoring Agency Country"
                 name="sponsoring_agency_country"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Sponsoring Agency Country
-                    </FormLabel>
-                    <Select onValueChange={field.onChange}>
-                      <FormControl className="text-xs sm:text-base">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Country" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent className="h-48">
-                        {countries.map((country, index) => (
-                          <SelectItem key={index} value={country.name}>
-                            {country.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
+                items={countries}
               />
             </div>
             {/* sponsoring_agency_name */}
@@ -235,7 +216,7 @@ export function Form8ContractResearchAwarded({
               />
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* title_of_research */}
             <div className="w-full lg:w-[30%]">
               <FormField
@@ -288,7 +269,7 @@ export function Form8ContractResearchAwarded({
               <select
                 name=""
                 id=""
-                className="w-full p-2 border rounded-md text-xs sm:text-base"
+                className="w-full p-2 text-xs border rounded-md sm:text-base"
                 onChange={(e) => setRole(e.target.value)}
               >
                 <option value="">Select Role</option>
@@ -298,7 +279,7 @@ export function Form8ContractResearchAwarded({
             </div>
           </div>
           {role !== "PI" && (
-            <div className="flex flex-col lg:flex-row w-full gap-4">
+            <div className="flex flex-col w-full gap-4 lg:flex-row">
               {/* pi_name */}
               <div className="w-full lg:w-[30%]">
                 <FormField
@@ -358,7 +339,7 @@ export function Form8ContractResearchAwarded({
               </div>
             </div>
           )}
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* start_date */}
             <div className="w-full lg:w-[30%]">
               <FormField
@@ -423,16 +404,16 @@ export function Form8ContractResearchAwarded({
               />
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* Contract Research Agreement Copy */}
             <div className="w-full">
               <div className="mb-2">
-                <label htmlFor="" className="text-xs sm:text-base font-medium">
+                <label htmlFor="" className="text-xs font-medium sm:text-base">
                   Contract Research Agreement Copy
                 </label>
               </div>
               <input
-                className="w-full p-2 rounded-md border"
+                className="w-full p-2 border rounded-md"
                 type="file"
                 onChange={(e: any) => setFile(e.target.files?.[0])}
                 name=""
@@ -448,7 +429,7 @@ export function Form8ContractResearchAwarded({
               className="text-xs sm:text-base"
             >
               {loading ? (
-                <Loader2 className="mx-auto h-4 w-4 animate-spin" />
+                <Loader2 className="w-4 h-4 mx-auto animate-spin" />
               ) : (
                 "Submit"
               )}

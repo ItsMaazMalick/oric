@@ -28,6 +28,7 @@ import { useLayoutEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
+import SelectInput from "../InputFields/selectInput";
 
 //FORM VALIDATION
 const formSchema = validateForm9;
@@ -145,7 +146,7 @@ export function Form7LinksEstablished({
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* TYPE OF LINKAGE */}
             <div className="w-full lg:w-[30%]">
               <FormField
@@ -231,34 +232,14 @@ export function Form7LinksEstablished({
               />
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* collaborating_agency_country */}
             <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
+              <SelectInput
+                label="Country of Collaborating Agency"
                 name="collaborating_agency_country"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Country of Collaborating Agency
-                    </FormLabel>
-                    <Select onValueChange={field.onChange}>
-                      <FormControl className="text-xs sm:text-base">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Country" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent className="h-48">
-                        {countries.map((country, index) => (
-                          <SelectItem key={index} value={country.name}>
-                            {country.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
+                items={countries}
               />
             </div>
             {/* scope_of_collaboration */}
@@ -303,16 +284,16 @@ export function Form7LinksEstablished({
             </div>
           </div>
 
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* ANNEX FILE */}
             <div className="w-full">
               <div className="mb-2">
-                <label htmlFor="" className="text-xs sm:text-base font-medium">
+                <label htmlFor="" className="text-xs font-medium sm:text-base">
                   MoU Copy
                 </label>
               </div>
               <input
-                className="w-full p-2 rounded-md border"
+                className="w-full p-2 border rounded-md"
                 type="file"
                 onChange={(e: any) => setFile(e.target.files?.[0])}
                 name=""
@@ -328,7 +309,7 @@ export function Form7LinksEstablished({
               className="text-xs sm:text-base"
             >
               {loading ? (
-                <Loader2 className="mx-auto h-4 w-4 animate-spin" />
+                <Loader2 className="w-4 h-4 mx-auto animate-spin" />
               ) : (
                 "Submit"
               )}

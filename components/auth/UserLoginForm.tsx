@@ -1,6 +1,6 @@
 "use client";
 import { loginUser } from "@/app/actions/user/auth";
-import { validateLogin } from "@/lib/validator";
+import { userLoginSchema } from "@/lib/validations/userValidations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,16 +18,18 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import { useRouter } from "next/navigation";
+import { toast } from "../ui/use-toast";
+import TextInput from "../InputFields/textInput";
+import MultiSelectInput from "../InputFields/MultiSelectInput";
 
 type PageProps = {
   register?: string;
 };
 
-const formSchema = validateLogin;
+const formSchema = userLoginSchema;
 
 const UserLoginForm = (props: PageProps) => {
-  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -39,25 +41,17 @@ const UserLoginForm = (props: PageProps) => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      const formData = new FormData();
-      formData.append("email", values.email);
-      formData.append("password", values.password);
-      const res = await loginUser(formData);
-      if (res && res.status !== 200) {
-        setError(res.message);
-        form.reset();
-      }
-    } catch (error) {
-      console.log(error);
-      setError("Something went wrong");
-      // throw new Error("Something went wrong");
-    }
+    const formData = new FormData();
+    formData.append("email", values.email);
+    formData.append("password", values.password);
+
+    const result = await loginUser(formData);
+    setMessage(result?.message);
   };
 
   return (
     <Form {...form}>
-      <div className=" text-2xl font-bold p-5">
+      <div className="p-5 text-2xl font-bold ">
         {/* Image */}
         <div className="relative mx-auto w-[120px] h-[100px]">
           <Image
@@ -69,60 +63,37 @@ const UserLoginForm = (props: PageProps) => {
         <h2 className="text-center text-primary">Login your account</h2>
       </div>
       {props?.register && (
-        <div className="w-full mx-auto text-center mb-2 text-green-500">
+        <div className="w-full mx-auto mb-2 text-center text-green-500">
           <span>Account Registered Successfully.</span>
         </div>
       )}
-      {error && (
-        <div className="w-full mx-auto text-center mb-2 text-destructive">
-          <span>{error}</span>
+      {message && (
+        <div className="w-full mx-auto mb-2 text-center text-destructive">
+          <span>{message}</span>
         </div>
       )}
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         {/* Email */}
         <div className="w-full">
-          <FormField
-            control={form.control}
+          <TextInput
+            label="Email"
             name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-xs md:text-base">Email</FormLabel>
-                <FormControl className="text-xs md:text-base">
-                  <Input
-                    type="email"
-                    placeholder="example@aiou.edu.pk *"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-xs md:text-base" />
-              </FormItem>
-            )}
+            type="email"
+            control={form.control}
           />
         </div>
         {/* Password */}
         <div className="relative">
           <div>
-            <FormField
-              control={form.control}
+            <TextInput
+              label="Password"
               name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xs md:text-base">
-                    Password
-                  </FormLabel>
-                  <FormControl className="text-xs md:text-base">
-                    <Input
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Password *"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-xs md:text-base" />
-                </FormItem>
-              )}
+              type={showPassword ? "text" : "password"}
+              placeholder="*****"
+              control={form.control}
             />
           </div>
-          <div className="absolute top-11 right-4 text-md cursor-pointer text-muted-foreground">
+          <div className="absolute cursor-pointer top-11 right-4 text-md text-muted-foreground">
             {showPassword ? (
               <span onClick={() => setShowPassword((prev) => !prev)}>
                 <AiFillEye />
@@ -138,17 +109,17 @@ const UserLoginForm = (props: PageProps) => {
           <div>
             <FormSubmitButton
               loading={form.formState.isSubmitting}
-              className="flex mx-auto bg-primary text-primary-foreground text-xs md:text-base"
+              className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
             >
               Login
             </FormSubmitButton>
           </div>
         </div>
       </form>
-      <div className="flex my-2 justify-center gap-2 text-xs md:text-base">
+      <div className="flex justify-center gap-2 my-2 text-xs md:text-base">
         Don&apos;t have an account?
         <Link href={"/user/register"}>
-          <div className="text-blue-700 hover:underline font-bold">
+          <div className="font-bold text-blue-700 hover:underline">
             Register
           </div>
         </Link>

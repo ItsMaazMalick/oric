@@ -1,22 +1,40 @@
 "use server";
 
 import prisma from "@/lib/db";
+import {
+  userLoginSchema,
+  userRegisterSchema,
+} from "@/lib/validations/userValidations";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { deleteCookie } from "../deleteCookie";
 
-// OK:
-// LOGIN USER
+// * OK:  FIXED:  -> LOGIN USER
 export async function loginUser(formData: FormData) {
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
+  const validatedFields = userLoginSchema.safeParse({
+    email: formData.get("email") as string,
+    password: formData.get("password") as string,
+  });
+
+  if (!validatedFields.success) {
+    return {
+      status: 401,
+      success: false,
+      message: "All fields are required",
+      // errors: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+  const { email, password } = validatedFields.data;
+
   if (!email || !password) {
     revalidatePath("/user/login");
     return {
-      status: 400,
+      status: 401,
       success: false,
+      // errors: {},
       message: "All fields are required",
     };
   }
@@ -27,8 +45,9 @@ export async function loginUser(formData: FormData) {
   if (!user) {
     revalidatePath("/user/login");
     return {
-      status: 400,
+      status: 401,
       success: false,
+      // errors: {},
       message: "Invalid credentials",
     };
   }
@@ -36,8 +55,9 @@ export async function loginUser(formData: FormData) {
   if (!isPassword) {
     revalidatePath("/user/login");
     return {
-      status: 400,
+      status: 401,
       success: false,
+      // errors: {},
       message: "Invalid credentials",
     };
   }
@@ -60,45 +80,56 @@ export async function loginUser(formData: FormData) {
   redirect("/user/dashboard");
 }
 
-// OK:
-// REGISTER USER
+// * OK:  FIXED:  -> REGISTER USER
 export async function registerUser(formData: FormData) {
-  const title = formData.get("title") as string;
-  const name = formData.get("name") as string;
+  const validatedFields = userRegisterSchema.safeParse({
+    title: formData.get("title") as string,
+    name: formData.get("name") as string,
+    dob: formData.get("dob") as string,
+    password: formData.get("password") as string,
+    confirm_password: formData.get("confirm_password") as string,
+    gender: formData.get("gender") as string,
+    phone_no: formData.get("phone_no") as string,
+    cell_no: formData.get("cell_no") as string,
+    research_domain: formData.get("research_domain") as string,
+    highest_degree: formData.get("highest_degree") as string,
+  });
+
   const email = formData.get("email") as string;
   const cnic = formData.get("cnic") as string;
-  const dob = formData.get("dob") as string;
-  const password = formData.get("password") as string;
-  const gender = formData.get("gender") as string;
   const department = formData.get("department") as string;
   const faculty = formData.get("faculty") as string;
-  const phone_no = formData.get("phone_no") as string;
-  const cell_no = formData.get("cell_no") as string;
-  const research_domain = formData.get("research_domain") as string;
-  const highest_degree = formData.get("highest_degree") as string;
 
-  if (
-    !title ||
-    !name ||
-    !email ||
-    !cnic ||
-    !dob ||
-    !password ||
-    !gender ||
-    !department ||
-    !faculty ||
-    !phone_no ||
-    !cell_no ||
-    !research_domain ||
-    !highest_degree
-  ) {
+  if (!validatedFields.success) {
+    console.log(validatedFields.error.flatten().fieldErrors);
     revalidatePath("user/register");
     return {
-      status: 400,
+      status: 401,
       success: false,
+      message: "All fields are required",
+      // errors: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+  if (!email || !cnic || !department || !faculty) {
+    revalidatePath("user/register");
+    return {
+      status: 401,
+      success: false,
+      // errors: {},
       message: "All fields are required",
     };
   }
+  const {
+    title,
+    name,
+    dob,
+    password,
+    gender,
+    phone_no,
+    cell_no,
+    research_domain,
+    highest_degree,
+  } = validatedFields.data;
 
   const isUser = await prisma.user.findUnique({
     where: { email },
@@ -147,34 +178,28 @@ export async function registerUser(formData: FormData) {
   redirect("/user/login?register=true");
 }
 
-// OK:
-// GET SINGLE USER
+// * OK:  FIXED:  -> GET SINGLE USER
 export async function getUser(token: string) {
   if (!token) {
-    cookies()?.set("auth-token", "", { expires: new Date(0) });
-    return null;
+    return deleteCookie();
   }
   const decodedToken = jwt.decode(token);
   if (!decodedToken) {
-    cookies()?.set("auth-token", "", { expires: new Date(0) });
-    return null;
+    return deleteCookie();
   }
   const { tokenData }: any = decodedToken;
   if (!tokenData) {
-    cookies()?.set("auth-token", "", { expires: new Date(0) });
-    return null;
+    return deleteCookie();
   }
   const id = tokenData.id;
   if (!id) {
-    cookies()?.set("auth-token", "", { expires: new Date(0) });
-    return null;
+    return deleteCookie();
   }
   const user = await prisma.user.findUnique({
     where: { id },
   });
   if (!user) {
-    cookies()?.set("auth-token", "", { expires: new Date(0) });
-    return null;
+    return deleteCookie();
   }
   return user;
 }

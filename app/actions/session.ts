@@ -2,12 +2,12 @@
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 import prisma from "../../lib/db";
+import { deleteCookie } from "./deleteCookie";
 
-// OK:
-// USER SESSION
+// * OK:  FIXED:  -> USER SESSION
 export const getUserSession = async () => {
   const cookieStore = cookies();
-  const userCookie = cookieStore.get("auth-token")?.value || "";
+  const userCookie = cookieStore.get("auth-token")?.value || null || undefined;
   if (!userCookie) {
     return { status: 401, success: false, message: "Unauthorized" };
   }
@@ -27,7 +27,7 @@ export const getUserSession = async () => {
     where: { id },
   });
   if (!user) {
-    cookies()?.set("auth-token", "", { expires: new Date(0) });
+    deleteCookie();
     return { status: 401, success: false, message: "Unauthorized" };
   }
   return {

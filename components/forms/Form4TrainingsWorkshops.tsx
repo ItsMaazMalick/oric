@@ -38,6 +38,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Label } from "../ui/label";
+import SelectInput from "../InputFields/selectInput";
+import TextInput from "../InputFields/textInput";
+import MultiSelectInput from "../InputFields/MultiSelectInput";
 
 //FORM VALIDATION
 const formSchema = validateForm4;
@@ -50,25 +53,7 @@ export function Form4TrainingsWorkshops({
   userCookie: string;
 }) {
   const [loading, setLoading] = useState(false);
-  const [books, setBooks] = useState([]);
   const [role, setRole] = useState("");
-  const [selectedAudience, setSelectedAudience] = useState<string[]>([]);
-
-  useLayoutEffect(() => {
-    const fetchBooks = async () => {
-      const res = await fetch(`/api/user/records/research-publications`, {
-        cache: "no-store",
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userCookie}`,
-        },
-      });
-      const { books } = await res.json();
-      setBooks(books);
-    };
-    fetchBooks();
-  }, []);
 
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -133,50 +118,18 @@ export function Form4TrainingsWorkshops({
     }
   };
 
-  const checkAudienceChange = (sdgName: string) => {
-    setSelectedAudience((prevSelected: any) => {
-      if (prevSelected.includes(sdgName)) {
-        return prevSelected.filter((name: any) => name !== sdgName);
-      } else {
-        return [...prevSelected, sdgName];
-      }
-    });
-  };
-
   return (
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* AUDIENCE TYPE */}
             <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
+              <SelectInput
+                label="Type of Event"
                 name="audience_type"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Type of Event
-                    </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      //   defaultValue={field.value}
-                    >
-                      <FormControl className="text-xs sm:text-base">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Type" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Training">Training</SelectItem>
-                        <SelectItem value="Workshop">Workshop</SelectItem>
-                        <SelectItem value="Seminar">Seminar</SelectItem>
-                        <SelectItem value="Conference">Conference</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
+                items={["Training", "Workshop", "Seminar", "Conference"]}
               />
             </div>
             {/* ROLE */}
@@ -187,7 +140,7 @@ export function Form4TrainingsWorkshops({
               <select
                 name=""
                 id=""
-                className="w-full p-2 border rounded-md text-xs sm:text-base"
+                className="w-full p-2 text-xs border rounded-md sm:text-base"
                 onChange={(e) => setRole(e.target.value)}
               >
                 <option disabled value="">
@@ -208,211 +161,79 @@ export function Form4TrainingsWorkshops({
             </div>
             {/* YEAR*/}
             <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
+              <TextInput
+                label="Date of Event (from)"
                 name="date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Date of Event (from)
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input
-                        type="date"
-                        placeholder="Date of Event"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                type="date"
+                control={form.control}
               />
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* YEAR*/}
             <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
+              <TextInput
+                label="Date of Event (to)"
                 name="date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Date of Event (to)
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input
-                        type="date"
-                        placeholder="Date of Event"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                type="date"
+                control={form.control}
               />
             </div>
 
             {/* TITLE OF TRAINING*/}
             <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
+              <TextInput
+                label="Title of Event"
                 name="title_of_training"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Title of Event
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Title of Event" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
               />
             </div>
 
             {/* NO OF PARTICIPANTS */}
             <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
+              <TextInput
+                label="No. Of Participants"
                 name="no_of_participants"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      No. Of Participants
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input
-                        type="number"
-                        placeholder="No. Of Participants"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                type="number"
+                control={form.control}
               />
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* MAJOR FOCUS */}
             <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
+              <TextInput
+                label="Major Focus Area"
                 name="focus_area_outcomes"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Major Focus Area
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Major Focus Area" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
               />
             </div>
 
             {/* AUDIENCE TYPE */}
             <div className="w-full lg:w-[70%]">
-              <div className="mb-2 text-xs sm:text-base sm:font-medium">
-                Audience Type
-              </div>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button className="w-full" variant="outline">
-                    {selectedAudience.map((audience, index) => (
-                      <span
-                        key={index}
-                        className="m-1 p-1 border border-primary rounded-lg"
-                      >
-                        {audience}
-                      </span>
-                    ))}
-                    <span className="ml-1 rounded-md bg-primary text-primary-foreground">
-                      <ChevronDown size={20} />
-                    </span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56">
-                  <DropdownMenuLabel>Select SDG</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuCheckboxItem
-                    checked={selectedAudience.includes("Student")}
-                    onCheckedChange={() => checkAudienceChange("Student")}
-                  >
-                    Student
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={selectedAudience.includes("Faculty")}
-                    onCheckedChange={() => checkAudienceChange("Faculty")}
-                  >
-                    Faculty
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={selectedAudience.includes("Researchers")}
-                    onCheckedChange={() => checkAudienceChange("Researchers")}
-                  >
-                    Researchers
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={selectedAudience.includes("Community")}
-                    onCheckedChange={() => checkAudienceChange("Community")}
-                  >
-                    Community
-                  </DropdownMenuCheckboxItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <MultiSelectInput
+                label="Audience Type"
+                name="Audience"
+                data={["Student", "Faculty", "Researchers", "Community"]}
+              />
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* ORGANIZER */}
             <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
+              <TextInput
+                label="Organizer"
                 name="organizer"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Organizer
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Organizer" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
               />
             </div>
             {/* COUNTRY */}
             <div className="w-full lg:w-[70%]">
-              <FormField
-                control={form.control}
+              <SelectInput
+                label="Country"
                 name="audience_type"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Country
-                    </FormLabel>
-                    <Select onValueChange={field.onChange}>
-                      <FormControl className="text-xs sm:text-base">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Country" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent className="h-48">
-                        {countries.map((country, index) => (
-                          <SelectItem key={index} value={country.name}>
-                            {country.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
+                items={countries}
               />
             </div>
           </div>
@@ -424,7 +245,7 @@ export function Form4TrainingsWorkshops({
               className="text-xs sm:text-base"
             >
               {loading ? (
-                <Loader2 className="mx-auto h-4 w-4 animate-spin" />
+                <Loader2 className="w-4 h-4 mx-auto animate-spin" />
               ) : (
                 "Submit"
               )}

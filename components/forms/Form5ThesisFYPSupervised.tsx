@@ -28,6 +28,8 @@ import { useLayoutEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
+import TextInput from "../InputFields/textInput";
+import SelectInput from "../InputFields/selectInput";
 
 //FORM VALIDATION
 const formSchema = validateForm7;
@@ -40,24 +42,8 @@ export function Form5ThesisFYPSupervised({
   userCookie: string;
 }) {
   const [loading, setLoading] = useState(false);
-  const [books, setBooks] = useState([]);
-  const [role, setRole] = useState("");
 
-  useLayoutEffect(() => {
-    const fetchBooks = async () => {
-      const res = await fetch(`/api/user/records/research-publications`, {
-        cache: "no-store",
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userCookie}`,
-        },
-      });
-      const { books } = await res.json();
-      setBooks(books);
-    };
-    fetchBooks();
-  }, []);
+  const [role, setRole] = useState("");
 
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -129,7 +115,7 @@ export function Form5ThesisFYPSupervised({
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* ROLE */}
             <div className="w-full lg:w-[30%]">
               <div className="mb-2 text-xs sm:text-base sm:font-medium">
@@ -138,7 +124,7 @@ export function Form5ThesisFYPSupervised({
               <select
                 name=""
                 id=""
-                className="w-full p-2 border rounded-md text-xs sm:text-base"
+                className="w-full p-2 text-xs border rounded-md sm:text-base"
                 onChange={(e) => setRole(e.target.value)}
               >
                 <option disabled value="">
@@ -154,20 +140,10 @@ export function Form5ThesisFYPSupervised({
             {/* CO_SUPERVISOR */}
             {role !== "Supervisor" && (
               <div className="w-full lg:w-[35%]">
-                <FormField
-                  control={form.control}
+                <TextInput
+                  label="Name of Supervisor"
                   name="co_supervisor"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-xs sm:text-base">
-                        Name of Supervisor
-                      </FormLabel>
-                      <FormControl className="text-xs sm:text-base">
-                        <Input placeholder="Name of Supervisor" {...field} />
-                      </FormControl>
-                      <FormMessage className="text-xs sm:text-base" />
-                    </FormItem>
-                  )}
+                  control={form.control}
                 />
               </div>
             )}
@@ -178,187 +154,79 @@ export function Form5ThesisFYPSupervised({
                 role !== "Supervisor" ? "w-[35%]" : "w-[70%]"
               }`}
             >
-              <FormField
-                control={form.control}
+              <SelectInput
+                label="Year."
                 name="date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Year.
-                    </FormLabel>
-                    <Select onValueChange={field.onChange}>
-                      <FormControl className="text-xs sm:text-base">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Year" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent className="h-48">
-                        {years.map((year) => (
-                          <SelectItem key={year.id} value={year.name}>
-                            {year.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
+                items={years}
               />
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* LEVEL OF DEGREE*/}
             <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
+              <SelectInput
+                label="Level of Degree"
                 name="level_of_degree"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Level of Degree
-                    </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      //   defaultValue={field.value}
-                    >
-                      <FormControl className="text-xs sm:text-base">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Level" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="BS">BS</SelectItem>
-                        <SelectItem value="Masters (16 years)">
-                          Masters (16 years)
-                        </SelectItem>
-                        <SelectItem value="Masters (18 years)">
-                          Masters (18 years)
-                        </SelectItem>
-                        <SelectItem value="PhD">PhD</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
+                items={[
+                  "BS",
+                  "Masters (16 years)",
+                  "Masters (18 years)",
+                  "PhD",
+                ]}
               />
             </div>
             {/* DEGREE PROGRAM */}
             <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
+              <TextInput
+                label="Degree Program"
                 name="degree_program"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Degree Program
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Degree Program" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
               />
             </div>
 
             {/* DEPARTMENT */}
             <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
+              <TextInput
+                label="Department"
                 name="department"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Department
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Department" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
               />
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* UNIVERSITY*/}
             <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
+              <TextInput
+                label="University"
                 name="university"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      University
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="University" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
               />
             </div>
             {/* STUDENT NAME */}
             <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
+              <TextInput
+                label="Student Name"
                 name="student_name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Student Name
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Student Name" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
               />
             </div>
             {/* DEGREE STAGE */}
             <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
+              <SelectInput
+                label="Degree Stage"
                 name="degree_stage"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Degree Stage
-                    </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      //   defaultValue={field.value}
-                    >
-                      <FormControl className="text-xs sm:text-base">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Value" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Synopsis Approved">
-                          Synopsis Approved
-                        </SelectItem>
-
-                        <SelectItem value="Research Work Completed">
-                          Research Work Completed
-                        </SelectItem>
-                        <SelectItem value="Thesis Submitted">
-                          Thesis Submitted
-                        </SelectItem>
-                        <SelectItem value="Degree Awarded">
-                          Degree Awarded
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
+                items={[
+                  "Synopsis Approved",
+                  "Research Work Completed",
+                  "Thesis Submitted",
+                  "Degree Awarded",
+                ]}
               />
             </div>
           </div>
-
           <div className="">
             <Button
               disabled={loading}
@@ -366,7 +234,7 @@ export function Form5ThesisFYPSupervised({
               className="text-xs sm:text-base"
             >
               {loading ? (
-                <Loader2 className="mx-auto h-4 w-4 animate-spin" />
+                <Loader2 className="w-4 h-4 mx-auto animate-spin" />
               ) : (
                 "Submit"
               )}

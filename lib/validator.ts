@@ -1,42 +1,5 @@
 import * as z from "zod";
 
-const phoneRegex = /^03[0-4]\d{8}$/;
-
-export const validateLogin = z.object({
-  email: z.string().min(1, "Email is required").email("Invalid email"),
-  password: z.string().min(1, "Password is required"),
-});
-
-export const userValidation = z
-  .object({
-    title: z.string().min(1, "Title is required"),
-    name: z.string().min(1, "Name is required"),
-    dob: z.string().refine((dob) => {
-      // Parse the date string into a Date object
-      const dobDate = new Date(dob);
-      // Calculate a date from some years ago (e.g., 18 years ago)
-      const yearsAgo = new Date();
-      yearsAgo.setFullYear(yearsAgo.getFullYear() - 18); // Change 18 to the desired minimum age
-      // Compare the date of birth with the minimum allowed date
-      return dobDate <= yearsAgo;
-    }, "Must be at least 18 years old"),
-    password: z.string().min(1, "Password is required"),
-    confirm_password: z.string().min(1, "Password is required"),
-    gender: z.string().min(1, "Gender is required"),
-    phone_no: z.string().refine((value) => phoneRegex.test(value), {
-      message: "Invalid phone number",
-    }),
-    cell_no: z.string().refine((value) => phoneRegex.test(value), {
-      message: "Invalid phone number",
-    }),
-    research_domain: z.string().min(1, "Research Domain is required"),
-    highest_degree: z.string().min(1, "Highest Degree is required"),
-  })
-  .refine((data) => data.password === data.confirm_password, {
-    message: "Passwords do not match",
-    path: ["confirm_password"],
-  });
-
 // 1 - Research Publications (Impact Journal / HJRS / HEC Recognized Journals)
 export const validateForm1 = z.object({
   date: z.string(),

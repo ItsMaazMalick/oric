@@ -27,6 +27,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { countries } from "@/constants/data";
+import SelectInput from "../InputFields/selectInput";
 
 //FORM VALIDATION
 const formSchema = validateForm12;
@@ -147,7 +148,7 @@ export function Form10ConsultancyContractsWithIndustry({
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* sponsoring_agency_address */}
             <div className="w-full lg:w-[30%]">
               <FormField
@@ -208,7 +209,7 @@ export function Form10ConsultancyContractsWithIndustry({
               />
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* pi_department */}
             <div className="w-full lg:w-[30%]">
               <FormField
@@ -229,31 +230,11 @@ export function Form10ConsultancyContractsWithIndustry({
             </div>
             {/* co_pi_designation */}
             <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
+              <SelectInput
+                label="Company Country"
                 name="company_country"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Company Country
-                    </FormLabel>
-                    <Select onValueChange={field.onChange}>
-                      <FormControl className="text-xs sm:text-base">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Country" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent className="h-48">
-                        {countries.map((country, index) => (
-                          <SelectItem key={index} value={country.name}>
-                            {country.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
+                items={countries}
               />
             </div>
 
@@ -280,7 +261,7 @@ export function Form10ConsultancyContractsWithIndustry({
               />
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* co_pi_university */}
             <div className="w-full lg:w-[30%]">
               <FormField
@@ -337,7 +318,7 @@ export function Form10ConsultancyContractsWithIndustry({
               />
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* sponsoring_agency_address */}
             <div className="w-full lg:w-[30%]">
               <FormField
@@ -383,7 +364,7 @@ export function Form10ConsultancyContractsWithIndustry({
               className="text-xs sm:text-base"
             >
               {loading ? (
-                <Loader2 className="mx-auto h-4 w-4 animate-spin" />
+                <Loader2 className="w-4 h-4 mx-auto animate-spin" />
               ) : (
                 "Submit"
               )}
