@@ -76,7 +76,7 @@ const UserLoginForm = (props: PageProps) => {
         {/* Email */}
         <div className="w-full">
           <TextInput
-            label="Email"
+            label="example@aiou.edu.pk"
             name="email"
             type="email"
             control={form.control}
