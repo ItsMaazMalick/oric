@@ -26,11 +26,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { userValidation } from "@/lib/validator";
+
 import { faculties } from "@/constants/data";
 import BackButton from "../button/BackButton";
+import { userRegisterSchema } from "@/lib/validations/userValidations";
 
-const formSchema = userValidation;
+const formSchema = userRegisterSchema;
 
 const EditUserProfileForm = ({ user }: any) => {
   const router = useRouter();
@@ -138,7 +139,7 @@ const EditUserProfileForm = ({ user }: any) => {
   return (
     <div className="w-full p-4">
       <Form {...form}>
-        <div className=" text-2xl font-bold p-5">
+        <div className="p-5 text-2xl font-bold ">
           {/* Image */}
           <div className="relative mx-auto w-[120px] h-[100px]">
             <Image
@@ -150,7 +151,7 @@ const EditUserProfileForm = ({ user }: any) => {
           <h2 className="text-center text-primary">Update Your Profile</h2>
         </div>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="w-full flex flex-col lg:flex-row justify-center items-center gap-4">
+          <div className="flex flex-col items-center justify-center w-full gap-4 lg:flex-row">
             <div className="w-full lg:w-[10%]">
               <FormField
                 control={form.control}
@@ -210,7 +211,7 @@ const EditUserProfileForm = ({ user }: any) => {
               />
             </div>
             {/* </div>
-          <div className="w-full flex flex-col lg:flex-row justify-center items-center gap-4"> */}
+          <div className="flex flex-col items-center justify-center w-full gap-4 lg:flex-row"> */}
             {/* DOB */}
             <div className="w-full lg:w-[30%]">
               <FormField
@@ -231,11 +232,11 @@ const EditUserProfileForm = ({ user }: any) => {
               />
             </div>
           </div>
-          <div className="w-full h-10 flex items-center bg-secondary text-secondary-foreground p-2 font-bold text-sm md:text-xl">
+          <div className="flex items-center w-full h-10 p-2 text-sm font-bold bg-secondary text-secondary-foreground md:text-xl">
             Basic Information
           </div>
           {/* BASIC INFORMATION */}
-          <div className="w-full flex flex-col lg:flex-row justify-center  gap-4">
+          <div className="flex flex-col justify-center w-full gap-4 lg:flex-row">
             {/* GENDER */}
             <div className="w-full lg:w-[30%]">
               <FormField
@@ -274,7 +275,7 @@ const EditUserProfileForm = ({ user }: any) => {
               <select
                 name=""
                 id=""
-                className="w-full p-2 border rounded-md text-xs sm:text-base mb-3"
+                className="w-full p-2 mb-3 text-xs border rounded-md sm:text-base"
                 onChange={handleFaculty}
               >
                 <option defaultValue={fact} value={fact}>
@@ -296,7 +297,7 @@ const EditUserProfileForm = ({ user }: any) => {
                 name=""
                 id=""
                 onChange={handleDepartmentChange}
-                className="w-full p-2 border rounded-md text-xs sm:text-base mb-3"
+                className="w-full p-2 mb-3 text-xs border rounded-md sm:text-base"
               >
                 <option defaultValue={dept} value={dept}>
                   {dept.replaceAll("-", " ")}
@@ -309,7 +310,7 @@ const EditUserProfileForm = ({ user }: any) => {
               </select>
             </div>
           </div>
-          <div className="w-full flex flex-col lg:flex-row justify-center  gap-4">
+          <div className="flex flex-col justify-center w-full gap-4 lg:flex-row">
             {/* PHONE NO */}
             <div className="w-full lg:w-[30%]">
               <FormField
@@ -383,11 +384,11 @@ const EditUserProfileForm = ({ user }: any) => {
           <div>
             <Button
               disabled={loading}
-              className="flex mx-auto bg-primary text-primary-foreground text-xs md:text-base"
+              className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
               type="submit"
             >
               {loading ? (
-                <Loader2 className="mx-auto h-4 w-4 animate-spin" />
+                <Loader2 className="w-4 h-4 mx-auto animate-spin" />
               ) : (
                 `Update`
               )}
