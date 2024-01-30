@@ -76,9 +76,10 @@ const UserLoginForm = (props: PageProps) => {
         {/* Email */}
         <div className="w-full">
           <TextInput
-            label="example@aiou.edu.pk"
+            label="Email"
             name="email"
             type="email"
+            placeholder="example@aiou.edu.pk"
             control={form.control}
           />
         </div>
