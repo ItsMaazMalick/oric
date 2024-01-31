@@ -53,7 +53,7 @@ const UserLoginForm = (props: PageProps) => {
           <span>{message}</span>
         </div>
       )}
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
         {/* Email */}
         <div className="w-full">
           <TextInput
