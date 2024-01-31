@@ -11,6 +11,7 @@ import TextInput from "../../InputFields/textInput";
 import FormSubmitButton from "../../button/FormSubmitButton";
 import { Form } from "../../ui/form";
 import UpdatePassword from "./UpdatePassword";
+import UserAuthTitle from "../UserAuthTitle";
 
 const formSchema = userVerifyEmailSchema;
 
@@ -43,17 +44,7 @@ const UserVerifyEmail = () => {
 
   return (
     <>
-      <div className="p-5 text-2xl font-bold ">
-        {/* Image */}
-        <div className="relative mx-auto w-[120px] h-[100px]">
-          <Image
-            src={"/images/site-logo.png"}
-            alt="ORIC user login"
-            fill={true}
-          />
-        </div>
-        <h2 className="text-center text-primary">Forgot Password</h2>
-      </div>
+      <UserAuthTitle title="Forgot Password" />
       {message && (
         <div className="w-full mx-auto mb-2 text-center text-destructive">
           <span>{message}</span>

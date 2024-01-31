@@ -15,6 +15,7 @@ import FormSubmitButton from "../button/FormSubmitButton";
 import { Form } from "../ui/form";
 import { Input } from "../ui/input";
 import { toast } from "../ui/use-toast";
+import UserAuthTitle from "./UserAuthTitle";
 
 const formSchema = userRegisterSchema;
 
@@ -124,17 +125,7 @@ const UserRegisterForm = () => {
 
   return (
     <Form {...form}>
-      <div className="p-5 text-2xl font-bold ">
-        {/* Image */}
-        <div className="relative mx-auto w-[120px] h-[100px]">
-          <Image
-            src={"/images/site-logo.png"}
-            alt="ORIC user login"
-            fill={true}
-          />
-        </div>
-        <h2 className="text-center text-primary">Register your account</h2>
-      </div>
+      <UserAuthTitle title="Register Account" />
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <div className="flex flex-col items-center justify-center w-full gap-4 lg:flex-row">
           <div className="w-full lg:w-[20%]">

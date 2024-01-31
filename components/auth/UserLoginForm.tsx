@@ -11,6 +11,7 @@ import * as z from "zod";
 import TextInput from "../InputFields/textInput";
 import FormSubmitButton from "../button/FormSubmitButton";
 import { Form } from "../ui/form";
+import UserAuthTitle from "./UserAuthTitle";
 
 type PageProps = {
   register?: string;
@@ -41,17 +42,7 @@ const UserLoginForm = (props: PageProps) => {
 
   return (
     <Form {...form}>
-      <div className="p-5 text-2xl font-bold ">
-        {/* Image */}
-        <div className="relative mx-auto w-[120px] h-[100px]">
-          <Image
-            src={"/images/site-logo.png"}
-            alt="ORIC user login"
-            fill={true}
-          />
-        </div>
-        <h2 className="text-center text-primary">Login your account</h2>
-      </div>
+      <UserAuthTitle title="Login Here" />
       {props?.register && (
         <div className="w-full mx-auto mb-2 text-sm text-center text-green-500 md:text-base">
           <span>Account Registered Successfully.</span>
@@ -62,7 +53,7 @@ const UserLoginForm = (props: PageProps) => {
           <span>{message}</span>
         </div>
       )}
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         {/* Email */}
         <div className="w-full">
           <TextInput
@@ -96,10 +87,8 @@ const UserLoginForm = (props: PageProps) => {
             )}
           </div>
         </div>
-        <Link href={"/user/forgot-password"} className="w-full text-sm">
-          <span className="flex justify-end mt-1 text-blue-600">
-            Forgot Password?
-          </span>
+        <Link href={"/user/forgot-password"} className="text-xs md:text-sm">
+          <span className="mt-1 text-blue-600 ">Forgot Password?</span>
         </Link>
         <div>
           <div className="flex items-center justify-center w-full">
