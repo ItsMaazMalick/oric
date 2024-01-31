@@ -20,6 +20,7 @@ const formSchema = userRegisterSchema;
 
 const UserRegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [cnic, setCnic] = useState("");
   const [email, setEmail] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(true);
@@ -205,6 +206,7 @@ const UserRegisterForm = () => {
                   label="Password"
                   name="password"
                   placeholder="*****"
+                  type={showPassword ? "text" : "password"}
                   control={form.control}
                 />
               </div>
@@ -229,16 +231,17 @@ const UserRegisterForm = () => {
                   label="Confirm Password"
                   name="confirm_password"
                   placeholder="*****"
+                  type={showConfirmPassword ? "text" : "password"}
                   control={form.control}
                 />
               </div>
               <div className="absolute cursor-pointer top-11 right-4 text-md text-muted-foreground">
-                {showPassword ? (
-                  <span onClick={() => setShowPassword((prev) => !prev)}>
+                {showConfirmPassword ? (
+                  <span onClick={() => setShowConfirmPassword((prev) => !prev)}>
                     <AiFillEye />
                   </span>
                 ) : (
-                  <span onClick={() => setShowPassword((prev) => !prev)}>
+                  <span onClick={() => setShowConfirmPassword((prev) => !prev)}>
                     <AiFillEyeInvisible />
                   </span>
                 )}
