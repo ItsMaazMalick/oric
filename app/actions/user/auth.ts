@@ -4,6 +4,7 @@ import prisma from "@/lib/db";
 import {
   userLoginSchema,
   userRegisterSchema,
+  userVerifyEmailSchema,
 } from "@/lib/validations/userValidations";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -202,4 +203,67 @@ export async function getUser(token: string) {
     return deleteCookie();
   }
   return user;
+}
+
+// * OK:  -> VERIFY EMAIL
+export async function verityEmail(formData: FormData) {
+  const validatedFields = userVerifyEmailSchema.safeParse({
+    email: formData.get("email"),
+    cnic: formData.get("cnic"),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      status: 401,
+      success: false,
+      message: "All fields are required",
+    };
+  }
+  const { email, cnic } = validatedFields.data;
+
+  const user = await prisma.user.findUnique({
+    where: { email },
+  });
+  if (!user) {
+    return {
+      status: 401,
+      success: false,
+      message: "Invalid credentials",
+    };
+  }
+  const isValidUser: boolean = user.cnic === cnic;
+  if (!isValidUser) {
+    return {
+      status: 401,
+      success: false,
+      message: "Invalid credentials",
+    };
+  }
+  return {
+    status: 200,
+    success: true,
+    id: user.id,
+  };
+}
+
+// * OK:  -> UPDATE USER PASSWORD
+export async function updatePassword(formData: FormData) {
+  const password = formData.get("password") as string;
+  const id = formData.get("id") as string;
+
+  if (!password || !id) {
+    return {
+      status: 401,
+      success: false,
+      message: "All fields are required",
+    };
+  }
+  const hashPassword = await bcrypt.hash(password, 10);
+  await prisma.user.update({
+    where: { id },
+    data: {
+      password: hashPassword,
+    },
+  });
+  redirect("/user/login");
 }

@@ -8,19 +8,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import * as z from "zod";
-import FormSubmitButton from "../button/FormSubmitButton";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
-import { toast } from "../ui/use-toast";
 import TextInput from "../InputFields/textInput";
-import MultiSelectInput from "../InputFields/MultiSelectInput";
+import FormSubmitButton from "../button/FormSubmitButton";
+import { Form } from "../ui/form";
 
 type PageProps = {
   register?: string;
@@ -106,13 +96,13 @@ const UserLoginForm = (props: PageProps) => {
             )}
           </div>
         </div>
-        <Link href={"/user/forget-password"} className="w-full text-sm">
+        <Link href={"/user/forgot-password"} className="w-full text-sm">
           <span className="flex justify-end mt-1 text-blue-600">
-            Forget Password?
+            Forgot Password?
           </span>
         </Link>
         <div>
-          <div>
+          <div className="flex items-center justify-center w-full">
             <FormSubmitButton
               loading={form.formState.isSubmitting}
               className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
@@ -122,7 +112,7 @@ const UserLoginForm = (props: PageProps) => {
           </div>
         </div>
       </form>
-      <div className="flex justify-center gap-2 my-2 text-xs md:text-base">
+      <div className="flex justify-center gap-2 mt-2 text-xs md:text-base">
         Don&apos;t have an account?
         <Link href={"/user/register"}>
           <div className="font-bold text-blue-700 hover:underline">

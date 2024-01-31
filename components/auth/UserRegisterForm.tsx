@@ -3,7 +3,6 @@ import { registerUser } from "@/app/actions/user/auth";
 import { faculties } from "@/constants/data";
 import { userRegisterSchema } from "@/lib/validations/userValidations";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -12,7 +11,7 @@ import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import * as z from "zod";
 import SelectInput from "../InputFields/selectInput";
 import TextInput from "../InputFields/textInput";
-import { Button } from "../ui/button";
+import FormSubmitButton from "../button/FormSubmitButton";
 import { Form } from "../ui/form";
 import { Input } from "../ui/input";
 import { toast } from "../ui/use-toast";
@@ -329,19 +328,13 @@ const UserRegisterForm = () => {
           name="highest_degree"
           control={form.control}
         />
-        <div>
-          <Button
+        <div className="flex items-center justify-center w-full">
+          <FormSubmitButton
+            loading={form.formState.isSubmitting}
             className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
-            type="submit"
-            disabled={form.formState.isSubmitting}
           >
-            <span className="flex items-center justify-center gap-1">
-              {form.formState.isSubmitting && (
-                <Loader2 size={20} className="animate-spin" />
-              )}
-              Register
-            </span>
-          </Button>
+            Register
+          </FormSubmitButton>
         </div>
       </form>
       <div className="flex justify-center gap-2 my-2 text-xs md:text-base">
