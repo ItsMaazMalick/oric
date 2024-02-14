@@ -22,11 +22,19 @@ export async function allRecords(id: string, userCookie: string) {
     orderBy: { date: "desc" },
   });
   const researchProject = await prisma.researchProject.findMany({
-    where: { user_id: id },
+    where: { userId: id },
     orderBy: { date: "desc" },
+    include: {
+      user: {
+        select: {
+          name: true,
+          department: true,
+        },
+      },
+    },
   });
   const departmentTraining = await prisma.departmentTraining.findMany({
-    where: { user_id: id },
+    where: { userId: id },
     orderBy: { date: "desc" },
   });
   if (bookAuthoredEdited) {

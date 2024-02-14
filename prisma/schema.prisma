@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-    provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL")
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
@@ -18,46 +18,44 @@ model Admin {
 }
 
 model User {
-  id                              String                                   @id @default(uuid())
-  title                           String
-  name                            String
-  email                           String                                   @unique
-  cnic                            String                                   @unique
-  dob                             String
-  password                        String
-  role                            String                                   @default("user")
-  secret_key                      String?
-  gender                          String
-  department                      String
-  faculty                         String
-  phone_no                        String
-  cell_no                         String
-  research_domain                 String
-  highest_degree                  String
-  research_publications           ResearchPublication[]
-  book_authored_edited            BookAuthoredEdited[]
-  research_projects               ResearchProject[]
-  department_trainings            DepartmentTraining[]
-  member_trainings                MemberTraining[]
-  ms_phd_thesis                   MSPHDThesis[]
-  bs_thesis                       BSThesis[]
-  policy_advocacies               PolicyAdvocacy[]
-  research_links_other_heis       ResearchLinksOtherHEIS[]
-  contract_research_organizations ContractResearchGovernmentOrganization[]
-  civic_engagement_events         CivicEngagementEvent[]
-  consultancy_contracts           ConsultancyContract[]
-  patents_trademarks              PatentsTrademark[]
-  research_products_process       ResearchProductsProcess[]
-  science_arts_products           ScienceArtsProduct[]
-  agreement_signed                AgreementSigned[]
-  list_of_community               ListOfCommunity[]
-  list_of_mentorship              ListOfMentorship[]
-  list_of_student                 ListOfStudent[]
-  list_of_facilities              ListOfFacilities[]
-  created_at                      DateTime                                 @default(now())
-  updated_at                      DateTime                                 @updatedAt
+  id                            String                                   @id @default(uuid())
+  title                         String
+  name                          String
+  email                         String                                   @unique
+  cnic                          String                                   @unique
+  dob                           String
+  password                      String
+  role                          String                                   @default("user")
+  gender                        String
+  department                    String
+  faculty                       String
+  phoneNo                       String
+  cellNo                        String
+  researchDomain                String
+  highestDegree                 String
+  researchPublications          ResearchPublication[]
+  bookAuthoredEdited            BookAuthoredEdited[]
+  researchProjects              ResearchProject[]
+  departmentTrainings           DepartmentTraining[]
+  memberTrainings               MemberTraining[]
+  msPhdThesis                   MSPHDThesis[]
+  bsThesis                      BSThesis[]
+  policyAdvocacies              PolicyAdvocacy[]
+  researchLinksOtherHeis        ResearchLinksOtherHEIS[]
+  contractResearchOrganizations ContractResearchGovernmentOrganization[]
+  civicEngagementEvents         CivicEngagementEvent[]
+  consultancyContracts          ConsultancyContract[]
+  patentsTrademarks             PatentsTrademark[]
+  researchProductsProcess       ResearchProductsProcess[]
+  scienceArtsProducts           ScienceArtsProduct[]
+  agreementSigned               AgreementSigned[]
+  listOfCommunity               ListOfCommunity[]
+  listOfMentorship              ListOfMentorship[]
+  listOfStudent                 ListOfStudent[]
+  listOfFacilities              ListOfFacilities[]
+  createdAt                     DateTime                                 @default(now())
+  updatedAt                     DateTime                                 @updatedAt
 }
-
 
 // 1 - 
 model ResearchPublication {
@@ -98,7 +96,7 @@ model BookAuthoredEdited {
   link              String
   pages             Int
   affiliation       String
-  addressing         String
+  addressing        String
   approved_status   String   @default("pending")
   created_at        DateTime @default(now())
   updated_at        DateTime @updatedAt
@@ -106,35 +104,35 @@ model BookAuthoredEdited {
 
 // 3 - 
 model ResearchProject {
-  id                    String   @id @default(uuid())
-  user                  User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id               String
-  date                  String
-  funding_agency        String
-  name_of_research      String
-  status                String
-  type                  String
-  role                  String
-  grant_amount          Int
-  title                 String
-  start_date            String
-  end_date              String
-  total_funding         Int
-  collaborating_partner String?
-  co_funding_partner    String?
-  completion            String
-  remarks               String
-  annex_file          String
-  approved_status       String   @default("pending")
-  created_at            DateTime @default(now())
-  updated_at            DateTime @updatedAt
+  id                   String   @id @default(uuid())
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId               String
+  date                 String
+  fundingAgency        String
+  nameOfResearch       String
+  status               String
+  type                 String
+  role                 String
+  grantAmount          Int
+  title                String
+  startDate            String
+  endDate              String
+  totalFunding         Int
+  collaboratingPartner String?
+  coFundingPartner     String?
+  completion           String
+  remarks              String
+  file                 String
+  approved_status      String   @default("pending")
+  created_at           DateTime @default(now())
+  updated_at           DateTime @updatedAt
 }
 
 // 4 - 
 model DepartmentTraining {
   id                  String   @id @default(uuid())
-  user                User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id             String
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId              String
   title_of_training   String
   date                String
   organizer           String
@@ -463,7 +461,7 @@ model ListOfFacilities {
   user_id                String
   lab_name               String
   equipment_type         String
-  available_to_student    String
+  available_to_student   String
   available_to_community String
   proofs                 String
   approved_status        String   @default("pending")

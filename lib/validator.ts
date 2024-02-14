@@ -45,21 +45,20 @@ export const validateForm2 = z.object({
 // 3 - Research Projects
 export const validateForm3 = z.object({
   date: z.string().min(1, "Year is required"),
-  funding_agency: z.string().min(1, "Funding agency is required"),
-  name_of_research: z.string().min(1, "Research name is required"),
+  fundingAgency: z.string().min(1, "Funding agency is required"),
+  nameOfResearch: z.string().min(1, "Research name is required"),
   status: z.string().min(1, "Status is required"),
   type: z.string().min(1, "Type is required"),
   role: z.string().min(1, "Role is required"),
-  grant_amount: z.coerce.number().min(1, "Grant amount is required"),
+  grantAmount: z.coerce.number().min(1, "Grant amount is required"),
   title: z.string().min(1, "Title is required"),
-  start_date: z.string().min(1, "Start date is required"),
-  end_date: z.string().min(1, "End date is required"),
-  total_funding: z.coerce.number().min(1, "Total Funding is required"),
-  collaborating_partner: z.string(),
-  co_funding_partner: z.string(),
+  startDate: z.string().min(1, "Start date is required"),
+  endDate: z.string().min(1, "End date is required"),
+  totalFunding: z.coerce.number().min(1, "Total Funding is required"),
+  collaboratingPartner: z.string(),
+  coFundingPartner: z.string(),
   completion: z.string().min(1, "Completion is required"),
   remarks: z.string(),
-  // annex_file: z.string(),
 });
 // 4 - Trainings / Workshops / Seminars / Conferences Arranged by your Department
 export const validateForm4 = z.object({

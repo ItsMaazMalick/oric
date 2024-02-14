@@ -27,7 +27,7 @@ export const getUserSession = async () => {
     where: { id },
   });
   if (!user) {
-    cookies()?.set("auth-token", "", { expires: new Date(0) });
+    // cookies()?.set("auth-token", "", { expires: new Date(0) });
     return { status: 401, success: false, message: "Unauthorized" };
   }
   return {

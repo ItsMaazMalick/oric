@@ -88,12 +88,12 @@ export async function registerUser(formData: FormData) {
     name: formData.get("name") as string,
     dob: formData.get("dob") as string,
     password: formData.get("password") as string,
-    confirm_password: formData.get("confirm_password") as string,
+    confirmPassword: formData.get("confirmPassword") as string,
     gender: formData.get("gender") as string,
-    phone_no: formData.get("phone_no") as string,
-    cell_no: formData.get("cell_no") as string,
-    research_domain: formData.get("research_domain") as string,
-    highest_degree: formData.get("highest_degree") as string,
+    phoneNo: formData.get("phoneNo") as string,
+    cellNo: formData.get("cellNo") as string,
+    researchDomain: formData.get("researchDomain") as string,
+    highestDegree: formData.get("highestDegree") as string,
   });
 
   const email = formData.get("email") as string;
@@ -126,10 +126,10 @@ export async function registerUser(formData: FormData) {
     dob,
     password,
     gender,
-    phone_no,
-    cell_no,
-    research_domain,
-    highest_degree,
+    phoneNo,
+    cellNo,
+    researchDomain,
+    highestDegree,
   } = validatedFields.data;
 
   const isUser = await prisma.user.findUnique({
@@ -170,10 +170,10 @@ export async function registerUser(formData: FormData) {
       gender,
       department,
       faculty,
-      phone_no,
-      cell_no,
-      research_domain,
-      highest_degree,
+      phoneNo,
+      cellNo,
+      researchDomain,
+      highestDegree,
     },
   });
   redirect("/user/login?register=true");

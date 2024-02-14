@@ -20,16 +20,15 @@ CREATE TABLE "User" (
     "dob" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "role" TEXT NOT NULL DEFAULT 'user',
-    "secret_key" TEXT,
     "gender" TEXT NOT NULL,
     "department" TEXT NOT NULL,
     "faculty" TEXT NOT NULL,
-    "phone_no" TEXT NOT NULL,
-    "cell_no" TEXT NOT NULL,
-    "research_domain" TEXT NOT NULL,
-    "highest_degree" TEXT NOT NULL,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) NOT NULL,
+    "phoneNo" TEXT NOT NULL,
+    "cellNo" TEXT NOT NULL,
+    "researchDomain" TEXT NOT NULL,
+    "highestDegree" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -84,23 +83,23 @@ CREATE TABLE "BookAuthoredEdited" (
 -- CreateTable
 CREATE TABLE "ResearchProject" (
     "id" TEXT NOT NULL,
-    "user_id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
     "date" TEXT NOT NULL,
-    "funding_agency" TEXT NOT NULL,
-    "name_of_research" TEXT NOT NULL,
+    "fundingAgency" TEXT NOT NULL,
+    "nameOfResearch" TEXT NOT NULL,
     "status" TEXT NOT NULL,
     "type" TEXT NOT NULL,
     "role" TEXT NOT NULL,
-    "grant_amount" INTEGER NOT NULL,
+    "grantAmount" INTEGER NOT NULL,
     "title" TEXT NOT NULL,
-    "start_date" TEXT NOT NULL,
-    "end_date" TEXT NOT NULL,
-    "total_funding" INTEGER NOT NULL,
-    "collaborating_partner" TEXT,
-    "co_funding_partner" TEXT,
+    "startDate" TEXT NOT NULL,
+    "endDate" TEXT NOT NULL,
+    "totalFunding" INTEGER NOT NULL,
+    "collaboratingPartner" TEXT,
+    "coFundingPartner" TEXT,
     "completion" TEXT NOT NULL,
     "remarks" TEXT NOT NULL,
-    "annex_file" TEXT NOT NULL,
+    "file" TEXT NOT NULL,
     "approved_status" TEXT NOT NULL DEFAULT 'pending',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -111,7 +110,7 @@ CREATE TABLE "ResearchProject" (
 -- CreateTable
 CREATE TABLE "DepartmentTraining" (
     "id" TEXT NOT NULL,
-    "user_id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
     "title_of_training" TEXT NOT NULL,
     "date" TEXT NOT NULL,
     "organizer" TEXT NOT NULL,
@@ -485,10 +484,10 @@ ALTER TABLE "ResearchPublication" ADD CONSTRAINT "ResearchPublication_user_id_fk
 ALTER TABLE "BookAuthoredEdited" ADD CONSTRAINT "BookAuthoredEdited_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ResearchProject" ADD CONSTRAINT "ResearchProject_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "ResearchProject" ADD CONSTRAINT "ResearchProject_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "DepartmentTraining" ADD CONSTRAINT "DepartmentTraining_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "DepartmentTraining" ADD CONSTRAINT "DepartmentTraining_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "MemberTraining" ADD CONSTRAINT "MemberTraining_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

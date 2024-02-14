@@ -29,6 +29,7 @@ import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
 import SelectInput from "../InputFields/selectInput";
+import TextInput from "../InputFields/textInput";
 
 //FORM VALIDATION
 const formSchema = validateForm8;
@@ -157,221 +158,74 @@ export function Form6PolicyAdvocacyORCaseStudies({
 
             {/* NAME OF GOVERNMENT BODY */}
             <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
+              <TextInput
+                label="Name of Government body presented"
                 name="name_government_body"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Name of Government body presented
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input
-                        placeholder="Name of Government body presented"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
               />
             </div>
 
             {/* PI NAME */}
             <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
+              <TextInput
+                label="Name of Researcher"
                 name="pi_name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Name of Researcher
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Name of Researcher" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
               />
             </div>
           </div>
           <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* PI DESIGNATION */}
             <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
+              <TextInput
+                label="Designation of Researcher"
                 name="pi_designation"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Designation of Researcher
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input
-                        placeholder="Designation of Researcher"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
               />
             </div>
             {/* PI DEPARTMENT */}
             <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
+              <TextInput
+                label="Department of Researcher"
                 name="pi_department"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Department of Researcher
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input
-                        placeholder="Department of Researcher"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
               />
             </div>
             {/* AREA ADVOCATED */}
             <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
+              <TextInput
+                label="Area Advocated"
                 name="area_of_advocated"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Area Advocated
-                    </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      //   defaultValue={field.value}
-                    >
-                      <FormControl className="text-xs sm:text-base">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select value" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent className="h-48">
-                        <SelectItem value="Political">Political</SelectItem>
-                        <SelectItem value="Law & Order">Law & Order</SelectItem>
-                        <SelectItem value="Economic Development">
-                          Economic Development
-                        </SelectItem>
-                        <SelectItem value="Social Progress">
-                          Social Progress
-                        </SelectItem>
-                        <SelectItem value="">Climate Change</SelectItem>
-                        <SelectItem value="">Environment</SelectItem>
-                        <SelectItem value="">Water</SelectItem>
-                        <SelectItem value="">Energy</SelectItem>
-                        <SelectItem value="Sustainability">
-                          Sustainability
-                        </SelectItem>
-                        <SelectItem value="Gender">Gender</SelectItem>
-                        <SelectItem value="Education">Education</SelectItem>
-                        <SelectItem value="Interfaith Harmony">
-                          Interfaith Harmony
-                        </SelectItem>
-                        <SelectItem value="Any Other">
-                          Mass Communication
-                        </SelectItem>
-                        <SelectItem value="Agricultural">
-                          Agricultural
-                        </SelectItem>
-                        <SelectItem value="Technology">Technology</SelectItem>
-                        <SelectItem value="Management">Management</SelectItem>
-                        <SelectItem value="Governance">Governance</SelectItem>
-                        <SelectItem value="Social Issues">
-                          Social Issues
-                        </SelectItem>
-                        <SelectItem value="Any Other">Any Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
               />
             </div>
           </div>
           <div className="flex flex-col w-full gap-4 lg:flex-row">
             {/* BRIEF */}
             <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
-                name="brief"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Brief
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Brief" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
+              <TextInput label="Brief" name="brief" control={form.control} />
             </div>
             {/* COALITION PARTNER */}
             <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
+              <TextInput
+                label="Partners in Advocacy Study"
                 name="coalition_partners"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Partners in Advocacy Study
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input
-                        placeholder="Partners in Advocacy Study"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
               />
             </div>
             {/* ADVOCACY TOOLS */}
             <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
+              <SelectInput
+                label="Advocacy Tools Adopted"
                 name="advocacy_tools"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Advocacy Tools Adopted
-                    </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      //   defaultValue={field.value}
-                    >
-                      <FormControl className="text-xs sm:text-base">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select value" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Briefings">Briefings</SelectItem>
-                        <SelectItem value="Meetings">Meetings</SelectItem>
-                        <SelectItem value="Websites">Websites</SelectItem>
-                        <SelectItem value="Social Media Debates">
-                          Social Media Debates
-                        </SelectItem>
-                        <SelectItem value="Any Other">Any Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
+                control={form.control}
+                items={[
+                  "Briefings",
+                  "Meetings",
+                  "Websites",
+                  "Social Media Debates",
+                  "Any Other",
+                ]}
               />
             </div>
           </div>

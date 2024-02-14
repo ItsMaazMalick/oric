@@ -105,7 +105,7 @@ export default function AdminDataTable({ data, index }: PageProps) {
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    // getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     state: {
@@ -116,7 +116,7 @@ export default function AdminDataTable({ data, index }: PageProps) {
 
   return (
     <div className="w-full p-2">
-      <div className="flex items-center py-4 gap-2">
+      <div className="flex items-center gap-2 py-4">
         <Input
           placeholder="Filter Titles..."
           value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
@@ -132,7 +132,7 @@ export default function AdminDataTable({ data, index }: PageProps) {
               <ArrowUpDown size={15} className="ml-1" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="h-48 overflow-y-auto">
+          <DropdownMenuContent align="end" className="overflow-y-auto max-h-48">
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
@@ -174,7 +174,7 @@ export default function AdminDataTable({ data, index }: PageProps) {
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {data.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
@@ -191,7 +191,7 @@ export default function AdminDataTable({ data, index }: PageProps) {
               <TableRow className="h-[73px]">
                 <TableCell
                   colSpan={table.getVisibleFlatColumns().length}
-                  className="text-center text-destructive font-bold"
+                  className="font-bold text-center text-destructive"
                 >
                   No results.
                 </TableCell>

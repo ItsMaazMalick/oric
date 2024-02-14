@@ -19,18 +19,18 @@ export const userRegisterSchema = z
       return dobDate <= yearsAgo;
     }, "Must be at least 18 years old"),
     password: z.string().min(1, "Password is required"),
-    confirm_password: z.string().min(1, "Password is required"),
+    confirmPassword: z.string().min(1, "Password is required"),
     gender: z.string().min(1, "Gender is required"),
-    phone_no: z.string().refine((value) => phoneRegex.test(value), {
+    phoneNo: z.string().refine((value) => phoneRegex.test(value), {
       message: "Invalid phone number",
     }),
-    cell_no: z.string().refine((value) => phoneRegex.test(value), {
+    cellNo: z.string().refine((value) => phoneRegex.test(value), {
       message: "Invalid phone number",
     }),
-    research_domain: z.string().min(1, "Research Domain is required"),
-    highest_degree: z.string().min(1, "Highest Degree is required"),
+    researchDomain: z.string().min(1, "Research Domain is required"),
+    highestDegree: z.string().min(1, "Highest Degree is required"),
   })
-  .refine((data) => data.password === data.confirm_password, {
+  .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirm_password"],
   });

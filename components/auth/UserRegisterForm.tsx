@@ -81,12 +81,12 @@ const UserRegisterForm = () => {
       name: "",
       dob: "",
       password: "",
-      confirm_password: "",
+      confirmPassword: "",
       gender: "",
-      phone_no: "",
-      cell_no: "",
-      research_domain: "",
-      highest_degree: "",
+      phoneNo: "",
+      cellNo: "",
+      researchDomain: "",
+      highestDegree: "",
     },
   });
 
@@ -99,14 +99,14 @@ const UserRegisterForm = () => {
       formData.append("cnic", cnic);
       formData.append("dob", values.dob);
       formData.append("password", values.password);
-      formData.append("confirm_password", values.confirm_password);
+      formData.append("confirmPassword", values.confirmPassword);
       formData.append("gender", values.gender);
       formData.append("department", dept);
       formData.append("faculty", fact);
-      formData.append("phone_no", values.phone_no);
-      formData.append("cell_no", values.cell_no);
-      formData.append("research_domain", values.research_domain);
-      formData.append("highest_degree", values.highest_degree);
+      formData.append("phoneNo", values.phoneNo);
+      formData.append("cellNo", values.cellNo);
+      formData.append("researchDomain", values.researchDomain);
+      formData.append("highestDegree", values.highestDegree);
 
       const result = await registerUser(formData);
       toast({
@@ -220,7 +220,7 @@ const UserRegisterForm = () => {
               <div>
                 <TextInput
                   label="Confirm Password"
-                  name="confirm_password"
+                  name="confirmPassword"
                   placeholder="*****"
                   type={showConfirmPassword ? "text" : "password"}
                   control={form.control}
@@ -298,28 +298,24 @@ const UserRegisterForm = () => {
         <div className="flex flex-col justify-center w-full gap-4 lg:flex-row">
           {/* PHONE NO */}
           <div className="w-full lg:w-[30%]">
-            <TextInput
-              label="Phone No"
-              name="phone_no"
-              control={form.control}
-            />
+            <TextInput label="Phone No" name="phoneNo" control={form.control} />
           </div>
           {/* CELL NO */}
           <div className="w-full lg:w-[40%]">
-            <TextInput label="Cell No" name="cell_no" control={form.control} />
+            <TextInput label="Cell No" name="cellNo" control={form.control} />
           </div>
           {/* RESEARCH DOMAIN */}
           <div className="w-full lg:w-[30%]">
             <TextInput
               label="Research Domain"
-              name="research_domain"
+              name="researchDomain"
               control={form.control}
             />
           </div>
         </div>
         <TextInput
           label="Highest Degree"
-          name="highest_degree"
+          name="highestDegree"
           control={form.control}
         />
         <div className="flex items-center justify-center w-full">

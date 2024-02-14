@@ -37,7 +37,10 @@ const UserLoginForm = (props: PageProps) => {
     formData.append("password", values.password);
 
     const result = await loginUser(formData);
-    setMessage(result?.message);
+    form.reset();
+    if (result) {
+      setMessage(result?.message);
+    }
   };
 
   return (
