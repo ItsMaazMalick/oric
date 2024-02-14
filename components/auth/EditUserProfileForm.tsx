@@ -65,12 +65,12 @@ const EditUserProfileForm = ({ user }: any) => {
       name: user.name,
       dob: user.dob,
       password: "",
-      confirm_password: "",
+      confirmPassword: "",
       gender: user.gender,
-      phone_no: user.phone_no,
-      cell_no: user.cell_no,
-      research_domain: user.research_domain,
-      highest_degree: user.highest_degree,
+      phoneNo: user.phoneNo,
+      cellNo: user.cellNo,
+      researchDomain: user.researchDomain,
+      highestDegree: user.highestDegree,
     },
   });
 
@@ -80,14 +80,14 @@ const EditUserProfileForm = ({ user }: any) => {
         !values.name ||
         !values.dob ||
         !values.password ||
-        !values.confirm_password ||
+        !values.confirmPassword ||
         !values.gender ||
         !dept ||
         !fact ||
-        !values.phone_no ||
-        !values.cell_no ||
-        !values.research_domain ||
-        !values.highest_degree
+        !values.phoneNo ||
+        !values.cellNo ||
+        !values.researchDomain ||
+        !values.highestDegree
       ) {
         toast({ variant: "destructive", title: "All fields are required" });
       } else {
@@ -105,10 +105,10 @@ const EditUserProfileForm = ({ user }: any) => {
             gender: values.gender,
             department: dept,
             faculty: fact,
-            phone_no: values.phone_no,
-            cell_no: values.cell_no,
-            research_domain: values.research_domain,
-            highest_degree: values.highest_degree,
+            phoneNo: values.phoneNo,
+            cellNo: values.cellNo,
+            researchDomain: values.researchDomain,
+            highestDegree: values.highestDegree,
           }),
         });
         const data = await res.json();
@@ -315,7 +315,7 @@ const EditUserProfileForm = ({ user }: any) => {
             <div className="w-full lg:w-[30%]">
               <FormField
                 control={form.control}
-                name="phone_no"
+                name="phoneNo"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs md:text-base">
@@ -333,7 +333,7 @@ const EditUserProfileForm = ({ user }: any) => {
             <div className="w-full lg:w-[40%]">
               <FormField
                 control={form.control}
-                name="cell_no"
+                name="cellNo"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs md:text-base">
@@ -351,7 +351,7 @@ const EditUserProfileForm = ({ user }: any) => {
             <div className="w-full lg:w-[30%]">
               <FormField
                 control={form.control}
-                name="research_domain"
+                name="researchDomain"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs md:text-base">
@@ -368,7 +368,7 @@ const EditUserProfileForm = ({ user }: any) => {
           </div>
           <FormField
             control={form.control}
-            name="highest_degree"
+            name="highestDegree"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs md:text-base">
