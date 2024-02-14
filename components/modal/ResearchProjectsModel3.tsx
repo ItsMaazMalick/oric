@@ -58,18 +58,18 @@ export function ResearchProjectsModel3({
     resolver: zodResolver(formSchema),
     defaultValues: {
       date: book.date,
-      funding_agency: book.funding_agency,
-      name_of_research: book.name_of_research,
+      fundingAgency: book.fundingAgency,
+      nameOfResearch: book.nameOfResearch,
       status: book.status,
       type: book.type,
       role: book.role,
-      grant_amount: book.grant_amount,
+      grantAmount: book.grantAmount,
       title: book.title,
-      start_date: book.start_date,
-      end_date: book.end_date,
-      total_funding: book.total_funding,
-      collaborating_partner: book.collaborating_partner,
-      co_funding_partner: book.co_funding_partner,
+      startDate: book.startDate,
+      endDate: book.endDate,
+      totalFunding: book.totalFunding,
+      collaboratingPartner: book.collaboratingPartner,
+      coFundingPartner: book.coFundingPartner,
       completion: book.completion,
     },
   });
@@ -91,18 +91,18 @@ export function ResearchProjectsModel3({
             },
             body: JSON.stringify({
               date: values.date,
-              funding_agency: values.funding_agency,
-              name_of_research: values.name_of_research,
+              fundingAgency: values.fundingAgency,
+              nameOfResearch: values.nameOfResearch,
               status: values.status,
               type: values.type,
               role: values.role,
-              grant_amount: values.grant_amount,
+              grantAmount: values.grantAmount,
               title: values.title,
-              start_date: values.start_date,
-              end_date: values.end_date,
-              total_funding: values.total_funding,
-              collaborating_partner: values.collaborating_partner,
-              co_funding_partner: values.co_funding_partner,
+              startDate: values.startDate,
+              endDate: values.endDate,
+              totalFunding: values.totalFunding,
+              collaboratingPartner: values.collaboratingPartner,
+              coFundingPartner: values.coFundingPartner,
               completion: values.completion,
               user_id: id,
             }),
@@ -169,7 +169,7 @@ export function ResearchProjectsModel3({
               />
               <FormField
                 control={form.control}
-                name="funding_agency"
+                name="fundingAgency"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
@@ -188,7 +188,7 @@ export function ResearchProjectsModel3({
               />
               <FormField
                 control={form.control}
-                name="name_of_research"
+                name="nameOfResearch"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
@@ -297,7 +297,7 @@ export function ResearchProjectsModel3({
               />
               <FormField
                 control={form.control}
-                name="grant_amount"
+                name="grantAmount"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
@@ -336,7 +336,7 @@ export function ResearchProjectsModel3({
               />
               <FormField
                 control={form.control}
-                name="start_date"
+                name="startDate"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
@@ -356,7 +356,7 @@ export function ResearchProjectsModel3({
               />
               <FormField
                 control={form.control}
-                name="end_date"
+                name="endDate"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
@@ -376,7 +376,7 @@ export function ResearchProjectsModel3({
               />
               <FormField
                 control={form.control}
-                name="total_funding"
+                name="totalFunding"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
@@ -396,7 +396,7 @@ export function ResearchProjectsModel3({
               />
               <FormField
                 control={form.control}
-                name="collaborating_partner"
+                name="collaboratingPartner"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
@@ -415,7 +415,7 @@ export function ResearchProjectsModel3({
               />
               <FormField
                 control={form.control}
-                name="co_funding_partner"
+                name="coFundingPartner"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs sm:text-base">
