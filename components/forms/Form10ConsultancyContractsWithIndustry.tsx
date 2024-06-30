@@ -67,6 +67,7 @@ export function Form10ConsultancyContractsWithIndustry({
       setSuccess(res.success);
       setError(res.error);
       form.reset();
+      router.refresh();
     }
   };
 
@@ -77,6 +78,7 @@ export function Form10ConsultancyContractsWithIndustry({
     const res = await saveConsultancyContractsNill(id);
     setSuccess(res.success);
     setError(res.error);
+    router.refresh();
   };
 
   return (

@@ -82,6 +82,7 @@ export function Form8ContractResearchAwarded({
     setSuccess(res.success);
     setError(res.error);
     form.reset();
+    router.refresh();
   };
 
   const handleNill = async (e: FormEvent<HTMLFormElement>) => {
@@ -91,6 +92,7 @@ export function Form8ContractResearchAwarded({
     const res = await saveContractResearchNill(id);
     setSuccess(res.success);
     setError(res.error);
+    router.refresh();
   };
 
   return (

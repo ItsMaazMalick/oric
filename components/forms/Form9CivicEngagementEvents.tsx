@@ -83,6 +83,7 @@ export function Form9CivicEngagementEvents({
       setSuccess(res.success);
       setError(res.error);
       form.reset();
+      router.refresh();
     }
   };
 
@@ -93,6 +94,7 @@ export function Form9CivicEngagementEvents({
     const res = await saveCivicEngagementNill(id);
     setSuccess(res.success);
     setError(res.error);
+    router.refresh();
   };
 
   return (

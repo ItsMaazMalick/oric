@@ -72,6 +72,7 @@ export function Form4TrainingsWorkshops({
     setSuccess(res.success);
     setError(res.error);
     form.reset();
+    router.refresh();
   };
 
   const handleNill = async (e: FormEvent<HTMLFormElement>) => {
@@ -81,6 +82,7 @@ export function Form4TrainingsWorkshops({
     const res = await saveTrainingsWorkshopsNill(id);
     setSuccess(res.success);
     setError(res.error);
+    router.refresh();
   };
 
   return (

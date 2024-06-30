@@ -82,6 +82,7 @@ export function Form6PolicyAdvocacyORCaseStudies({
       setSuccess(res.success);
       setError(res.error);
       form.reset();
+      router.refresh();
     }
   };
 
@@ -92,6 +93,7 @@ export function Form6PolicyAdvocacyORCaseStudies({
     const res = await ssavePolicyAdvocacyNill(id);
     setSuccess(res.success);
     setError(res.error);
+    router.refresh();
   };
 
   return (

@@ -80,6 +80,7 @@ export function Form3ResearchProjects({
       setSuccess(res.success);
       setError(res.error);
       form.reset();
+      router.refresh();
     }
   };
 
@@ -90,6 +91,7 @@ export function Form3ResearchProjects({
     const res = await saveResearchProjectsNill(id);
     setSuccess(res.success);
     setError(res.error);
+    router.refresh();
   };
 
   return (

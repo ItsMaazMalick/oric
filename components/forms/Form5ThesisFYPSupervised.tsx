@@ -67,6 +67,7 @@ export function Form5ThesisFYPSupervised({
     setSuccess(res.success);
     setError(res.error);
     form.reset();
+    router.refresh();
   };
 
   const handleNill = async (e: FormEvent<HTMLFormElement>) => {
@@ -76,6 +77,7 @@ export function Form5ThesisFYPSupervised({
     const res = await saveThesisNill(id);
     setSuccess(res.success);
     setError(res.error);
+    router.refresh();
   };
 
   return (

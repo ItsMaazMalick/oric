@@ -74,6 +74,7 @@ export function Form2BookAuthoredEdited({
     const result = await saveBookAuthoredEdited(values, id);
     setSuccess(result?.success);
     setError(result?.error);
+    router.refresh();
   };
 
   const handleNill = async (e: FormEvent<HTMLFormElement>) => {
@@ -83,6 +84,7 @@ export function Form2BookAuthoredEdited({
     const res = await saveBookAuthoredEditedNill(id);
     setSuccess(res.success);
     setError(res.error);
+    router.refresh();
   };
 
   return (

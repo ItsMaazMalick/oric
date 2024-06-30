@@ -20,6 +20,7 @@ import FormSubmitButton from "../button/FormSubmitButton";
 import { Checkbox } from "../ui/checkbox";
 import { FormError } from "./FormError";
 import { FormSuccess } from "./FormSuccess";
+import { useRouter } from "next/navigation";
 
 export function Form7LinksEstablished({
   id,
@@ -34,6 +35,8 @@ export function Form7LinksEstablished({
   const [nill, setNill] = useState(false);
   const [success, setSuccess] = useState<string | undefined>("");
   const [error, setError] = useState<string | undefined>("");
+
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof linksEstablishedSchema>>({
     resolver: zodResolver(linksEstablishedSchema),
@@ -59,6 +62,7 @@ export function Form7LinksEstablished({
       setSuccess(res.success);
       setError(res.error);
       form.reset();
+      router.refresh();
     }
   };
 
@@ -69,6 +73,7 @@ export function Form7LinksEstablished({
     const res = await saveLinksEstablishedNill(id);
     setSuccess(res.success);
     setError(res.error);
+    router.refresh();
   };
 
   return (

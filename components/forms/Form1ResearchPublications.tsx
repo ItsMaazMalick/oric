@@ -33,6 +33,7 @@ import {
 } from "../ui/select";
 import { FormError } from "./FormError";
 import { FormSuccess } from "./FormSuccess";
+import { useRouter } from "next/navigation";
 
 export function Form1ResearchPublications({
   id,
@@ -51,6 +52,8 @@ export function Form1ResearchPublications({
   const [nill, setNill] = useState(false);
   const [success, setSuccess] = useState<string | undefined>("");
   const [error, setError] = useState<string | undefined>("");
+
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof researchPublicationSchema>>({
     resolver: zodResolver(researchPublicationSchema),
@@ -78,6 +81,7 @@ export function Form1ResearchPublications({
     const result = await saveResearchPublications(values, id);
     setSuccess(result?.success);
     setError(result?.error);
+    router.refresh();
   };
 
   const handleNill = async (e: FormEvent<HTMLFormElement>) => {
@@ -87,6 +91,7 @@ export function Form1ResearchPublications({
     const res = await saveResearchPublicationsNill(id);
     setSuccess(res.success);
     setError(res.error);
+    router.refresh();
   };
 
   return (
