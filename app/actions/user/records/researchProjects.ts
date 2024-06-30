@@ -1,72 +1,38 @@
 "use server";
 import prisma from "@/lib/db";
-import { validateForm3 } from "@/lib/validator";
+
 import { getUserSession } from "../../session";
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
+import { researchProjectSchema } from "@/lib/validations/formValidations";
 
-export async function saveResearchProjects(formData: FormData) {
-  const validatedFields = validateForm3.safeParse({
-    date: formData.get("date"),
-    fundingAgency: formData.get("fundingAgency"),
-    nameOfResearch: formData.get("nameOfResearch"),
-    status: formData.get("status"),
-    type: formData.get("type"),
-    role: formData.get("role"),
-    grantAmount: Number(formData.get("grantAmount")),
-    title: formData.get("title"),
-    startDate: formData.get("startDate"),
-    endDate: formData.get("endDate"),
-    totalFunding: Number(formData.get("totalFunding")),
-    collaboratingPartner: formData.get("collaboratingPartner"),
-    coFundingPartner: formData.get("coFundingPartner"),
-    completion: formData.get("completion"),
-    remarks: formData.get("remarks"),
-  });
-
-  if (!validatedFields.success) {
-    return {
-      status: 401,
-      success: false,
-      message: "Invalid data provided",
-    };
+export async function saveResearchProjects(
+  values: z.infer<typeof researchProjectSchema>,
+  file: string,
+  id: string
+) {
+  const validData = researchProjectSchema.safeParse(values);
+  if (!validData?.success) {
+    return { error: "Invalid data provided" };
   }
-  const file = formData.get("file") as string;
-  const id = formData.get("userId") as string;
-  const {
-    date,
-    fundingAgency,
-    nameOfResearch,
-    status,
-    type,
-    role,
-    grantAmount,
-    title,
-    startDate,
-    endDate,
-    totalFunding,
-    collaboratingPartner,
-    coFundingPartner,
-    completion,
-    remarks,
-  } = validatedFields.data;
 
   await prisma.researchProject.create({
     data: {
-      date,
-      fundingAgency,
-      nameOfResearch,
-      status,
-      type,
-      role,
-      grantAmount,
-      title,
-      startDate,
-      endDate,
-      totalFunding,
-      collaboratingPartner,
-      coFundingPartner,
-      completion,
-      remarks,
+      date: validData.data.date,
+      agency: validData.data.fundingAgency,
+      name: validData.data.nameOfResearch,
+      status: validData.data.status,
+      type: validData.data.type,
+      role: validData.data.role,
+      grantAmount: validData.data.grantAmount,
+      title: validData.data.title,
+      startDate: validData.data.startDate,
+      endDate: validData.data.endDate,
+      totalFunding: validData.data.totalFunding,
+      collaboratingPartner: validData.data.collaboratingPartner,
+      coFundingPartner: validData.data.coFundingPartner,
+      completion: validData.data.completion,
+      remarks: validData.data.remarks,
       file,
       user: {
         connect: {
@@ -75,17 +41,20 @@ export async function saveResearchProjects(formData: FormData) {
       },
     },
   });
+  return { success: "Data saved Successfully" };
   revalidatePath("/user/dashboard/add-record");
 }
 
-export async function saveResearchProjectsNill(formData: FormData) {
-  const id = formData.get("userId") as string;
+export async function saveResearchProjectsNill(id: string) {
+  if (!id) {
+    return { error: "Id is required" };
+  }
 
   await prisma.researchProject.create({
     data: {
       date: "NILL",
-      fundingAgency: "NILL",
-      nameOfResearch: "NILL",
+      agency: "NILL",
+      name: "NILL",
       status: "NILL",
       type: "NILL",
       role: "NILL",
@@ -106,5 +75,6 @@ export async function saveResearchProjectsNill(formData: FormData) {
       },
     },
   });
+  return { success: "Data saved successfully" };
   revalidatePath("/user/dashboard-add-record");
 }

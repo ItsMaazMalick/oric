@@ -13,7 +13,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { SDG, years } from "@/constants/data";
-import { validateForm3 } from "@/lib/validator";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FormEvent, useLayoutEffect, useState } from "react";
@@ -23,7 +22,6 @@ import SelectInput from "../InputFields/selectInput";
 import TextInput from "../InputFields/textInput";
 import { toast } from "../ui/use-toast";
 import { Input } from "../ui/input";
-import { UploadButton } from "@/app/utils/uploadthing";
 import Image from "next/image";
 import {
   saveResearchProjects,
@@ -32,9 +30,10 @@ import {
 import { Checkbox } from "../ui/checkbox";
 import Link from "next/link";
 import FormSubmitButton from "../button/FormSubmitButton";
-
-//FORM VALIDATION
-const formSchema = validateForm3;
+import UploadButtonComponent from "@/lib/UploadButtonComponent";
+import { researchProjectSchema } from "@/lib/validations/formValidations";
+import { FormSuccess } from "./FormSuccess";
+import { FormError } from "./FormError";
 
 export function Form3ResearchProjects({
   id,
@@ -45,10 +44,12 @@ export function Form3ResearchProjects({
 }) {
   const [file, setFile] = useState("");
   const [nill, setNill] = useState(false);
+  const [success, setSuccess] = useState<string | undefined>("");
+  const [error, setError] = useState<string | undefined>("");
 
   const router = useRouter();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof researchProjectSchema>>({
+    resolver: zodResolver(researchProjectSchema),
     defaultValues: {
       date: "",
       fundingAgency: "",
@@ -67,33 +68,17 @@ export function Form3ResearchProjects({
       remarks: "",
     },
   });
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof researchProjectSchema>) => {
     if (!file) {
       alert("Image is required");
+      setError("Image is required");
       return;
     } else {
-      const formData = new FormData();
-      formData.append("date", values.date);
-      formData.append("fundingAgency", values.fundingAgency);
-      formData.append("nameOfResearch", values.nameOfResearch);
-      formData.append("status", values.status);
-      formData.append("type", values.type);
-      formData.append("role", values.role);
-      formData.append("grantAmount", String(values.grantAmount));
-      formData.append("title", values.title);
-      formData.append("startDate", values.startDate);
-      formData.append("endDate", values.endDate);
-      formData.append("totalFunding", String(values.totalFunding));
-      formData.append("collaboratingPartner", values.collaboratingPartner);
-      formData.append("coFundingPartner", values.coFundingPartner);
-      formData.append("completion", values.completion);
-      formData.append("remarks", values.remarks);
-      formData.append("file", file as string);
-      formData.append("userId", id);
-
-      const res = await saveResearchProjects(formData);
+      const res = await saveResearchProjects(values, file, id);
       setNill(false);
       setFile("");
+      setSuccess(res.success);
+      setError(res.error);
       form.reset();
     }
   };
@@ -102,9 +87,9 @@ export function Form3ResearchProjects({
     e.preventDefault();
     setNill(false);
     setFile("");
-    const formData = new FormData();
-    formData.append("userId", id);
-    const res = await saveResearchProjectsNill(formData);
+    const res = await saveResearchProjectsNill(id);
+    setSuccess(res.success);
+    setError(res.error);
   };
 
   return (
@@ -130,6 +115,8 @@ export function Form3ResearchProjects({
           <div className="mt-2">
             <form onSubmit={handleNill}>
               <div>
+                {success && <FormSuccess message={success} className="my-2" />}
+                {error && <FormError message={error} className="my-2" />}
                 <div className="flex items-center justify-center w-full">
                   <FormSubmitButton
                     loading={form.formState.isSubmitting}
@@ -314,21 +301,13 @@ export function Form3ResearchProjects({
                 </Link>
               ) : (
                 <div className="text-black bg-primary w-full lg:w-[50%] rounded-md h-10 flex justify-center items-center mt-8">
-                  <UploadButton
-                    className="mt-4"
-                    endpoint="imageUploader"
-                    onClientUploadComplete={(res) => {
-                      setFile(res[0].url);
-                    }}
-                    onUploadError={(error: Error) => {
-                      alert(`ERROR! ${error.message}`);
-                      setFile("");
-                    }}
-                  />
+                  <UploadButtonComponent image={file} setImage={setFile} />
                 </div>
               )}
             </div>
             <div>
+              {success && <FormSuccess message={success} className="my-2" />}
+              {error && <FormError message={error} className="my-2" />}
               <div className="flex items-center justify-center w-full">
                 <FormSubmitButton
                   loading={form.formState.isSubmitting}

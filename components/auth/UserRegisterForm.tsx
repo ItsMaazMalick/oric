@@ -110,7 +110,7 @@ const UserRegisterForm = () => {
 
       const result = await registerUser(formData);
       toast({
-        title: result.message,
+        title: result.success,
         variant: result.success ? "success" : "destructive",
       });
       form.reset();

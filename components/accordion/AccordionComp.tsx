@@ -28,7 +28,10 @@ export function AccordionComp({ data }: { data: any }) {
           <AccordionContent>
             <FormMain index={index} />
             <div className="max-h-[400px] overflow-y-auto overflow-x-auto">
-              <AdminDataTable data={data[index] ? data[index] : []} index={3} />
+              <AdminDataTable
+                data={data[index] ? data[index] : []}
+                index={index + 1}
+              />
             </div>
             <div className="w-full mt-4 border-t-2 border-primary" />
           </AccordionContent>

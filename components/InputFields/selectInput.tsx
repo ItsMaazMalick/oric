@@ -43,7 +43,7 @@ export default function SelectInput({
                 <SelectValue placeholder={`Select ${label}`} />
               </SelectTrigger>
             </FormControl>
-            <SelectContent>
+            <SelectContent className="max-h-[300px]">
               {items.map((item: string, index: number) => (
                 <SelectItem key={index} value={item}>
                   {item}

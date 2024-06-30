@@ -3,34 +3,24 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
-import { Button } from "@/components/ui/button";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { validateForm12 } from "@/lib/validator";
-import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useLayoutEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "../ui/use-toast";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
+  saveConsultancyContracts,
+  saveConsultancyContractsNill,
+} from "@/app/actions/user/records/consultancy-contracts";
+import { Form } from "@/components/ui/form";
 import { countries } from "@/constants/data";
+import UploadButtonComponent from "@/lib/UploadButtonComponent";
+import { consultancyContractSchema } from "@/lib/validations/formValidations";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { FormEvent, useState } from "react";
+import { useForm } from "react-hook-form";
 import SelectInput from "../InputFields/selectInput";
-
-//FORM VALIDATION
-const formSchema = validateForm12;
+import TextInput from "../InputFields/textInput";
+import FormSubmitButton from "../button/FormSubmitButton";
+import { Checkbox } from "../ui/checkbox";
+import { FormError } from "./FormError";
+import { FormSuccess } from "./FormSuccess";
 
 export function Form10ConsultancyContractsWithIndustry({
   id,
@@ -40,338 +30,221 @@ export function Form10ConsultancyContractsWithIndustry({
   userCookie: string;
 }) {
   const [loading, setLoading] = useState(false);
-  const [books, setBooks] = useState([]);
-  const [file, setFile] = useState();
-  const [role, setRole] = useState("");
 
-  useLayoutEffect(() => {
-    const fetchBooks = async () => {
-      const res = await fetch(`/api/user/records/research-publications`, {
-        cache: "no-store",
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userCookie}`,
-        },
-      });
-      const { books } = await res.json();
-      setBooks(books);
-    };
-    fetchBooks();
-  }, []);
+  const [file, setFile] = useState("");
+  const [nill, setNill] = useState(false);
+  const [success, setSuccess] = useState<string | undefined>("");
+  const [error, setError] = useState<string | undefined>("");
 
   const router = useRouter();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof consultancyContractSchema>>({
+    resolver: zodResolver(consultancyContractSchema),
     defaultValues: {
-      title_of_project: "",
-      pi_name: "",
-      pi_designation: "",
-      pi_department: "",
-      company_name: "",
-      company_country: "",
-      contract_value: 0,
-      start_date: "",
-      end_date: "",
-      type_of_consultancy: "",
-      key_deliverable_file: "",
-      oric_percentage: 0,
+      consultancyType: "",
+      titleOfConsultancy: "",
+      role: "",
+      companyName: "",
+      companyCountry: "",
+      contractValue: 0,
+      startDate: "",
+      endDate: "",
+      keyDeliverables: "",
       remarks: "",
-      annex_page_ref_file: "",
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      if (!values) {
-        toast({ variant: "destructive", title: "All fields are required" });
-      } else {
-        setLoading(true);
-        const formData = new FormData();
-        // formData.append("date", values.date);
-        // formData.append("funding_agency", values.funding_agency);
-        // formData.append("name_of_research", values.name_of_research);
-        // formData.append("status", values.status);
-        // formData.append("type", values.type);
-        // formData.append("role", values.role);
-        // formData.append("grant_amount", String(values.grant_amount));
-        // formData.append("title", values.title);
-        // formData.append("start_date", values.start_date);
-        // formData.append("end_date", values.end_date);
-        // formData.append("total_funding", String(values.total_funding));
-        // formData.append("collaborating_partner", values.collaborating_partner);
-        // formData.append("co_funding_partner", values.co_funding_partner);
-        // formData.append("completion", values.completion);
-        // formData.append("remarks", values.remarks);
-        if (file) {
-          formData.set("file", file);
-        }
-        formData.set("user_id", id);
-
-        toast({ variant: "default", title: "Please wait..." });
-        const res = await fetch(`/api/user/records/research-projects`, {
-          method: "POST",
-          headers: {
-            // "Content-Type": "application/json",
-            Authorization: `Bearer ${userCookie}`,
-          },
-          body: formData,
-        });
-        const data = await res.json();
-        console.log(data);
-        if (data.success) {
-          toast({
-            variant: "success",
-            title: data.message,
-          });
-          form.reset();
-          router.refresh();
-          // router.push("/user/dashboard");
-        } else {
-          toast({
-            variant: "destructive",
-            title: data.message,
-          });
-        }
-        setLoading(false);
-      }
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Something went wrong",
-      });
-      setLoading(false);
+  const onSubmit = async (
+    values: z.infer<typeof consultancyContractSchema>
+  ) => {
+    if (!file) {
+      alert("Image is required");
+      setError("Image is required");
+      return;
+    } else {
+      const res = await saveConsultancyContracts(values, file, id);
+      setNill(false);
+      setFile("");
+      setSuccess(res.success);
+      setError(res.error);
+      form.reset();
     }
+  };
+
+  const handleNill = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setNill(false);
+    setFile("");
+    const res = await saveConsultancyContractsNill(id);
+    setSuccess(res.success);
+    setError(res.error);
   };
 
   return (
     <>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <div className="flex flex-col w-full gap-4 lg:flex-row">
-            {/* sponsoring_agency_address */}
-            <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
-                name="type_of_consultancy"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Consultancy Type
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Consultancy Type" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            {/* thematic_area */}
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="title_of_project"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Title of Consultancy Project
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input
-                        placeholder="Title of Consultancy Project"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {/* ROLE */}
-
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="title_of_project"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Applicant Role
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Applicant Role" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
+      <div className="flex items-center w-16 p-2 mb-4 space-x-2 border-2 rounded-md border-primary">
+        <Checkbox
+          onClick={() => setNill((prev) => !prev)}
+          id="nill"
+          checked={nill}
+        />
+        <label
+          htmlFor="nill"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          Nill
+        </label>
+      </div>
+      {nill ? (
+        <>
+          <div className="flex items-center justify-center w-full font-bold text-destructive">
+            All fields are marked as NILL
           </div>
-          <div className="flex flex-col w-full gap-4 lg:flex-row">
-            {/* pi_department */}
-            <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
-                name="company_name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Company Name
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Company Name" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            {/* co_pi_designation */}
-            <div className="w-full lg:w-[35%]">
-              <SelectInput
-                label="Company Country"
-                name="company_country"
-                control={form.control}
-                items={countries}
-              />
-            </div>
-
-            {/* co_pi_department */}
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="contract_value"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Contract Value (Rs)
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input
-                        type="number"
-                        placeholder="Contract Value (Rs)"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
+          <div className="mt-2">
+            <form onSubmit={handleNill}>
+              <div>
+                {success && <FormSuccess message={success} className="my-2" />}
+                {error && <FormError message={error} className="my-2" />}
+                <div className="flex items-center justify-center w-full">
+                  <FormSubmitButton
+                    loading={form.formState.isSubmitting}
+                    className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
+                  >
+                    Submit
+                  </FormSubmitButton>
+                </div>
+              </div>
+            </form>
           </div>
-          <div className="flex flex-col w-full gap-4 lg:flex-row">
-            {/* co_pi_university */}
-            <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
-                name="start_date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Start Date
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input type="date" placeholder="Start Date" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            {/* sponsoring_agency_name */}
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="end_date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      End Date
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input type="date" placeholder="End Date" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
+        </>
+      ) : (
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <div className="flex flex-col w-full gap-4 lg:flex-row">
+              {/* sponsoring_agency_address */}
+              <div className="w-full lg:w-[30%]">
+                <TextInput
+                  label="Consultancy Type"
+                  name="consultancyType"
+                  control={form.control}
+                />
+              </div>
+              {/* thematic_area */}
+              <div className="w-full lg:w-[35%]">
+                <TextInput
+                  label="Title of Consultancy Project"
+                  name="titleOfConsultancy"
+                  control={form.control}
+                />
+              </div>
 
-            {/* sponsoring_agency_country */}
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="key_deliverable_file"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Key Deliverables
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Key Deliverables" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div className="flex flex-col w-full gap-4 lg:flex-row">
-            {/* sponsoring_agency_address */}
-            <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
-                name="remarks"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Remarks (if any)
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Remarks (if any)" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            {/* sponsoring_agency_country */}
-            <div className="w-full lg:w-[70%]">
-              <FormField
-                control={form.control}
-                name="annex_page_ref_file"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Copy of Contract
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input type="file" placeholder="Proofs" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
+              {/* ROLE */}
 
-          <div className="">
-            <Button
-              disabled={loading}
-              type="submit"
-              className="text-xs sm:text-base"
-            >
-              {loading ? (
-                <Loader2 className="w-4 h-4 mx-auto animate-spin" />
+              <div className="w-full lg:w-[35%]">
+                <TextInput
+                  label="Applicant Role"
+                  name="role"
+                  control={form.control}
+                />
+              </div>
+            </div>
+            <div className="flex flex-col w-full gap-4 lg:flex-row">
+              {/* pi_department */}
+              <div className="w-full lg:w-[30%]">
+                <TextInput
+                  label="Company Name"
+                  name="companyName"
+                  control={form.control}
+                />
+              </div>
+              {/* co_pi_designation */}
+              <div className="w-full lg:w-[35%]">
+                <SelectInput
+                  label="Company Country"
+                  name="companyCountry"
+                  control={form.control}
+                  items={countries}
+                />
+              </div>
+
+              {/* co_pi_department */}
+              <div className="w-full lg:w-[35%]">
+                <TextInput
+                  label="Contract Value (Rs)"
+                  name="contractValue"
+                  type="number"
+                  control={form.control}
+                />
+              </div>
+            </div>
+            <div className="flex flex-col w-full gap-4 lg:flex-row">
+              {/* co_pi_university */}
+              <div className="w-full lg:w-[30%]">
+                <TextInput
+                  label="Start Date"
+                  name="startDate"
+                  control={form.control}
+                  type="date"
+                />
+              </div>
+              {/* sponsoring_agency_name */}
+              <div className="w-full lg:w-[35%]">
+                <TextInput
+                  label="End Date"
+                  name="endDate"
+                  control={form.control}
+                  type="date"
+                />
+              </div>
+
+              {/* sponsoring_agency_country */}
+              <div className="w-full lg:w-[35%]">
+                <TextInput
+                  label="Key Deliverables"
+                  name="keyDeliverables"
+                  control={form.control}
+                />
+              </div>
+            </div>
+            <div className="flex flex-col w-full gap-4 lg:flex-row">
+              {/* sponsoring_agency_address */}
+              <div className="w-full lg:w-[30%]">
+                <TextInput
+                  label="Remarks (if any)"
+                  name="remarks"
+                  control={form.control}
+                />
+              </div>
+              {/* sponsoring_agency_country */}
+              {file ? (
+                <Link
+                  href={file}
+                  target="_blank"
+                  className="text-secondary-foreground bg-secondary w-full lg:w-[50%] rounded-md h-10 mt-8 flex justify-center items-center"
+                >
+                  File Uploaded
+                </Link>
               ) : (
-                "Submit"
+                <div className="text-black bg-primary w-full lg:w-[50%] rounded-md h-10 flex justify-center items-center mt-8">
+                  <UploadButtonComponent image={file} setImage={setFile} />
+                </div>
               )}
-            </Button>
-          </div>
-        </form>
-      </Form>
+            </div>
+
+            <div>
+              {success && <FormSuccess message={success} className="my-2" />}
+              {error && <FormError message={error} className="my-2" />}
+              <div className="flex items-center justify-center w-full">
+                <FormSubmitButton
+                  loading={form.formState.isSubmitting}
+                  className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
+                >
+                  Submit
+                </FormSubmitButton>
+              </div>
+            </div>
+          </form>
+        </Form>
+      )}
     </>
   );
 }

@@ -3,113 +3,110 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL")
-  directUrl = env("POSTGRES_URL_NON_POOLING")
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
 }
 
 model Admin {
-  id         String   @id @default(uuid())
-  name       String
-  email      String
-  password   String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model User {
-  id                            String                                   @id @default(uuid())
-  title                         String
-  name                          String
-  email                         String                                   @unique
-  cnic                          String                                   @unique
-  dob                           String
-  password                      String
-  role                          String                                   @default("user")
-  gender                        String
-  department                    String
-  faculty                       String
-  phoneNo                       String
-  cellNo                        String
-  researchDomain                String
-  highestDegree                 String
-  researchPublications          ResearchPublication[]
-  bookAuthoredEdited            BookAuthoredEdited[]
-  researchProjects              ResearchProject[]
-  departmentTrainings           DepartmentTraining[]
-  memberTrainings               MemberTraining[]
-  msPhdThesis                   MSPHDThesis[]
-  bsThesis                      BSThesis[]
-  policyAdvocacies              PolicyAdvocacy[]
-  researchLinksOtherHeis        ResearchLinksOtherHEIS[]
-  contractResearchOrganizations ContractResearchGovernmentOrganization[]
-  civicEngagementEvents         CivicEngagementEvent[]
-  consultancyContracts          ConsultancyContract[]
-  patentsTrademarks             PatentsTrademark[]
-  researchProductsProcess       ResearchProductsProcess[]
-  scienceArtsProducts           ScienceArtsProduct[]
-  agreementSigned               AgreementSigned[]
-  listOfCommunity               ListOfCommunity[]
-  listOfMentorship              ListOfMentorship[]
-  listOfStudent                 ListOfStudent[]
-  listOfFacilities              ListOfFacilities[]
-  createdAt                     DateTime                                 @default(now())
-  updatedAt                     DateTime                                 @updatedAt
+  id                          String                        @id @default(auto()) @map("_id") @db.ObjectId
+  title                       String
+  name                        String
+  email                       String                        @unique
+  cnic                        String                        @unique
+  dob                         String
+  password                    String
+  role                        String                        @default("user")
+  gender                      String
+  department                  String
+  faculty                     String
+  phoneNo                     String
+  cellNo                      String
+  researchDomain              String
+  highestDegree               String
+  researchPublication         ResearchPublication[]
+  bookAuthoredEdited          BookAuthoredEdited[]
+  researchProject             ResearchProject[]
+  training                    Training[]
+  thesis                      Thesis[]
+  policyAdvocacy              PolicyAdvocacy[]
+  linksEstablished            LinksEstablished[]
+  contractResearchAward       ContractResearchAward[]
+  civicEngagementEvent        CivicEngagementEvent[]
+  consultancyContract         ConsultancyContract[]
+  patentsTrademark            PatentsTrademark[]
+  researchProductsProcess     ResearchProductsProcess[]
+  scienceArtsProduct          ScienceArtsProduct[]
+  agreementSigned             AgreementSigned[]
+  nationalInternationalAwards NationalInternationalAwards[]
+  hec                         Hec[]
+  community                   Community[]
+  mentorship                  Mentorship[]
+  createdAt                   DateTime                      @default(now())
+  updatedAt                   DateTime                      @updatedAt
 }
 
 // 1 - 
 model ResearchPublication {
-  id              String   @id @default(uuid())
-  user            User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id         String
-  date            String
-  journal_name    String
-  title           String
-  authors         String
-  category        String
-  status          String
-  issn            String   @unique
-  volume          String
-  page_no         Int
-  affiliation     String
-  link            String
-  country         String
-  other_countries String?
-  addressing      String
-  approved_status String   @default("pending")
-  created_at      DateTime @default(now())
-  updated_at      DateTime @updatedAt
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String   @db.ObjectId
+  year           String
+  country        String
+  journalName    String
+  title          String
+  authorName     String
+  category       String
+  status         String
+  issn           String
+  volume         String
+  pages          Int
+  affiliation    String
+  link           String
+  countries      String
+  addressing     String
+  approvedStatus String   @default("pending")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 
 // 2 -  
 model BookAuthoredEdited {
-  id                String   @id @default(uuid())
-  user              User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id           String
-  date              String
-  title_of_book     String
-  title_of_research String
-  publisher         String
-  country           String
-  role              String
-  isbn              String   @unique
-  link              String
-  pages             Int
-  affiliation       String
-  addressing        String
-  approved_status   String   @default("pending")
-  created_at        DateTime @default(now())
-  updated_at        DateTime @updatedAt
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String   @db.ObjectId
+  isbn           String
+  role           String
+  pages          Int
+  year           String
+  country        String
+  bookTitle      String
+  chapterTitle   String?
+  publisherName  String
+  affiliation    String
+  link           String
+  addressing     String
+  approvedStatus String   @default("pending")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 
 // 3 - 
 model ResearchProject {
-  id                   String   @id @default(uuid())
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
   user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId               String
+  userId               String   @db.ObjectId
   date                 String
-  fundingAgency        String
-  nameOfResearch       String
+  agency               String
+  name                 String
   status               String
   type                 String
   role                 String
@@ -121,350 +118,281 @@ model ResearchProject {
   collaboratingPartner String?
   coFundingPartner     String?
   completion           String
-  remarks              String
+  remarks              String?
   file                 String
-  approved_status      String   @default("pending")
-  created_at           DateTime @default(now())
-  updated_at           DateTime @updatedAt
+  approvedStatus       String   @default("pending")
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
 }
 
 // 4 - 
-model DepartmentTraining {
-  id                  String   @id @default(uuid())
-  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId              String
-  title_of_training   String
-  date                String
-  organizer           String
-  no_of_participants  Int
-  focus_area_outcomes String
-  audience_type       String
-  approved_status     String   @default("pending")
-  created_at          DateTime @default(now())
-  updated_at          DateTime @updatedAt
+model Training {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           String   @db.ObjectId
+  eventType        String
+  applicantRole    String
+  startDate        String
+  endDate          String
+  eventTitle       String
+  noOfParticipants Int
+  majorFocusArea   String
+  audienceType     String
+  organizer        String
+  country          String
+  approvedStatus   String   @default("pending")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }
 
 // 5 - 
-model MemberTraining {
-  id                  String   @id @default(uuid())
-  user                User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id             String
-  title_of_training   String
-  date                String
-  organizing_agency   String
-  no_of_participants  Int
-  focus_area_outcomes String
-  country             String
-  audience_type       String
-  attended_as         String
-  approved_status     String   @default("pending")
-  created_at          DateTime @default(now())
-  updated_at          DateTime @updatedAt
-}
 
 // 7 -
-model MSPHDThesis {
-  id              String   @id @default(uuid())
-  user            User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id         String
-  level_of_degree String
-  date            String
-  department      String
-  university      String
-  student_name    String
-  degree_stage    String
-  degree_program  String
-  supervisor      String
-  co_supervisor   String
-  approved_status String   @default("pending")
-  created_at      DateTime @default(now())
-  updated_at      DateTime @updatedAt
-}
-
-// 6 - 
-model BSThesis {
-  id              String   @id @default(uuid())
-  user            User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id         String
-  level_of_degree String
-  date            String
-  department      String
-  university      String
-  student_name    String
-  degree_stage    String
-  degree_program  String
-  supervisor      String
-  co_supervisor   String
-  approved_status String   @default("pending")
-  created_at      DateTime @default(now())
-  updated_at      DateTime @updatedAt
+model Thesis {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           String   @db.ObjectId
+  role             String
+  nameOfSupervisor String?
+  year             String
+  degreeLevel      String
+  degreeProgram    String
+  department       String
+  university       String
+  studentName      String
+  degreeStage      String
+  approvedStatus   String   @default("pending")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }
 
 // 8 - 
 model PolicyAdvocacy {
-  id                   String   @id @default(uuid())
-  user                 User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id              String
-  date                 String
-  name_government_body String
-  pi_name              String
-  pi_designation       String
-  pi_department        String
-  area_of_advocated    String
-  brief                String
-  coalition_partners   String?
-  verification_status  String
-  advocacy_tools       String
-  policy_file          String
-  approved_status      String   @default("pending")
-  created_at           DateTime @default(now())
-  updated_at           DateTime @updatedAt
+  id                      String   @id @default(auto()) @map("_id") @db.ObjectId
+  user                    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                  String   @db.ObjectId
+  year                    String
+  nameOfGovernmentBody    String
+  nameOfResearcher        String
+  designationOfResearcher String
+  areaAdvocated           String
+  brief                   String
+  partners                String
+  advocacyTools           String
+  policyCaseStudyCopy     String
+  approvedStatus          String   @default("pending")
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
 }
 
 // 9 - 
-model ResearchLinksOtherHEIS {
-  id                           String   @id @default(uuid())
-  user                         User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id                      String
-  type_of_linkage              String
-  location_scope               String
-  host_institution_name        String
-  host_institution_address     String
-  host_institution_country     String
-  collaborating_agency_name    String
-  collaborating_agency_address String
-  collaborating_agency_country String
-  filed_of_study               String
-  scope_of_collaboration       String
-  linkage_establishment_date   String
-  salient_features             String
-  mou_copy_file                String
-  approved_status              String   @default("pending")
-  created_at                   DateTime @default(now())
-  updated_at                   DateTime @updatedAt
+model LinksEstablished {
+  id                           String   @id @default(auto()) @map("_id") @db.ObjectId
+  user                         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                       String   @db.ObjectId
+  linkageType                  String
+  scope                        String
+  nameOfCollaboratingAgency    String
+  countryOfCollaboratingAgency String
+  scopeOfCollaboration         String
+  linkageDate                  String
+  mouCopy                      String
+  approvedStatus               String   @default("pending")
+  createdAt                    DateTime @default(now())
+  updatedAt                    DateTime @updatedAt
 }
 
 // 10 - 
-model ContractResearchGovernmentOrganization {
-  id                           String   @id @default(uuid())
-  user                         User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id                      String
-  thematic_area                String
-  title_of_research            String
-  pi_name                      String
-  pi_designation               String
-  pi_department                String
-  co_pi_designation            String
-  co_pi_department             String
-  co_pi_university             String
-  sponsoring_agency_name       String
-  sponsoring_agency_address    String
-  sponsoring_agency_country    String
-  location_scope               String
-  counterpart_industry_address String
-  counterpart_industry_country String
-  start_date                   String
-  end_date                     String
-  total_amount_approved        Int
-  project_expected_file        String
-  date_of_contract             String
-  contract_research_copy_file  String
-  approved_status              String   @default("pending")
-  created_at                   DateTime @default(now())
-  updated_at                   DateTime @updatedAt
+model ContractResearchAward {
+  id                      String   @id @default(auto()) @map("_id") @db.ObjectId
+  user                    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                  String   @db.ObjectId
+  scope                   String
+  sponsoringAgencyCountry String
+  contractAwardingAgency  String
+  title                   String
+  amountOfContract        Int
+  role                    String
+  nameOfPI                String?
+  designationOfPI         String?
+  organizationOfPI        String?
+  startingDate            String
+  endingDate              String
+  dateOfContract          String
+  contractResearchCopy    String?
+  approvedStatus          String   @default("pending")
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
 }
 
 // 11 - 
 model CivicEngagementEvent {
-  id                        String   @id @default(uuid())
-  user                      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id                   String
-  title_of_event            String
-  components_address        String
-  outcomes                  String
-  collaboration_developed   String
-  date                      String
-  name_of_csos              String
-  name_of_sponsoring_agency String
-  event_status              String
-  report_file               String
-  remarks                   String
-  brief_report_file         String
-  approved_status           String   @default("pending")
-  created_at                DateTime @default(now())
-  updated_at                DateTime @updatedAt
+  id                      String   @id @default(auto()) @map("_id") @db.ObjectId
+  user                    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                  String   @db.ObjectId
+  type                    String
+  role                    String
+  title                   String
+  communityInvolved       String
+  outcomes                String
+  date                    String
+  collaboratingAgency     String
+  collaboratingAgencyName String
+  briefReport             String
+  approvedStatus          String   @default("pending")
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
 }
 
 // 12 - 
 model ConsultancyContract {
-  id                   String   @id @default(uuid())
-  user                 User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id              String
-  title_of_project     String
-  pi_name              String
-  pi_designation       String
-  pi_department        String
-  company_name         String
-  company_country      String
-  contract_value       Int
-  start_date           String
-  end_date             String
-  type_of_consultancy  String
-  key_deliverable_file String
-  oric_percentage      Int?
-  remarks              String
-  annex_page_ref_file  String
-  approved_status      String   @default("pending")
-  created_at           DateTime @default(now())
-  updated_at           DateTime @updatedAt
+  id                 String   @id @default(auto()) @map("_id") @db.ObjectId
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId             String   @db.ObjectId
+  consultancyType    String
+  titleOfConsultancy String
+  role               String
+  companyName        String
+  companyCountry     String
+  contractValue      Int
+  startDate          String
+  endDate            String
+  keyDeliverables    String
+  remarks            String?
+  copyOfContract     String
+  approvedStatus     String   @default("pending")
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 }
 
 // 13 - 
 model PatentsTrademark {
-  id                        String   @id @default(uuid())
-  user                      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id                   String
-  lead_inventor_name        String
-  lead_inventor_designation String
-  lead_inventor_department  String
-  title_on_invention        String
-  ip_category               String
-  development_status        String
-  key_scientific_aspects    String
-  commercial_partner        String?
-  patent_name               String
-  patent_department         String
-  location_scope            String
-  financial_support         Int?
-  date_of_filling           String
-  patent_copy_file          String
-  approved_status           String   @default("pending")
-  created_at                DateTime @default(now())
-  updated_at                DateTime @updatedAt
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId               String   @db.ObjectId
+  typeOfIP             String
+  scope                String
+  date                 String
+  namesOfInventors     String
+  inventionTitle       String
+  IPStatus             String
+  royaltyRevenue       Float
+  keyScientificAspects String
+  commertialPartners   String?
+  evidence             String
+  approvedStatus       String   @default("pending")
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
 }
 
 // 14 - 
 model ResearchProductsProcess {
-  id                            String   @id @default(uuid())
-  user                          User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id                       String
-  lead_inventor_name            String
-  lead_inventor_designation     String
-  lead_inventor_department      String
-  title_on_invention            String
-  ip_category                   String
-  development_status            String
-  key_scientific_aspects        String
-  location_scope                String
-  field_of_use                  String
-  collaborating_partner_name    String
-  collaborating_partner_details String
-  financial_support             Int?
-  remarks                       String
-  pd_proof_file                 String
-  approved_status               String   @default("pending")
-  created_at                    DateTime @default(now())
-  updated_at                    DateTime @updatedAt
+  id                       String   @id @default(auto()) @map("_id") @db.ObjectId
+  user                     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                   String   @db.ObjectId
+  type                     String
+  category                 String
+  developmentStatus        String
+  date                     String
+  nameOfInventors          String
+  title                    String
+  keyScientificAspects     String
+  fieldOfUse               String
+  collaboratingPartnerName String?
+  financialSupport         Float
+  evidence                 String
+  approvedStatus           String   @default("pending")
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
 }
 
 // 15 - 
 model ScienceArtsProduct {
-  id                String   @id @default(uuid())
-  user              User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id           String
-  title             String
-  lead_name         String
-  lead_designation  String
-  lead_department   String
-  category          String
-  location_scope    String
-  forum             String
-  status            String
-  financial_support Int?
-  field_of_use      String
-  brief_file        String
-  approved_status   String   @default("pending")
-  created_at        DateTime @default(now())
-  updated_at        DateTime @updatedAt
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String   @db.ObjectId
+  category       String
+  date           String
+  scope          String
+  title          String
+  departmentName String
+  evidence       String
+  approvedStatus String   @default("pending")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 
 // 16 - 
 model AgreementSigned {
-  id                         String   @id @default(uuid())
-  user                       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id                    String
-  type_of_linkages           String
-  location_scope             String
-  host_name                  String
-  host_address               String
-  host_country               String
+  id                         String   @id @default(auto()) @map("_id") @db.ObjectId
+  user                       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                     String   @db.ObjectId
+  typeOfLinkage              String
+  linkageEstablishmentDate   String
+  scope                      String
+  collaboratingAgency        String
+  collaboratingAgencyCountry String
   duration                   String
-  key_initiatives            String
-  field                      String
-  scope_of_collaboration     String
-  linkage_establishment_date String
-  financial_support          Int?
-  mou_copy_file              String
-  approved_status            String   @default("pending")
-  created_at                 DateTime @default(now())
-  updated_at                 DateTime @updatedAt
+  areaOfFocus                String
+  mouCopy                    String
+  approvedStatus             String   @default("pending")
+  createdAt                  DateTime @default(now())
+  updatedAt                  DateTime @updatedAt
+}
+
+model NationalInternationalAwards {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String   @db.ObjectId
+  date           String
+  titleOfAward   String
+  awardingAgency String
+  amountOfPrize  String
+  evicence       String
+  approvedStatus String   @default("pending")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Hec {
+  id                    String   @id @default(auto()) @map("_id") @db.ObjectId
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                String   @db.ObjectId
+  date                  String
+  dataProvidedTo        String
+  programOfOrganization String
+  evicence              String
+  approvedStatus        String   @default("pending")
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
 }
 
 // 17 - 
-model ListOfCommunity {
-  id              String   @id @default(uuid())
-  user            User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id         String
-  community_type  String
-  title           String
-  proofs          String
-  date            String
-  picture_file    String
-  approved_status String   @default("pending")
-  created_at      DateTime @default(now())
-  updated_at      DateTime @updatedAt
+model Community {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String   @db.ObjectId
+  date           String
+  role           String
+  type           String
+  title          String
+  evidence       String
+  approvedStatus String   @default("pending")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 
 // 18 - 
-model ListOfMentorship {
-  id              String   @id @default(uuid())
-  user            User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id         String
-  program_name    String
-  no_of_students  Int
-  details         String
-  proofs          String
-  approved_status String   @default("pending")
-  created_at      DateTime @default(now())
-  updated_at      DateTime @updatedAt
-}
-
-// 19 - 
-model ListOfStudent {
-  id                String   @id @default(uuid())
-  user              User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id           String
-  organization_name String
-  number_of_members Int
-  members_name      String
-  objective         String
-  proofs            String
-  approved_status   String   @default("pending")
-  created_at        DateTime @default(now())
-  updated_at        DateTime @updatedAt
-}
-
-// 20 - 
-model ListOfFacilities {
-  id                     String   @id @default(uuid())
-  user                   User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id                String
-  lab_name               String
-  equipment_type         String
-  available_to_student   String
-  available_to_community String
-  proofs                 String
-  approved_status        String   @default("pending")
-  created_at             DateTime @default(now())
-  updated_at             DateTime @updatedAt
+model Mentorship {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String   @db.ObjectId
+  programName    String
+  noOfStudents   String
+  role           String
+  details        String
+  evidence       String
+  approvedStatus String   @default("pending")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }

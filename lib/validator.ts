@@ -1,5 +1,10 @@
 import * as z from "zod";
 
+const requireString = z.string().min(1, "This field is required");
+const optionalString = z.string().optional();
+const requiredInt = z.coerce.number().min(0, "This field is required");
+const optionalInt = z.coerce.number().optional();
+
 // 1 - Research Publications (Impact Journal / HJRS / HEC Recognized Journals)
 export const validateForm1 = z.object({
   date: z.string(),
@@ -42,23 +47,24 @@ export const validateForm2 = z.object({
   affiliation: z.string().min(1, "Affiliation is required"),
   addressing: z.string().min(1, "Address is required"),
 });
+
 // 3 - Research Projects
-export const validateForm3 = z.object({
-  date: z.string().min(1, "Year is required"),
-  fundingAgency: z.string().min(1, "Funding agency is required"),
-  nameOfResearch: z.string().min(1, "Research name is required"),
-  status: z.string().min(1, "Status is required"),
-  type: z.string().min(1, "Type is required"),
-  role: z.string().min(1, "Role is required"),
-  grantAmount: z.coerce.number().min(1, "Grant amount is required"),
-  title: z.string().min(1, "Title is required"),
-  startDate: z.string().min(1, "Start date is required"),
-  endDate: z.string().min(1, "End date is required"),
-  totalFunding: z.coerce.number().min(1, "Total Funding is required"),
-  collaboratingPartner: z.string(),
-  coFundingPartner: z.string(),
-  completion: z.string().min(1, "Completion is required"),
-  remarks: z.string(),
+export const researchProjectSchema = z.object({
+  date: requireString,
+  fundingAgency: requireString,
+  nameOfResearch: requireString,
+  status: requireString,
+  type: requireString,
+  role: requireString,
+  grantAmount: requiredInt,
+  title: requireString,
+  startDate: requireString,
+  endDate: requireString,
+  totalFunding: requiredInt,
+  collaboratingPartner: optionalString,
+  coFundingPartner: optionalString,
+  completion: requireString,
+  remarks: requireString,
 });
 // 4 - Trainings / Workshops / Seminars / Conferences Arranged by your Department
 export const validateForm4 = z.object({

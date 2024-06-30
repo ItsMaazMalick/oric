@@ -12,6 +12,7 @@ import TextInput from "../InputFields/textInput";
 import FormSubmitButton from "../button/FormSubmitButton";
 import { Form } from "../ui/form";
 import UserAuthTitle from "./UserAuthTitle";
+import { useRouter } from "next/navigation";
 
 type PageProps = {
   register?: string;
@@ -20,7 +21,8 @@ type PageProps = {
 const formSchema = userLoginSchema;
 
 const UserLoginForm = (props: PageProps) => {
-  const [message, setMessage] = useState("");
+  const router = useRouter();
+  const [message, setMessage] = useState<string | undefined>("");
   const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -39,7 +41,10 @@ const UserLoginForm = (props: PageProps) => {
     const result = await loginUser(formData);
     form.reset();
     if (result) {
-      setMessage(result?.message);
+      setMessage(result.success || result.error);
+      if (result.success) {
+        router.push("/user/dashboard");
+      }
     }
   };
 

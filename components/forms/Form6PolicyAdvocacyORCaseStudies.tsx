@@ -24,15 +24,23 @@ import {
 } from "../ui/select";
 import { years } from "@/constants/data";
 import { validateForm8 } from "@/lib/validator";
-import { useLayoutEffect, useState } from "react";
+import { FormEvent, useLayoutEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
 import SelectInput from "../InputFields/selectInput";
 import TextInput from "../InputFields/textInput";
-
-//FORM VALIDATION
-const formSchema = validateForm8;
+import { policyAdvocacySchema } from "@/lib/validations/formValidations";
+import { Checkbox } from "../ui/checkbox";
+import { FormSuccess } from "./FormSuccess";
+import { FormError } from "./FormError";
+import FormSubmitButton from "../button/FormSubmitButton";
+import Link from "next/link";
+import UploadButtonComponent from "@/lib/UploadButtonComponent";
+import {
+  savePolicyAdvocacy,
+  ssavePolicyAdvocacyNill,
+} from "@/app/actions/user/records/policy-advocacy";
 
 export function Form6PolicyAdvocacyORCaseStudies({
   id,
@@ -42,226 +50,198 @@ export function Form6PolicyAdvocacyORCaseStudies({
   userCookie: string;
 }) {
   const [loading, setLoading] = useState(false);
-  const [books, setBooks] = useState([]);
-  const [file, setFile] = useState();
-
-  useLayoutEffect(() => {
-    const fetchBooks = async () => {
-      const res = await fetch(`/api/user/records/research-publications`, {
-        cache: "no-store",
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userCookie}`,
-        },
-      });
-      const { books } = await res.json();
-      setBooks(books);
-    };
-    fetchBooks();
-  }, []);
+  const [file, setFile] = useState("");
+  const [nill, setNill] = useState(false);
+  const [success, setSuccess] = useState<string | undefined>("");
+  const [error, setError] = useState<string | undefined>("");
 
   const router = useRouter();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof policyAdvocacySchema>>({
+    resolver: zodResolver(policyAdvocacySchema),
     defaultValues: {
-      date: "",
-      name_government_body: "",
-      pi_name: "",
-      pi_designation: "",
-      pi_department: "",
-      area_of_advocated: "",
+      year: "",
+      nameOfGovernmentBody: "",
+      nameOfResearcher: "",
+      designationOfResearcher: "",
+      areaAdvocated: "",
       brief: "",
-      coalition_partners: "",
-      verification_status: "",
-      advocacy_tools: "",
+      partners: "",
+      advocacyTools: "",
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      if (!values) {
-        toast({ variant: "destructive", title: "All fields are required" });
-      } else {
-        setLoading(true);
-        const formData = new FormData();
-        // formData.append("date", values.date);
-        // formData.append("funding_agency", values.funding_agency);
-        // formData.append("name_of_research", values.name_of_research);
-        // formData.append("status", values.status);
-        // formData.append("type", values.type);
-        // formData.append("role", values.role);
-        // formData.append("grant_amount", String(values.grant_amount));
-        // formData.append("title", values.title);
-        // formData.append("start_date", values.start_date);
-        // formData.append("end_date", values.end_date);
-        // formData.append("total_funding", String(values.total_funding));
-        // formData.append("collaborating_partner", values.collaborating_partner);
-        // formData.append("co_funding_partner", values.co_funding_partner);
-        // formData.append("completion", values.completion);
-        // formData.append("remarks", values.remarks);
-        if (file) {
-          formData.set("file", file);
-        }
-        formData.set("user_id", id);
-
-        toast({ variant: "default", title: "Please wait..." });
-        const res = await fetch(`/api/user/records/research-projects`, {
-          method: "POST",
-          headers: {
-            // "Content-Type": "application/json",
-            Authorization: `Bearer ${userCookie}`,
-          },
-          body: formData,
-        });
-        const data = await res.json();
-        console.log(data);
-        if (data.success) {
-          toast({
-            variant: "success",
-            title: data.message,
-          });
-          form.reset();
-          router.refresh();
-          // router.push("/user/dashboard");
-        } else {
-          toast({
-            variant: "destructive",
-            title: data.message,
-          });
-        }
-        setLoading(false);
-      }
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Something went wrong",
-      });
-      setLoading(false);
+  const onSubmit = async (values: z.infer<typeof policyAdvocacySchema>) => {
+    if (!file) {
+      alert("Image is required");
+      setError("Image is required");
+      return;
+    } else {
+      const res = await savePolicyAdvocacy(values, file, id);
+      setNill(false);
+      setFile("");
+      setSuccess(res.success);
+      setError(res.error);
+      form.reset();
     }
+  };
+
+  const handleNill = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setNill(false);
+    setFile("");
+    const res = await ssavePolicyAdvocacyNill(id);
+    setSuccess(res.success);
+    setError(res.error);
   };
 
   return (
     <>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <div className="flex flex-col w-full gap-4 lg:flex-row">
-            {/* YEAR*/}
-            <div className="w-full lg:w-[30%]">
-              <SelectInput
-                label="Year."
-                name="date"
-                control={form.control}
-                items={years}
-              />
-            </div>
-
-            {/* NAME OF GOVERNMENT BODY */}
-            <div className="w-full lg:w-[35%]">
-              <TextInput
-                label="Name of Government body presented"
-                name="name_government_body"
-                control={form.control}
-              />
-            </div>
-
-            {/* PI NAME */}
-            <div className="w-full lg:w-[35%]">
-              <TextInput
-                label="Name of Researcher"
-                name="pi_name"
-                control={form.control}
-              />
-            </div>
+      <div className="flex items-center w-16 p-2 mb-4 space-x-2 border-2 rounded-md border-primary">
+        <Checkbox
+          onClick={() => setNill((prev) => !prev)}
+          id="nill"
+          checked={nill}
+        />
+        <label
+          htmlFor="nill"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          Nill
+        </label>
+      </div>
+      {nill ? (
+        <>
+          <div className="flex items-center justify-center w-full font-bold text-destructive">
+            All fields are marked as NILL
           </div>
-          <div className="flex flex-col w-full gap-4 lg:flex-row">
-            {/* PI DESIGNATION */}
-            <div className="w-full lg:w-[30%]">
-              <TextInput
-                label="Designation of Researcher"
-                name="pi_designation"
-                control={form.control}
-              />
-            </div>
-            {/* PI DEPARTMENT */}
-            <div className="w-full lg:w-[35%]">
-              <TextInput
-                label="Department of Researcher"
-                name="pi_department"
-                control={form.control}
-              />
-            </div>
-            {/* AREA ADVOCATED */}
-            <div className="w-full lg:w-[35%]">
-              <TextInput
-                label="Area Advocated"
-                name="area_of_advocated"
-                control={form.control}
-              />
-            </div>
-          </div>
-          <div className="flex flex-col w-full gap-4 lg:flex-row">
-            {/* BRIEF */}
-            <div className="w-full lg:w-[30%]">
-              <TextInput label="Brief" name="brief" control={form.control} />
-            </div>
-            {/* COALITION PARTNER */}
-            <div className="w-full lg:w-[35%]">
-              <TextInput
-                label="Partners in Advocacy Study"
-                name="coalition_partners"
-                control={form.control}
-              />
-            </div>
-            {/* ADVOCACY TOOLS */}
-            <div className="w-full lg:w-[35%]">
-              <SelectInput
-                label="Advocacy Tools Adopted"
-                name="advocacy_tools"
-                control={form.control}
-                items={[
-                  "Briefings",
-                  "Meetings",
-                  "Websites",
-                  "Social Media Debates",
-                  "Any Other",
-                ]}
-              />
-            </div>
-          </div>
-          <div className="flex flex-col w-full gap-4 lg:flex-row">
-            {/* POLICY FILE */}
-            <div className="w-full">
-              <div className="mb-2">
-                <label htmlFor="" className="text-xs font-medium sm:text-base">
-                  Policy / Case Study brief copy
-                </label>
+          <div className="mt-2">
+            <form onSubmit={handleNill}>
+              <div>
+                {success && <FormSuccess message={success} className="my-2" />}
+                {error && <FormError message={error} className="my-2" />}
+                <div className="flex items-center justify-center w-full">
+                  <FormSubmitButton
+                    loading={form.formState.isSubmitting}
+                    className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
+                  >
+                    Submit
+                  </FormSubmitButton>
+                </div>
               </div>
-              <input
-                className="w-full p-2 border rounded-md"
-                type="file"
-                onChange={(e: any) => setFile(e.target.files?.[0])}
-                name=""
-                id=""
-              />
-            </div>
+            </form>
           </div>
+        </>
+      ) : (
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <div className="flex flex-col w-full gap-4 lg:flex-row">
+              {/* YEAR*/}
+              <div className="w-full lg:w-[30%]">
+                <SelectInput
+                  label="Year."
+                  name="year"
+                  control={form.control}
+                  items={years}
+                />
+              </div>
 
-          <div className="">
-            <Button
-              disabled={loading}
-              type="submit"
-              className="text-xs sm:text-base"
-            >
-              {loading ? (
-                <Loader2 className="w-4 h-4 mx-auto animate-spin" />
+              {/* NAME OF GOVERNMENT BODY */}
+              <div className="w-full lg:w-[35%]">
+                <TextInput
+                  label="Name of Government body presented"
+                  name="nameOfGovernmentBody"
+                  control={form.control}
+                />
+              </div>
+
+              {/* PI NAME */}
+              <div className="w-full lg:w-[35%]">
+                <TextInput
+                  label="Name of Researcher"
+                  name="nameOfResearcher"
+                  control={form.control}
+                />
+              </div>
+            </div>
+            <div className="flex flex-col w-full gap-4 lg:flex-row">
+              {/* PI DESIGNATION */}
+              <div className="w-full lg:w-[30%]">
+                <TextInput
+                  label="Designation of Researcher"
+                  name="designationOfResearcher"
+                  control={form.control}
+                />
+              </div>
+              {/* AREA ADVOCATED */}
+              <div className="w-full lg:w-[35%]">
+                <TextInput
+                  label="Area Advocated"
+                  name="areaAdvocated"
+                  control={form.control}
+                />
+              </div>
+            </div>
+            <div className="flex flex-col w-full gap-4 lg:flex-row">
+              {/* BRIEF */}
+              <div className="w-full lg:w-[30%]">
+                <TextInput label="Brief" name="brief" control={form.control} />
+              </div>
+              {/* COALITION PARTNER */}
+              <div className="w-full lg:w-[35%]">
+                <TextInput
+                  label="Partners in Advocacy Study"
+                  name="partners"
+                  control={form.control}
+                />
+              </div>
+              {/* ADVOCACY TOOLS */}
+              <div className="w-full lg:w-[35%]">
+                <SelectInput
+                  label="Advocacy Tools Adopted"
+                  name="advocacyTools"
+                  control={form.control}
+                  items={[
+                    "Briefings",
+                    "Meetings",
+                    "Websites",
+                    "Social Media Debates",
+                    "Any Other",
+                  ]}
+                />
+              </div>
+            </div>
+            <div className="flex flex-col w-full gap-4 lg:flex-row">
+              {/* POLICY FILE */}
+              {file ? (
+                <Link
+                  href={file}
+                  target="_blank"
+                  className="text-secondary-foreground bg-secondary w-full lg:w-[50%] rounded-md h-10 mt-8 flex justify-center items-center"
+                >
+                  File Uploaded
+                </Link>
               ) : (
-                "Submit"
+                <div className="text-black bg-primary w-full lg:w-[50%] rounded-md h-10 flex justify-center items-center mt-8">
+                  <UploadButtonComponent image={file} setImage={setFile} />
+                </div>
               )}
-            </Button>
-          </div>
-        </form>
-      </Form>
+            </div>
+
+            <div>
+              {success && <FormSuccess message={success} className="my-2" />}
+              {error && <FormError message={error} className="my-2" />}
+              <div className="flex items-center justify-center w-full">
+                <FormSubmitButton
+                  loading={form.formState.isSubmitting}
+                  className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
+                >
+                  Submit
+                </FormSubmitButton>
+              </div>
+            </div>
+          </form>
+        </Form>
+      )}
     </>
   );
 }
