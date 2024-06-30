@@ -23,19 +23,12 @@ import {
   SelectValue,
 } from "../ui/select";
 import { countries, years } from "@/constants/data";
-import {
-  validateForm10,
-  validateForm11,
-  validateForm12,
-  validateForm13,
-  validateForm14,
-  validateForm3,
-  validateForm9,
-} from "@/lib/validator";
+
 import { useLayoutEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
+import { validateForm14 } from "@/lib/validator";
 
 //FORM VALIDATION
 const formSchema = validateForm14;

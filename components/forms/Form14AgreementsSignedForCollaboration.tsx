@@ -7,14 +7,19 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { countries } from "@/constants/data";
+import { validateForm16 } from "@/lib/validator";
+import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useLayoutEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import SelectInput from "../InputFields/selectInput";
 import {
   Select,
   SelectContent,
@@ -22,23 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { countries, years } from "@/constants/data";
-import {
-  validateForm10,
-  validateForm11,
-  validateForm12,
-  validateForm13,
-  validateForm14,
-  validateForm15,
-  validateForm16,
-  validateForm3,
-  validateForm9,
-} from "@/lib/validator";
-import { useLayoutEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
-import SelectInput from "../InputFields/selectInput";
 
 //FORM VALIDATION
 const formSchema = validateForm16;
