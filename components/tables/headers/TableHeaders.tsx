@@ -826,134 +826,105 @@ export const Table10Header: ColumnDef<any>[] = [
 export const Table11Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
-    header: "Hello",
+    header: "Username",
     cell: ({ row }) => (
-      <div className="font-bold">{row.original.user.name}</div>
+      <div className="font-bold">{row?.original?.user?.name}</div>
     ),
   },
   {
-    accessorKey: "title",
+    accessorKey: "typeOfIP",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Title
+          Type of IP
           <ArrowUpDown size={15} className="ml-1" />
         </Button>
       );
     },
-    cell: ({ row }) => <div>{row.getValue("title")}</div>,
+    cell: ({ row }) => <div>{row.getValue("typeOfIP")}</div>,
   },
   {
     accessorKey: "date",
-    header: "Year",
+    header: "Date",
     cell: ({ row }) => <div>{row.getValue("date")}</div>,
   },
   {
-    accessorKey: "country",
-    header: "Country",
-    cell: ({ row }) => <div>{row.getValue("country")}</div>,
+    accessorKey: "scope",
+    header: "Scope",
+    cell: ({ row }) => <div>{row.getValue("scope")}</div>,
   },
   {
-    accessorKey: "journal_name",
-    header: "Journal Name",
-    cell: ({ row }) => <div>{row.getValue("journal_name")}</div>,
+    accessorKey: "namesOfInventors",
+    header: "Name of Inventors",
+    cell: ({ row }) => <div>{row.getValue("namesOfInventors")}</div>,
   },
   {
-    accessorKey: "authors",
-    header: "Authors Name",
-    cell: ({ row }) => <div>{row.getValue("authors")}</div>,
+    accessorKey: "inventionTitle",
+    header: "Invention Title",
+    cell: ({ row }) => <div>{row.getValue("inventionTitle")}</div>,
   },
   {
-    accessorKey: "category",
-    header: "Category",
-    cell: ({ row }) => <div>{row.getValue("category")}</div>,
+    accessorKey: "IPStatus",
+    header: "IP Status",
+    cell: ({ row }) => <div>{row.getValue("IPStatus")}</div>,
   },
   {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => <div>{row.getValue("status")}</div>,
+    accessorKey: "royaltyRevenue",
+    header: "Royalty Revenue",
+    cell: ({ row }) => <div>{row.getValue("royaltyRevenue")}</div>,
   },
   {
-    accessorKey: "issn",
-    header: "ISSN",
-    cell: ({ row }) => <div>{row.getValue("issn")}</div>,
+    accessorKey: "keyScientificAspects",
+    header: "Key Scientific Aspects",
+    cell: ({ row }) => <div>{row.getValue("keyScientificAspects")}</div>,
   },
   {
-    accessorKey: "volume",
-    header: "Volume",
-    cell: ({ row }) => <div>{row.getValue("volume")}</div>,
+    accessorKey: "commertialPartners",
+    header: "Commertial Partners",
+    cell: ({ row }) => <div>{row.getValue("commertialPartners")}</div>,
   },
   {
-    accessorKey: "page_no",
-    header: "Pages",
-    cell: ({ row }) => <div>{row.getValue("page_no")}</div>,
-  },
-  {
-    accessorKey: "affiliation",
-    header: "Affiliation",
-    cell: ({ row }) => <div>{row.getValue("affiliation")}</div>,
-  },
-  {
-    accessorKey: "link",
-    header: "Web Link",
+    accessorKey: "evidence",
+    header: "Evidence",
     cell: ({ row }) => (
-      <Link href={row.getValue("link")} target="_blank">
-        {row.getValue("link")}
-      </Link>
+      <>
+        {row.getValue("evidence") === "NILL" ? (
+          "NILL"
+        ) : (
+          <Link href={row.getValue("evidence")} target="_blank">
+            <Button variant={"secondary"}>VIEW File</Button>
+          </Link>
+        )}
+      </>
     ),
-  },
-  {
-    accessorKey: "addressing",
-    header: "addressing",
-    cell: ({ row }) => <div>{row.getValue("addressing")}</div>,
   },
 ];
 
 export const Table12Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
-    header: "Hello",
+    header: "Username",
     cell: ({ row }) => (
-      <div className="font-bold">{row.original.user.name}</div>
+      <div className="font-bold">{row?.original?.user?.name}</div>
     ),
   },
   {
-    accessorKey: "title",
+    accessorKey: "type",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Title
+          Type
           <ArrowUpDown size={15} className="ml-1" />
         </Button>
       );
     },
-    cell: ({ row }) => <div>{row.getValue("title")}</div>,
-  },
-  {
-    accessorKey: "date",
-    header: "Year",
-    cell: ({ row }) => <div>{row.getValue("date")}</div>,
-  },
-  {
-    accessorKey: "country",
-    header: "Country",
-    cell: ({ row }) => <div>{row.getValue("country")}</div>,
-  },
-  {
-    accessorKey: "journal_name",
-    header: "Journal Name",
-    cell: ({ row }) => <div>{row.getValue("journal_name")}</div>,
-  },
-  {
-    accessorKey: "authors",
-    header: "Authors Name",
-    cell: ({ row }) => <div>{row.getValue("authors")}</div>,
+    cell: ({ row }) => <div>{row.getValue("type")}</div>,
   },
   {
     accessorKey: "category",
@@ -961,52 +932,68 @@ export const Table12Header: ColumnDef<any>[] = [
     cell: ({ row }) => <div>{row.getValue("category")}</div>,
   },
   {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => <div>{row.getValue("status")}</div>,
+    accessorKey: "developmentStatus",
+    header: "Development Status",
+    cell: ({ row }) => <div>{row.getValue("developmentStatus")}</div>,
   },
   {
-    accessorKey: "issn",
-    header: "ISSN",
-    cell: ({ row }) => <div>{row.getValue("issn")}</div>,
+    accessorKey: "date",
+    header: "Date",
+    cell: ({ row }) => <div>{row.getValue("date")}</div>,
   },
   {
-    accessorKey: "volume",
-    header: "Volume",
-    cell: ({ row }) => <div>{row.getValue("volume")}</div>,
+    accessorKey: "nameOfInventors",
+    header: "Name of Inventors",
+    cell: ({ row }) => <div>{row.getValue("nameOfInventors")}</div>,
   },
   {
-    accessorKey: "page_no",
-    header: "Pages",
-    cell: ({ row }) => <div>{row.getValue("page_no")}</div>,
+    accessorKey: "title",
+    header: "Title",
+    cell: ({ row }) => <div>{row.getValue("title")}</div>,
   },
   {
-    accessorKey: "affiliation",
-    header: "Affiliation",
-    cell: ({ row }) => <div>{row.getValue("affiliation")}</div>,
+    accessorKey: "keyScientificAspects",
+    header: "Key Scientific Aspects",
+    cell: ({ row }) => <div>{row.getValue("keyScientificAspects")}</div>,
   },
   {
-    accessorKey: "link",
-    header: "Web Link",
+    accessorKey: "fieldOfUse",
+    header: "Field of Use",
+    cell: ({ row }) => <div>{row.getValue("fieldOfUse")}</div>,
+  },
+  {
+    accessorKey: "collaboratingPartnerName",
+    header: "Collaborating Partner Name",
+    cell: ({ row }) => <div>{row.getValue("collaboratingPartnerName")}</div>,
+  },
+  {
+    accessorKey: "financialSupport",
+    header: "Financial Support",
+    cell: ({ row }) => <div>{row.getValue("financialSupport")}</div>,
+  },
+  {
+    accessorKey: "evidence",
+    header: "Evidence",
     cell: ({ row }) => (
-      <Link href={row.getValue("link")} target="_blank">
-        {row.getValue("link")}
-      </Link>
+      <>
+        {row.getValue("evidence") === "NILL" ? (
+          "NILL"
+        ) : (
+          <Link href={row.getValue("evidence")} target="_blank">
+            <Button variant={"secondary"}>VIEW File</Button>
+          </Link>
+        )}
+      </>
     ),
-  },
-  {
-    accessorKey: "addressing",
-    header: "addressing",
-    cell: ({ row }) => <div>{row.getValue("addressing")}</div>,
   },
 ];
 
 export const Table13Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
-    header: "Hello",
+    header: "Username",
     cell: ({ row }) => (
-      <div className="font-bold">{row.original.user.name}</div>
+      <div className="font-bold">{row?.original?.user?.name}</div>
     ),
   },
   {
@@ -1025,170 +1012,122 @@ export const Table13Header: ColumnDef<any>[] = [
     cell: ({ row }) => <div>{row.getValue("title")}</div>,
   },
   {
-    accessorKey: "date",
-    header: "Year",
-    cell: ({ row }) => <div>{row.getValue("date")}</div>,
-  },
-  {
-    accessorKey: "country",
-    header: "Country",
-    cell: ({ row }) => <div>{row.getValue("country")}</div>,
-  },
-  {
-    accessorKey: "journal_name",
-    header: "Journal Name",
-    cell: ({ row }) => <div>{row.getValue("journal_name")}</div>,
-  },
-  {
-    accessorKey: "authors",
-    header: "Authors Name",
-    cell: ({ row }) => <div>{row.getValue("authors")}</div>,
-  },
-  {
     accessorKey: "category",
     header: "Category",
     cell: ({ row }) => <div>{row.getValue("category")}</div>,
   },
   {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => <div>{row.getValue("status")}</div>,
+    accessorKey: "date",
+    header: "Date",
+    cell: ({ row }) => <div>{row.getValue("date")}</div>,
   },
   {
-    accessorKey: "issn",
-    header: "ISSN",
-    cell: ({ row }) => <div>{row.getValue("issn")}</div>,
+    accessorKey: "scope",
+    header: "Scope",
+    cell: ({ row }) => <div>{row.getValue("scope")}</div>,
   },
   {
-    accessorKey: "volume",
-    header: "Volume",
-    cell: ({ row }) => <div>{row.getValue("volume")}</div>,
+    accessorKey: "departmentName",
+    header: "Department Name",
+    cell: ({ row }) => <div>{row.getValue("departmentName")}</div>,
   },
   {
-    accessorKey: "page_no",
-    header: "Pages",
-    cell: ({ row }) => <div>{row.getValue("page_no")}</div>,
-  },
-  {
-    accessorKey: "affiliation",
-    header: "Affiliation",
-    cell: ({ row }) => <div>{row.getValue("affiliation")}</div>,
-  },
-  {
-    accessorKey: "link",
-    header: "Web Link",
+    accessorKey: "evidence",
+    header: "Evidence",
     cell: ({ row }) => (
-      <Link href={row.getValue("link")} target="_blank">
-        {row.getValue("link")}
-      </Link>
+      <>
+        {row.getValue("evidence") === "NILL" ? (
+          "NILL"
+        ) : (
+          <Link href={row.getValue("evidence")} target="_blank">
+            <Button variant={"secondary"}>VIEW File</Button>
+          </Link>
+        )}
+      </>
     ),
-  },
-  {
-    accessorKey: "addressing",
-    header: "addressing",
-    cell: ({ row }) => <div>{row.getValue("addressing")}</div>,
   },
 ];
 
 export const Table14Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
-    header: "Hello",
+    header: "Username",
     cell: ({ row }) => (
-      <div className="font-bold">{row.original.user.name}</div>
+      <div className="font-bold">{row?.original?.user?.name}</div>
     ),
   },
   {
-    accessorKey: "title",
+    accessorKey: "typeOfLinkage",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Title
+          Type
           <ArrowUpDown size={15} className="ml-1" />
         </Button>
       );
     },
-    cell: ({ row }) => <div>{row.getValue("title")}</div>,
+    cell: ({ row }) => <div>{row.getValue("typeOfLinkage")}</div>,
   },
   {
-    accessorKey: "date",
-    header: "Year",
-    cell: ({ row }) => <div>{row.getValue("date")}</div>,
+    accessorKey: "linkageEstablishmentDate",
+    header: "Date",
+    cell: ({ row }) => <div>{row.getValue("linkageEstablishmentDate")}</div>,
   },
   {
-    accessorKey: "country",
-    header: "Country",
-    cell: ({ row }) => <div>{row.getValue("country")}</div>,
+    accessorKey: "scope",
+    header: "Scope",
+    cell: ({ row }) => <div>{row.getValue("scope")}</div>,
   },
   {
-    accessorKey: "journal_name",
-    header: "Journal Name",
-    cell: ({ row }) => <div>{row.getValue("journal_name")}</div>,
+    accessorKey: "collaboratingAgency",
+    header: "Collaborating Agency",
+    cell: ({ row }) => <div>{row.getValue("collaboratingAgency")}</div>,
   },
   {
-    accessorKey: "authors",
-    header: "Authors Name",
-    cell: ({ row }) => <div>{row.getValue("authors")}</div>,
+    accessorKey: "collaboratingAgencyCountry",
+    header: "Collaborating Agency Country",
+    cell: ({ row }) => <div>{row.getValue("collaboratingAgencyCountry")}</div>,
   },
   {
-    accessorKey: "category",
-    header: "Category",
-    cell: ({ row }) => <div>{row.getValue("category")}</div>,
+    accessorKey: "duration",
+    header: "Duration",
+    cell: ({ row }) => <div>{row.getValue("duration")}</div>,
   },
   {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => <div>{row.getValue("status")}</div>,
+    accessorKey: "areaOfFocus",
+    header: "Area of Focus",
+    cell: ({ row }) => <div>{row.getValue("areaOfFocus")}</div>,
   },
   {
-    accessorKey: "issn",
-    header: "ISSN",
-    cell: ({ row }) => <div>{row.getValue("issn")}</div>,
-  },
-  {
-    accessorKey: "volume",
-    header: "Volume",
-    cell: ({ row }) => <div>{row.getValue("volume")}</div>,
-  },
-  {
-    accessorKey: "page_no",
-    header: "Pages",
-    cell: ({ row }) => <div>{row.getValue("page_no")}</div>,
-  },
-  {
-    accessorKey: "affiliation",
-    header: "Affiliation",
-    cell: ({ row }) => <div>{row.getValue("affiliation")}</div>,
-  },
-  {
-    accessorKey: "link",
-    header: "Web Link",
+    accessorKey: "mouCopy",
+    header: "MoU Copy",
     cell: ({ row }) => (
-      <Link href={row.getValue("link")} target="_blank">
-        {row.getValue("link")}
-      </Link>
+      <>
+        {row.getValue("mouCopy") === "NILL" ? (
+          "NILL"
+        ) : (
+          <Link href={row.getValue("mouCopy")} target="_blank">
+            <Button variant={"secondary"}>VIEW File</Button>
+          </Link>
+        )}
+      </>
     ),
-  },
-  {
-    accessorKey: "addressing",
-    header: "addressing",
-    cell: ({ row }) => <div>{row.getValue("addressing")}</div>,
   },
 ];
 
 export const Table15Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
-    header: "Hello",
+    header: "Username",
     cell: ({ row }) => (
-      <div className="font-bold">{row.original.user.name}</div>
+      <div className="font-bold">{row?.original?.user?.name}</div>
     ),
   },
   {
-    accessorKey: "title",
+    accessorKey: "titleOfAward",
     header: ({ column }) => {
       return (
         <Button
@@ -1200,169 +1139,96 @@ export const Table15Header: ColumnDef<any>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => <div>{row.getValue("title")}</div>,
+    cell: ({ row }) => <div>{row.getValue("titleOfAward")}</div>,
   },
   {
     accessorKey: "date",
-    header: "Year",
+    header: "Date",
     cell: ({ row }) => <div>{row.getValue("date")}</div>,
   },
   {
-    accessorKey: "country",
-    header: "Country",
-    cell: ({ row }) => <div>{row.getValue("country")}</div>,
+    accessorKey: "awardingAgency",
+    header: "Awarding Agency",
+    cell: ({ row }) => <div>{row.getValue("awardingAgency")}</div>,
   },
   {
-    accessorKey: "journal_name",
-    header: "Journal Name",
-    cell: ({ row }) => <div>{row.getValue("journal_name")}</div>,
+    accessorKey: "amountOfPrize",
+    header: "Amount of Prize",
+    cell: ({ row }) => <div>{row.getValue("amountOfPrize")}</div>,
   },
   {
-    accessorKey: "authors",
-    header: "Authors Name",
-    cell: ({ row }) => <div>{row.getValue("authors")}</div>,
-  },
-  {
-    accessorKey: "category",
-    header: "Category",
-    cell: ({ row }) => <div>{row.getValue("category")}</div>,
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => <div>{row.getValue("status")}</div>,
-  },
-  {
-    accessorKey: "issn",
-    header: "ISSN",
-    cell: ({ row }) => <div>{row.getValue("issn")}</div>,
-  },
-  {
-    accessorKey: "volume",
-    header: "Volume",
-    cell: ({ row }) => <div>{row.getValue("volume")}</div>,
-  },
-  {
-    accessorKey: "page_no",
-    header: "Pages",
-    cell: ({ row }) => <div>{row.getValue("page_no")}</div>,
-  },
-  {
-    accessorKey: "affiliation",
-    header: "Affiliation",
-    cell: ({ row }) => <div>{row.getValue("affiliation")}</div>,
-  },
-  {
-    accessorKey: "link",
-    header: "Web Link",
+    accessorKey: "evidence",
+    header: "Evidence",
     cell: ({ row }) => (
-      <Link href={row.getValue("link")} target="_blank">
-        {row.getValue("link")}
-      </Link>
+      <>
+        {row.getValue("evidence") === "NILL" ? (
+          "NILL"
+        ) : (
+          <Link href={row.getValue("evidence")} target="_blank">
+            <Button variant={"secondary"}>VIEW File</Button>
+          </Link>
+        )}
+      </>
     ),
-  },
-  {
-    accessorKey: "addressing",
-    header: "addressing",
-    cell: ({ row }) => <div>{row.getValue("addressing")}</div>,
   },
 ];
 
 export const Table16Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
-    header: "Hello",
+    header: "Username",
     cell: ({ row }) => (
-      <div className="font-bold">{row.original.user.name}</div>
+      <div className="font-bold">{row?.original?.user?.name}</div>
     ),
   },
   {
-    accessorKey: "title",
+    accessorKey: "date",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Title
+          Date
           <ArrowUpDown size={15} className="ml-1" />
         </Button>
       );
     },
-    cell: ({ row }) => <div>{row.getValue("title")}</div>,
-  },
-  {
-    accessorKey: "date",
-    header: "Year",
     cell: ({ row }) => <div>{row.getValue("date")}</div>,
   },
   {
-    accessorKey: "country",
-    header: "Country",
-    cell: ({ row }) => <div>{row.getValue("country")}</div>,
+    accessorKey: "dataProvidedTo",
+    header: "Data Provided To",
+    cell: ({ row }) => <div>{row.getValue("dataProvidedTo")}</div>,
   },
   {
-    accessorKey: "journal_name",
-    header: "Journal Name",
-    cell: ({ row }) => <div>{row.getValue("journal_name")}</div>,
+    accessorKey: "programOfOrganization",
+    header: "Program of Organization",
+    cell: ({ row }) => <div>{row.getValue("programOfOrganization")}</div>,
   },
   {
-    accessorKey: "authors",
-    header: "Authors Name",
-    cell: ({ row }) => <div>{row.getValue("authors")}</div>,
-  },
-  {
-    accessorKey: "category",
-    header: "Category",
-    cell: ({ row }) => <div>{row.getValue("category")}</div>,
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => <div>{row.getValue("status")}</div>,
-  },
-  {
-    accessorKey: "issn",
-    header: "ISSN",
-    cell: ({ row }) => <div>{row.getValue("issn")}</div>,
-  },
-  {
-    accessorKey: "volume",
-    header: "Volume",
-    cell: ({ row }) => <div>{row.getValue("volume")}</div>,
-  },
-  {
-    accessorKey: "page_no",
-    header: "Pages",
-    cell: ({ row }) => <div>{row.getValue("page_no")}</div>,
-  },
-  {
-    accessorKey: "affiliation",
-    header: "Affiliation",
-    cell: ({ row }) => <div>{row.getValue("affiliation")}</div>,
-  },
-  {
-    accessorKey: "link",
-    header: "Web Link",
+    accessorKey: "evidence",
+    header: "Evidence",
     cell: ({ row }) => (
-      <Link href={row.getValue("link")} target="_blank">
-        {row.getValue("link")}
-      </Link>
+      <>
+        {row.getValue("evidence") === "NILL" ? (
+          "NILL"
+        ) : (
+          <Link href={row.getValue("evidence")} target="_blank">
+            <Button variant={"secondary"}>VIEW File</Button>
+          </Link>
+        )}
+      </>
     ),
-  },
-  {
-    accessorKey: "addressing",
-    header: "addressing",
-    cell: ({ row }) => <div>{row.getValue("addressing")}</div>,
   },
 ];
 
 export const Table17Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
-    header: "Hello",
+    header: "Username",
     cell: ({ row }) => (
-      <div className="font-bold">{row.original.user.name}</div>
+      <div className="font-bold">{row?.original?.user?.name}</div>
     ),
   },
   {
@@ -1382,244 +1248,163 @@ export const Table17Header: ColumnDef<any>[] = [
   },
   {
     accessorKey: "date",
-    header: "Year",
+    header: "Date",
     cell: ({ row }) => <div>{row.getValue("date")}</div>,
   },
   {
-    accessorKey: "country",
-    header: "Country",
-    cell: ({ row }) => <div>{row.getValue("country")}</div>,
+    accessorKey: "role",
+    header: "Role",
+    cell: ({ row }) => <div>{row.getValue("role")}</div>,
   },
   {
-    accessorKey: "journal_name",
-    header: "Journal Name",
-    cell: ({ row }) => <div>{row.getValue("journal_name")}</div>,
+    accessorKey: "type",
+    header: "Type",
+    cell: ({ row }) => <div>{row.getValue("type")}</div>,
   },
   {
-    accessorKey: "authors",
-    header: "Authors Name",
-    cell: ({ row }) => <div>{row.getValue("authors")}</div>,
-  },
-  {
-    accessorKey: "category",
-    header: "Category",
-    cell: ({ row }) => <div>{row.getValue("category")}</div>,
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => <div>{row.getValue("status")}</div>,
-  },
-  {
-    accessorKey: "issn",
-    header: "ISSN",
-    cell: ({ row }) => <div>{row.getValue("issn")}</div>,
-  },
-  {
-    accessorKey: "volume",
-    header: "Volume",
-    cell: ({ row }) => <div>{row.getValue("volume")}</div>,
-  },
-  {
-    accessorKey: "page_no",
-    header: "Pages",
-    cell: ({ row }) => <div>{row.getValue("page_no")}</div>,
-  },
-  {
-    accessorKey: "affiliation",
-    header: "Affiliation",
-    cell: ({ row }) => <div>{row.getValue("affiliation")}</div>,
-  },
-  {
-    accessorKey: "link",
-    header: "Web Link",
+    accessorKey: "evidence",
+    header: "Evidence",
     cell: ({ row }) => (
-      <Link href={row.getValue("link")} target="_blank">
-        {row.getValue("link")}
-      </Link>
+      <>
+        {row.getValue("evidence") === "NILL" ? (
+          "NILL"
+        ) : (
+          <Link href={row.getValue("evidence")} target="_blank">
+            <Button variant={"secondary"}>VIEW File</Button>
+          </Link>
+        )}
+      </>
     ),
-  },
-  {
-    accessorKey: "addressing",
-    header: "addressing",
-    cell: ({ row }) => <div>{row.getValue("addressing")}</div>,
   },
 ];
 
 export const Table18Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
-    header: "Hello",
+    header: "Username",
     cell: ({ row }) => (
-      <div className="font-bold">{row.original.user.name}</div>
+      <div className="font-bold">{row?.original?.user?.name}</div>
     ),
   },
   {
-    accessorKey: "title",
+    accessorKey: "programName",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Title
+          Name
           <ArrowUpDown size={15} className="ml-1" />
         </Button>
       );
     },
-    cell: ({ row }) => <div>{row.getValue("title")}</div>,
+    cell: ({ row }) => <div>{row.getValue("programName")}</div>,
   },
   {
-    accessorKey: "date",
-    header: "Year",
-    cell: ({ row }) => <div>{row.getValue("date")}</div>,
+    accessorKey: "noOfStudents",
+    header: "No of Students",
+    cell: ({ row }) => <div>{row.getValue("noOfStudents")}</div>,
   },
   {
-    accessorKey: "country",
-    header: "Country",
-    cell: ({ row }) => <div>{row.getValue("country")}</div>,
+    accessorKey: "role",
+    header: "Role",
+    cell: ({ row }) => <div>{row.getValue("role")}</div>,
   },
   {
-    accessorKey: "journal_name",
-    header: "Journal Name",
-    cell: ({ row }) => <div>{row.getValue("journal_name")}</div>,
+    accessorKey: "details",
+    header: "Details",
+    cell: ({ row }) => <div>{row.getValue("details")}</div>,
   },
   {
-    accessorKey: "authors",
-    header: "Authors Name",
-    cell: ({ row }) => <div>{row.getValue("authors")}</div>,
-  },
-  {
-    accessorKey: "category",
-    header: "Category",
-    cell: ({ row }) => <div>{row.getValue("category")}</div>,
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => <div>{row.getValue("status")}</div>,
-  },
-  {
-    accessorKey: "issn",
-    header: "ISSN",
-    cell: ({ row }) => <div>{row.getValue("issn")}</div>,
-  },
-  {
-    accessorKey: "volume",
-    header: "Volume",
-    cell: ({ row }) => <div>{row.getValue("volume")}</div>,
-  },
-  {
-    accessorKey: "page_no",
-    header: "Pages",
-    cell: ({ row }) => <div>{row.getValue("page_no")}</div>,
-  },
-  {
-    accessorKey: "affiliation",
-    header: "Affiliation",
-    cell: ({ row }) => <div>{row.getValue("affiliation")}</div>,
-  },
-  {
-    accessorKey: "link",
-    header: "Web Link",
+    accessorKey: "evidence",
+    header: "Evidence",
     cell: ({ row }) => (
-      <Link href={row.getValue("link")} target="_blank">
-        {row.getValue("link")}
-      </Link>
+      <>
+        {row.getValue("evidence") === "NILL" ? (
+          "NILL"
+        ) : (
+          <Link href={row.getValue("evidence")} target="_blank">
+            <Button variant={"secondary"}>VIEW File</Button>
+          </Link>
+        )}
+      </>
     ),
-  },
-  {
-    accessorKey: "addressing",
-    header: "addressing",
-    cell: ({ row }) => <div>{row.getValue("addressing")}</div>,
   },
 ];
 
 export const Table19Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
-    header: "Hello",
+    header: "Username",
     cell: ({ row }) => (
-      <div className="font-bold">{row.original.user.name}</div>
+      <div className="font-bold">{row?.original?.user?.name}</div>
     ),
   },
   {
-    accessorKey: "title",
+    accessorKey: "organizationName",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Title
+          Name
           <ArrowUpDown size={15} className="ml-1" />
         </Button>
       );
     },
-    cell: ({ row }) => <div>{row.getValue("title")}</div>,
+    cell: ({ row }) => <div>{row.getValue("organizationName")}</div>,
   },
   {
-    accessorKey: "date",
-    header: "Year",
-    cell: ({ row }) => <div>{row.getValue("date")}</div>,
+    accessorKey: "noOfMenbers",
+    header: "No of Menbers",
+    cell: ({ row }) => <div>{row.getValue("noOfMenbers")}</div>,
   },
   {
-    accessorKey: "country",
-    header: "Country",
-    cell: ({ row }) => <div>{row.getValue("country")}</div>,
+    accessorKey: "membersName",
+    header: "Members Name",
+    cell: ({ row }) => <div>{row.getValue("membersName")}</div>,
   },
   {
-    accessorKey: "journal_name",
-    header: "Journal Name",
-    cell: ({ row }) => <div>{row.getValue("journal_name")}</div>,
+    accessorKey: "role",
+    header: "Role",
+    cell: ({ row }) => <div>{row.getValue("role")}</div>,
   },
   {
-    accessorKey: "authors",
-    header: "Authors Name",
-    cell: ({ row }) => <div>{row.getValue("authors")}</div>,
+    accessorKey: "objectives",
+    header: "Objectives",
+    cell: ({ row }) => <div>{row.getValue("objectives")}</div>,
   },
-  {
-    accessorKey: "category",
-    header: "Category",
-    cell: ({ row }) => <div>{row.getValue("category")}</div>,
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => <div>{row.getValue("status")}</div>,
-  },
-  {
-    accessorKey: "issn",
-    header: "ISSN",
-    cell: ({ row }) => <div>{row.getValue("issn")}</div>,
-  },
-  {
-    accessorKey: "volume",
-    header: "Volume",
-    cell: ({ row }) => <div>{row.getValue("volume")}</div>,
-  },
-  {
-    accessorKey: "page_no",
-    header: "Pages",
-    cell: ({ row }) => <div>{row.getValue("page_no")}</div>,
-  },
-  {
-    accessorKey: "affiliation",
-    header: "Affiliation",
-    cell: ({ row }) => <div>{row.getValue("affiliation")}</div>,
-  },
+
   {
     accessorKey: "link",
     header: "Web Link",
     cell: ({ row }) => (
-      <Link href={row.getValue("link")} target="_blank">
-        {row.getValue("link")}
-      </Link>
+      <>
+        {row.getValue("link") === "NILL" ? (
+          <div>{row.getValue("link")}</div>
+        ) : (
+          <Link href={row.getValue("link")} target="_blank">
+            {row.getValue("link")}
+          </Link>
+        )}
+      </>
     ),
   },
   {
-    accessorKey: "addressing",
-    header: "addressing",
-    cell: ({ row }) => <div>{row.getValue("addressing")}</div>,
+    accessorKey: "evidence",
+    header: "Evidence",
+    cell: ({ row }) => (
+      <>
+        {row.getValue("evidence") === "NILL" ? (
+          "NILL"
+        ) : (
+          <Link href={row.getValue("evidence")} target="_blank">
+            <Button variant={"secondary"}>VIEW File</Button>
+          </Link>
+        )}
+      </>
+    ),
   },
 ];

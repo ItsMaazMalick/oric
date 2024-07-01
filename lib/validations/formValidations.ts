@@ -186,7 +186,7 @@ export const nationalInternationalAwardsSchema = z.object({
   date: requireString,
   titleOfAward: requireString,
   awardingAgency: requireString,
-  amountOfPrize: requireString,
+  amountOfPrize: optionalInt,
 });
 
 export const hecSchema = z.object({
@@ -204,7 +204,16 @@ export const communitySchema = z.object({
 
 export const mentorshipSchema = z.object({
   programName: requireString,
-  noOfStudents: requireString,
+  noOfStudents: requiredInt,
   role: requireString,
   details: requireString,
+});
+
+export const studentOrganizationSchema = z.object({
+  organizationName: requireString,
+  noOfMenbers: requiredInt,
+  membersName: requireString,
+  role: requireString,
+  objectives: requireString,
+  link: optionalString,
 });

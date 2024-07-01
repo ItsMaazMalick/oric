@@ -28,9 +28,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-
-//FORM VALIDATION
-const formSchema = validateForm18;
+import { mentorshipSchema } from "@/lib/validations/formValidations";
+import TextInput from "../InputFields/textInput";
+import SelectInput from "../InputFields/selectInput";
+import Link from "next/link";
+import UploadButtonComponent from "@/lib/UploadButtonComponent";
+import { FormSuccess } from "./FormSuccess";
+import { FormError } from "./FormError";
+import FormSubmitButton from "../button/FormSubmitButton";
+import {
+  saveMentorshipProgram,
+  saveMentorshipProgramNill,
+} from "@/app/actions/user/records/mentorship-program";
 
 export function Form18MentorshipProgrammes({
   id,
@@ -40,112 +49,56 @@ export function Form18MentorshipProgrammes({
   userCookie: string;
 }) {
   const [loading, setLoading] = useState(false);
-  const [books, setBooks] = useState([]);
-  const [evidence, setEvidence] = useState();
-  const [nill, setNill] = useState<boolean>(false);
-
-  useLayoutEffect(() => {
-    const fetchBooks = async () => {
-      const res = await fetch(`/api/user/records/research-publications`, {
-        cache: "no-store",
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userCookie}`,
-        },
-      });
-      const { books } = await res.json();
-      setBooks(books);
-    };
-    fetchBooks();
-  }, []);
+  const [file, setFile] = useState("");
+  const [nill, setNill] = useState(false);
+  const [success, setSuccess] = useState<string | undefined>("");
+  const [error, setError] = useState<string | undefined>("");
 
   const router = useRouter();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof mentorshipSchema>>({
+    resolver: zodResolver(mentorshipSchema),
     defaultValues: {
-      program_name: "",
-      no_of_students: 0,
+      programName: "",
+      noOfStudents: 0,
+      role: "",
       details: "",
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      if (nill) {
-        setLoading(true);
-        toast({ variant: "default", title: "Please wait..." });
-        console.log(values);
-        toast({
-          variant: "success",
-          title: "Submitted Successfully",
-        });
-        setLoading(false);
-      } else {
-        if (!values) {
-          toast({ variant: "destructive", title: "All fields are required" });
-        } else {
-          setLoading(true);
-          toast({ variant: "default", title: "Please wait..." });
-          const res = await fetch(`/api/user/records/trainings-workshops`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${userCookie}`,
-            },
-            body: JSON.stringify({
-              // title_of_training: values.title_of_training,
-              // date: values.date,
-              // organizer: values.organizer,
-              // no_of_participants: values.no_of_participants,
-              // focus_area_outcomes: values.focus_area_outcomes,
-              // audience_type: values.audience_type,
-              // user_id: id,
-            }),
-          });
-          const data = await res.json();
-          console.log(data);
-          if (data.success) {
-            toast({
-              variant: "success",
-              title: data.message,
-            });
-            form.reset();
-            router.refresh();
-            // router.push("/user/dashboard");
-          } else {
-            // toast({
-            //   variant: "destructive",
-            //   title: data.message,
-            // });
-            toast({
-              variant: "success",
-              title: "Success",
-            });
-          }
-          setLoading(false);
-        }
-      }
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Something went wrong",
-      });
-      setLoading(false);
+  const onSubmit = async (values: z.infer<typeof mentorshipSchema>) => {
+    if (!file) {
+      alert("Image is required");
+      setError("Image is required");
+      return;
+    } else {
+      const res = await saveMentorshipProgram(values, file, id);
+      setNill(false);
+      setFile("");
+      setSuccess(res.success);
+      setError(res.error);
+      form.reset();
+      router.refresh();
     }
   };
 
-  const handleNill = (e: FormEvent<HTMLFormElement>) => {
-    setLoading(true);
+  const handleNill = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log({ program_name: "NILL", no_of_students: 0, details: "NILL" });
-    setLoading(false);
+    setNill(false);
+
+    const res = await saveMentorshipProgramNill(id);
+    setSuccess(res.success);
+    setError(res.error);
+    router.refresh();
   };
 
   return (
     <>
-      <div className="flex items-center space-x-2 p-2 w-16 border-2 border-primary rounded-md mb-4">
-        <Checkbox onClick={() => setNill((prev) => !prev)} id="nill" />
+      <div className="flex items-center w-16 p-2 mb-4 space-x-2 border-2 rounded-md border-primary">
+        <Checkbox
+          onClick={() => setNill((prev) => !prev)}
+          id="nill"
+          checked={nill}
+        />
         <label
           htmlFor="nill"
           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -155,22 +108,23 @@ export function Form18MentorshipProgrammes({
       </div>
       {nill ? (
         <>
-          <div className="w-full flex justify-center items-center font-bold text-destructive">
+          <div className="flex items-center justify-center w-full font-bold text-destructive">
             All fields are marked as NILL
           </div>
-          <div className="">
+          <div className="mt-2">
             <form onSubmit={handleNill}>
-              <Button
-                disabled={loading}
-                type="submit"
-                className="text-xs sm:text-base"
-              >
-                {loading ? (
-                  <Loader2 className="mx-auto h-4 w-4 animate-spin" />
-                ) : (
-                  "Submit"
-                )}
-              </Button>
+              <div>
+                {success && <FormSuccess message={success} className="my-2" />}
+                {error && <FormError message={error} className="my-2" />}
+                <div className="flex items-center justify-center w-full">
+                  <FormSubmitButton
+                    loading={form.formState.isSubmitting}
+                    className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
+                  >
+                    Submit
+                  </FormSubmitButton>
+                </div>
+              </div>
             </form>
           </div>
         </>
@@ -181,131 +135,72 @@ export function Form18MentorshipProgrammes({
               <div className="flex flex-col lg:flex-row w-full gap-4">
                 {/* PROGRAM NAME */}
                 <div className="w-full lg:w-[30%]">
-                  <FormField
+                  <TextInput
+                    label="Program Name"
+                    name="programName"
                     control={form.control}
-                    name="program_name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-xs sm:text-base">
-                          Program Name
-                        </FormLabel>
-                        <FormControl className="text-xs sm:text-base">
-                          <Input placeholder="Program Name" {...field} />
-                        </FormControl>
-                        <FormMessage className="text-xs sm:text-base" />
-                      </FormItem>
-                    )}
                   />
                 </div>
 
                 {/* NUMBER OF STUDENTS */}
                 <div className="w-full lg:w-[35%]">
-                  <FormField
+                  <TextInput
+                    label="No of Students"
+                    name="noOfStudents"
                     control={form.control}
-                    name="no_of_students"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-xs sm:text-base">
-                          No of Students
-                        </FormLabel>
-                        <FormControl className="text-xs sm:text-base">
-                          <Input
-                            type="number"
-                            placeholder="No of Students"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage className="text-xs sm:text-base" />
-                      </FormItem>
-                    )}
+                    type="number"
                   />
                 </div>
                 {/* title_of_research */}
                 <div className="w-full lg:w-[35%]">
-                  <FormField
+                  <SelectInput
+                    label="Applicant Role"
+                    name="role"
                     control={form.control}
-                    name="details"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-xs sm:text-base">
-                          Role of Applicant
-                        </FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          //   defaultValue={field.value}
-                        >
-                          <FormControl className="text-xs sm:text-base">
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select Role" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="Focal Person">
-                              Focal Person
-                            </SelectItem>
-                            <SelectItem value="Coordinator">
-                              Coordinator
-                            </SelectItem>
-                            <SelectItem value="Member">Member</SelectItem>
-                            <SelectItem value="Any Other">Any Other</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage className="text-xs sm:text-base" />
-                      </FormItem>
-                    )}
+                    items={[
+                      "Focal Person",
+                      "Coordinator",
+                      "Member",
+                      "Any Other",
+                    ]}
                   />
                 </div>
               </div>
               <div className="flex flex-col lg:flex-row w-full gap-4">
                 {/* DETAILS */}
                 <div className="w-full lg:w-[30%]">
-                  <FormField
-                    control={form.control}
+                  <TextInput
+                    label="Details"
                     name="details"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-xs sm:text-base">
-                          Details
-                        </FormLabel>
-                        <FormControl className="text-xs sm:text-base">
-                          <Input placeholder="Details" {...field} />
-                        </FormControl>
-                        <FormMessage className="text-xs sm:text-base" />
-                      </FormItem>
-                    )}
+                    control={form.control}
                   />
                 </div>
-                <div className="w-full lg:w-[70%]">
-                  <div className="mb-2">
-                    <label
-                      htmlFor=""
-                      className="text-xs sm:text-base font-medium"
-                    >
-                      Evidence
-                    </label>
+                {file ? (
+                  <Link
+                    href={file}
+                    target="_blank"
+                    className="text-secondary-foreground bg-secondary w-full lg:w-[50%] rounded-md h-10 mt-8 flex justify-center items-center"
+                  >
+                    File Uploaded
+                  </Link>
+                ) : (
+                  <div className="text-black bg-primary w-full lg:w-[50%] rounded-md h-10 flex justify-center items-center mt-8">
+                    <UploadButtonComponent image={file} setImage={setFile} />
                   </div>
-                  <input
-                    className="w-full p-2 rounded-md border"
-                    type="file"
-                    onChange={(e: any) => setEvidence(e.target.files?.[0])}
-                    name=""
-                    id=""
-                  />
-                </div>
+                )}
               </div>
 
-              <div className="">
-                <Button
-                  disabled={loading}
-                  type="submit"
-                  className="text-xs sm:text-base"
-                >
-                  {loading ? (
-                    <Loader2 className="mx-auto h-4 w-4 animate-spin" />
-                  ) : (
-                    "Submit"
-                  )}
-                </Button>
+              <div>
+                {success && <FormSuccess message={success} className="my-2" />}
+                {error && <FormError message={error} className="my-2" />}
+                <div className="flex items-center justify-center w-full">
+                  <FormSubmitButton
+                    loading={form.formState.isSubmitting}
+                    className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
+                  >
+                    Submit
+                  </FormSubmitButton>
+                </div>
               </div>
             </>
           </form>

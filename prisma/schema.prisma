@@ -50,6 +50,7 @@ model User {
   hec                         Hec[]
   community                   Community[]
   mentorship                  Mentorship[]
+  studentOrganization         StudentOrganization[]
   createdAt                   DateTime                      @default(now())
   updatedAt                   DateTime                      @updatedAt
 }
@@ -347,8 +348,8 @@ model NationalInternationalAwards {
   date           String
   titleOfAward   String
   awardingAgency String
-  amountOfPrize  String
-  evicence       String
+  amountOfPrize  Float?
+  evidence       String
   approvedStatus String   @default("pending")
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
@@ -361,7 +362,7 @@ model Hec {
   date                  String
   dataProvidedTo        String
   programOfOrganization String
-  evicence              String
+  evidence              String
   approvedStatus        String   @default("pending")
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
@@ -388,11 +389,27 @@ model Mentorship {
   user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId         String   @db.ObjectId
   programName    String
-  noOfStudents   String
+  noOfStudents   Float
   role           String
   details        String
   evidence       String
   approvedStatus String   @default("pending")
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+}
+
+model StudentOrganization {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           String   @db.ObjectId
+  organizationName String
+  noOfMenbers      Int
+  membersName      String
+  role             String
+  objectives       String
+  link             String?
+  evidence         String
+  approvedStatus   String   @default("pending")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }

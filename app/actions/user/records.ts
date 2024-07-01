@@ -137,6 +137,126 @@ export async function allRecords(id: string, userCookie: string) {
     },
   });
 
+  // 11 OK:
+  const patentsTrademark = await prisma.patentsTrademark.findMany({
+    where: { userId: id },
+    include: {
+      user: {
+        select: {
+          name: true,
+          department: true,
+        },
+      },
+    },
+  });
+
+  // 12 OK:
+  const researchProductsProcess = await prisma.researchProductsProcess.findMany(
+    {
+      where: { userId: id },
+      include: {
+        user: {
+          select: {
+            name: true,
+            department: true,
+          },
+        },
+      },
+    }
+  );
+
+  // 13 OK:
+  const scienceArtsProduct = await prisma.scienceArtsProduct.findMany({
+    where: { userId: id },
+    include: {
+      user: {
+        select: {
+          name: true,
+          department: true,
+        },
+      },
+    },
+  });
+
+  // 14 OK:
+  const agreementSigned = await prisma.agreementSigned.findMany({
+    where: { userId: id },
+    include: {
+      user: {
+        select: {
+          name: true,
+          department: true,
+        },
+      },
+    },
+  });
+
+  // 15 OK:
+  const nationalInternationalAwards =
+    await prisma.nationalInternationalAwards.findMany({
+      where: { userId: id },
+      include: {
+        user: {
+          select: {
+            name: true,
+            department: true,
+          },
+        },
+      },
+    });
+
+  // 16 OK:
+  const hec = await prisma.hec.findMany({
+    where: { userId: id },
+    include: {
+      user: {
+        select: {
+          name: true,
+          department: true,
+        },
+      },
+    },
+  });
+
+  // 17 OK:
+  const community = await prisma.community.findMany({
+    where: { userId: id },
+    include: {
+      user: {
+        select: {
+          name: true,
+          department: true,
+        },
+      },
+    },
+  });
+
+  // 18 OK:
+  const mentorship = await prisma.mentorship.findMany({
+    where: { userId: id },
+    include: {
+      user: {
+        select: {
+          name: true,
+          department: true,
+        },
+      },
+    },
+  });
+
+  // 19 OK:
+  const studentOrganization = await prisma.studentOrganization.findMany({
+    where: { userId: id },
+    include: {
+      user: {
+        select: {
+          name: true,
+          department: true,
+        },
+      },
+    },
+  });
+
   if (bookAuthoredEdited) {
     const books = [
       researchPublication,
@@ -149,6 +269,15 @@ export async function allRecords(id: string, userCookie: string) {
       contractResearchAward,
       civicEngagementEvent,
       consultancyContract,
+      patentsTrademark,
+      researchProductsProcess,
+      scienceArtsProduct,
+      agreementSigned,
+      nationalInternationalAwards,
+      hec,
+      community,
+      mentorship,
+      studentOrganization,
     ];
     return { status: 200, success: true, books };
   }

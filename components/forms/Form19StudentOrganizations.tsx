@@ -16,7 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { validateForm19 } from "@/lib/validator";
-import { useLayoutEffect, useState } from "react";
+import { FormEvent, useLayoutEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
@@ -27,9 +27,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-
-//FORM VALIDATION
-const formSchema = validateForm19;
+import { studentOrganizationSchema } from "@/lib/validations/formValidations";
+import TextInput from "../InputFields/textInput";
+import SelectInput from "../InputFields/selectInput";
+import Link from "next/link";
+import UploadButtonComponent from "@/lib/UploadButtonComponent";
+import { FormSuccess } from "./FormSuccess";
+import { FormError } from "./FormError";
+import FormSubmitButton from "../button/FormSubmitButton";
+import { Checkbox } from "../ui/checkbox";
+import {
+  saveStudentOrganization,
+  saveStudentOrganizationNill,
+} from "@/app/actions/user/records/student-organization";
 
 export function Form19StudentOrganizations({
   id,
@@ -39,254 +49,177 @@ export function Form19StudentOrganizations({
   userCookie: string;
 }) {
   const [loading, setLoading] = useState(false);
-  const [books, setBooks] = useState([]);
-  const [file, setFile] = useState();
-
-  useLayoutEffect(() => {
-    const fetchBooks = async () => {
-      const res = await fetch(`/api/user/records/research-publications`, {
-        cache: "no-store",
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userCookie}`,
-        },
-      });
-      const { books } = await res.json();
-      setBooks(books);
-    };
-    fetchBooks();
-  }, []);
+  const [file, setFile] = useState("");
+  const [nill, setNill] = useState(false);
+  const [success, setSuccess] = useState<string | undefined>("");
+  const [error, setError] = useState<string | undefined>("");
 
   const router = useRouter();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof studentOrganizationSchema>>({
+    resolver: zodResolver(studentOrganizationSchema),
     defaultValues: {
-      organization_name: "",
-      number_of_members: 0,
-      members_name: "",
-      objective: "",
+      organizationName: "",
+      noOfMenbers: 0,
+      membersName: "",
+      role: "",
+      objectives: "",
+      link: "",
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      if (!values) {
-        toast({ variant: "destructive", title: "All fields are required" });
-      } else {
-        setLoading(true);
-        toast({ variant: "default", title: "Please wait..." });
-        const res = await fetch(`/api/user/records/trainings-workshops`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${userCookie}`,
-          },
-          body: JSON.stringify({
-            // title_of_training: values.title_of_training,
-            // date: values.date,
-            // organizer: values.organizer,
-            // no_of_participants: values.no_of_participants,
-            // focus_area_outcomes: values.focus_area_outcomes,
-            // audience_type: values.audience_type,
-            // user_id: id,
-          }),
-        });
-        const data = await res.json();
-        console.log(data);
-        if (data.success) {
-          toast({
-            variant: "success",
-            title: data.message,
-          });
-          form.reset();
-          router.refresh();
-          // router.push("/user/dashboard");
-        } else {
-          toast({
-            variant: "destructive",
-            title: data.message,
-          });
-        }
-        setLoading(false);
-      }
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Something went wrong",
-      });
-      setLoading(false);
+  const onSubmit = async (
+    values: z.infer<typeof studentOrganizationSchema>
+  ) => {
+    if (!file) {
+      alert("Image is required");
+      setError("Image is required");
+      return;
+    } else {
+      const res = await saveStudentOrganization(values, file, id);
+      setNill(false);
+      setFile("");
+      setSuccess(res.success);
+      setError(res.error);
+      form.reset();
+      router.refresh();
     }
+  };
+
+  const handleNill = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setNill(false);
+
+    const res = await saveStudentOrganizationNill(id);
+    setSuccess(res.success);
+    setError(res.error);
+    router.refresh();
   };
 
   return (
     <>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <div className="flex flex-col lg:flex-row w-full gap-4">
-            {/* ORGANIZATION NAME */}
-            <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
-                name="organization_name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Organization Name
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Organization Name" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {/* NUMBER OF MEMBERS */}
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="number_of_members"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      No of Members
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input
-                        type="number"
-                        placeholder="No of Members"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            {/* MEMBERS NAME */}
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="members_name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Members Name
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Members Name" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
+      <div className="flex items-center w-16 p-2 mb-4 space-x-2 border-2 rounded-md border-primary">
+        <Checkbox
+          onClick={() => setNill((prev) => !prev)}
+          id="nill"
+          checked={nill}
+        />
+        <label
+          htmlFor="nill"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          Nill
+        </label>
+      </div>
+      {nill ? (
+        <>
+          <div className="flex items-center justify-center w-full font-bold text-destructive">
+            All fields are marked as NILL
           </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
-            <div className="w-full lg:w-[30%]">
-              <FormField
-                control={form.control}
-                name="objective"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Role of Applicant
-                    </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      //   defaultValue={field.value}
-                    >
-                      <FormControl className="text-xs sm:text-base">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Role" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Focal Person">
-                          Focal Person
-                        </SelectItem>
-                        <SelectItem value="Coordinator">Coordinator</SelectItem>
-                        <SelectItem value="Member">Member</SelectItem>
-                        <SelectItem value="Any Other">Any Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            {/* OBJECTIVE */}
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="objective"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Objectives
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Objectives" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-full lg:w-[35%]">
-              <FormField
-                control={form.control}
-                name="objective"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs sm:text-base">
-                      Weblink (if any)
-                    </FormLabel>
-                    <FormControl className="text-xs sm:text-base">
-                      <Input placeholder="Weblink (if any)" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs sm:text-base" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            {/* PROOFS*/}
-          </div>
-          <div className="flex flex-col lg:flex-row w-full gap-4">
-            <div className="w-full">
-              <div className="mb-2">
-                <label htmlFor="" className="text-xs sm:text-base font-medium">
-                  Evidence
-                </label>
+          <div className="mt-2">
+            <form onSubmit={handleNill}>
+              <div>
+                {success && <FormSuccess message={success} className="my-2" />}
+                {error && <FormError message={error} className="my-2" />}
+                <div className="flex items-center justify-center w-full">
+                  <FormSubmitButton
+                    loading={form.formState.isSubmitting}
+                    className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
+                  >
+                    Submit
+                  </FormSubmitButton>
+                </div>
               </div>
-              <input
-                className="w-full p-2 rounded-md border"
-                type="file"
-                onChange={(e: any) => setFile(e.target.files?.[0])}
-                name=""
-                id=""
-              />
-            </div>
+            </form>
           </div>
+        </>
+      ) : (
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <div className="flex flex-col lg:flex-row w-full gap-4">
+              {/* ORGANIZATION NAME */}
+              <div className="w-full lg:w-[30%]">
+                <TextInput
+                  label="Organization Name"
+                  name="organizationName"
+                  control={form.control}
+                />
+              </div>
 
-          <div className="">
-            <Button
-              disabled={loading}
-              type="submit"
-              className="text-xs sm:text-base"
-            >
-              {loading ? (
-                <Loader2 className="mx-auto h-4 w-4 animate-spin" />
-              ) : (
-                "Submit"
-              )}
-            </Button>
-          </div>
-        </form>
-      </Form>
+              {/* NUMBER OF MEMBERS */}
+              <div className="w-full lg:w-[35%]">
+                <TextInput
+                  label="No of Members"
+                  name="noOfMenbers"
+                  control={form.control}
+                  type="number"
+                />
+              </div>
+
+              {/* MEMBERS NAME */}
+              <div className="w-full lg:w-[35%]">
+                <TextInput
+                  label="Members Name"
+                  name="membersName"
+                  control={form.control}
+                  description="Separate Name wirth Comma ( , )"
+                />
+              </div>
+            </div>
+            <div className="flex flex-col lg:flex-row w-full gap-4">
+              <div className="w-full lg:w-[30%]">
+                <SelectInput
+                  label="Role of Applicant"
+                  name="role"
+                  control={form.control}
+                  items={["Coordinator", "Member", "Any Other"]}
+                />
+              </div>
+              {/* OBJECTIVE */}
+              <div className="w-full lg:w-[35%]">
+                <TextInput
+                  label="Objectives"
+                  name="objectives"
+                  control={form.control}
+                />
+              </div>
+              <div className="w-full lg:w-[35%]">
+                <TextInput
+                  label="Weblink (if any)"
+                  name="link"
+                  control={form.control}
+                />
+              </div>
+              {/* PROOFS*/}
+            </div>
+            {file ? (
+              <Link
+                href={file}
+                target="_blank"
+                className="text-secondary-foreground bg-secondary w-full lg:w-[50%] rounded-md h-10 mt-8 flex justify-center items-center"
+              >
+                File Uploaded
+              </Link>
+            ) : (
+              <div className="text-black bg-primary w-full lg:w-[50%] rounded-md h-10 flex justify-center items-center mt-8">
+                <UploadButtonComponent image={file} setImage={setFile} />
+              </div>
+            )}
+
+            <div>
+              {success && <FormSuccess message={success} className="my-2" />}
+              {error && <FormError message={error} className="my-2" />}
+              <div className="flex items-center justify-center w-full">
+                <FormSubmitButton
+                  loading={form.formState.isSubmitting}
+                  className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
+                >
+                  Submit
+                </FormSubmitButton>
+              </div>
+            </div>
+          </form>
+        </Form>
+      )}
     </>
   );
 }

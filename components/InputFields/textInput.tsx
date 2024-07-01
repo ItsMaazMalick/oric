@@ -1,5 +1,6 @@
 import {
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -12,6 +13,7 @@ type TextInputProps = {
   name: string;
   type?: string;
   placeholder?: string;
+  description?: string;
 };
 
 export default function TextInput({
@@ -20,6 +22,7 @@ export default function TextInput({
   name,
   type,
   placeholder,
+  description,
 }: TextInputProps) {
   return (
     <FormField
@@ -35,6 +38,7 @@ export default function TextInput({
               {...field}
             />
           </FormControl>
+          <FormDescription>{description}</FormDescription>
           <FormMessage className="text-xs md:text-base" />
         </FormItem>
       )}
