@@ -49,6 +49,23 @@ export async function saveMentorshipProgramNill(id: string) {
     return { error: "Id is required" };
   }
 
+  const currentYear = new Date().getFullYear();
+
+  const existingNillRecord = await prisma.mentorship.findFirst({
+    where: {
+      userId: id,
+      programName: "NILL",
+      createdAt: {
+        gte: new Date(`${currentYear}-01-01T00:00:00.000Z`),
+        lt: new Date(`${currentYear + 1}-01-01T00:00:00.000Z`),
+      },
+    },
+  });
+
+  if (existingNillRecord) {
+    return { error: "NILL record for the current year already exists" };
+  }
+
   await prisma.mentorship.create({
     data: {
       programName: "NILL",

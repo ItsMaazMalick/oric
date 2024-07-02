@@ -48,6 +48,23 @@ export async function saveCommunityWorkNill(id: string) {
     return { error: "Id is required" };
   }
 
+  const currentYear = new Date().getFullYear();
+
+  const existingNillRecord = await prisma.community.findFirst({
+    where: {
+      userId: id,
+      type: "NILL",
+      createdAt: {
+        gte: new Date(`${currentYear}-01-01T00:00:00.000Z`),
+        lt: new Date(`${currentYear + 1}-01-01T00:00:00.000Z`),
+      },
+    },
+  });
+
+  if (existingNillRecord) {
+    return { error: "NILL record for the current year already exists" };
+  }
+
   await prisma.community.create({
     data: {
       date: "NILL",
