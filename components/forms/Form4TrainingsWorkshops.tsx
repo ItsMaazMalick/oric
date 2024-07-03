@@ -35,6 +35,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { DynamicSelectInput } from "../InputFields/dynamicselectInput";
 
 export function Form4TrainingsWorkshops({
   id,
@@ -137,48 +138,21 @@ export function Form4TrainingsWorkshops({
               </div>
               {/* ROLE */}
               <div className="w-full lg:w-[35%]">
-                <FormField
-                  control={form.control}
+                <DynamicSelectInput
+                  label="Select Role"
                   name="applicantRole"
-                  render={({ field: { value, ...fieldValues } }) => (
-                    <FormItem>
-                      <FormLabel>Select Role</FormLabel>
-                      <Select
-                        onValueChange={(selectedValue) => {
-                          const selectedRole = selectedValue;
-                          setRole(selectedRole);
-                          fieldValues.onChange(selectedRole);
-                        }}
-                        //   defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select Role" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent className="max-h-[300px]">
-                          <SelectItem value="Organizer">Organizer</SelectItem>
-                          <SelectItem value="Participant">
-                            Participant
-                          </SelectItem>
-                          <SelectItem value="Both (Organizer & Participant)">
-                            Both (Organizer & Participant)
-                          </SelectItem>
-                          <SelectItem value="Resource Person">
-                            Resource Person
-                          </SelectItem>
-                          <SelectItem value="Speaker">Speaker</SelectItem>
-                          <SelectItem value="Invited / Keynote Speaker">
-                            Invited / Keynote Speaker
-                          </SelectItem>
-                          <SelectItem value="Poster Presenter">
-                            Poster Presenter
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  control={form.control}
+                  items={[
+                    "Organizer",
+                    "Participant",
+                    "Both (Organizer & Participant)",
+                    "Resource Person",
+                    "Invited / Keynote Speaker",
+                    "Poster Presenter",
+                  ]}
+                  data={role}
+                  setData={setRole}
+                  required
                 />
               </div>
               {/* YEAR*/}

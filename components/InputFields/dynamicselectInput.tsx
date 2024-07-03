@@ -21,28 +21,35 @@ type TextInputProps = {
   control: any;
   items: string[];
   required?: boolean;
+  data: any;
+  setData: (data: any) => void;
 };
 
-export default function SelectInput({
+export function DynamicSelectInput({
   label,
   control,
   name,
   items,
   required,
+  data,
+  setData,
 }: TextInputProps) {
   return (
     <FormField
       control={control}
       name={name}
-      render={({ field }) => (
+      render={({ field: { value, ...fieldValues } }) => (
         <FormItem>
           <FormLabel className="text-xs md:text-base">
             {label}
             {required && <RequiredTag />}
           </FormLabel>
           <Select
-            onValueChange={field.onChange}
-            //   defaultValue={field.value}
+            onValueChange={(selectedValue) => {
+              const selectedData = selectedValue;
+              setData(selectedData);
+              fieldValues.onChange(selectedData);
+            }}
           >
             <FormControl className="text-xs md:text-base">
               <SelectTrigger>

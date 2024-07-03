@@ -1,7 +1,16 @@
+import { ViewDialog } from "@/components/dialog/view-dialog";
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, Target } from "lucide-react";
+import {
+  ArrowUpDown,
+  Eye,
+  FileCog,
+  FilePenLine,
+  Target,
+  Trash2,
+} from "lucide-react";
 import Link from "next/link";
+import { header1 } from "./headers";
 
 export const Table1Header: ColumnDef<any>[] = [
   {
@@ -95,6 +104,34 @@ export const Table1Header: ColumnDef<any>[] = [
     accessorKey: "addressing",
     header: "addressing",
     cell: ({ row }) => <div>{row.getValue("addressing")}</div>,
+  },
+  {
+    accessorKey: "actions",
+    header: () => <div className="text-center">Actions</div>,
+    cell: ({ row }) => (
+      <div className="flex items-center gap-6">
+        <ViewDialog
+          title="Research Publications"
+          headers={header1}
+          data={row.original}
+        >
+          <div className="cursor-pointer text-[10px] flex flex-col justify-center items-center text-primary">
+            <Eye />
+            View
+          </div>
+        </ViewDialog>
+        {row.original.approvedStatus !== "accepted" && (
+          <div className="cursor-pointer text-xs flex flex-col justify-center items-center text-secondary">
+            <FileCog />
+            Edit
+          </div>
+        )}
+        <div className="cursor-pointer text-xs flex flex-col justify-center items-center text-destructive">
+          <Trash2 />
+          Delete
+        </div>
+      </div>
+    ),
   },
 ];
 

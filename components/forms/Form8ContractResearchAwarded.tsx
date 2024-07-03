@@ -40,6 +40,7 @@ import {
   saveContractResearch,
   saveContractResearchNill,
 } from "@/app/actions/user/records/contract-research";
+import { DynamicSelectInput } from "../InputFields/dynamicselectInput";
 
 export function Form8ContractResearchAwarded({
   id,
@@ -184,33 +185,14 @@ export function Form8ContractResearchAwarded({
               </div>
               {/* ROLE */}
               <div className="w-full lg:w-[35%]">
-                <FormField
-                  control={form.control}
+                <DynamicSelectInput
+                  label="Select Role"
                   name="role"
-                  render={({ field: { value, ...fieldValues } }) => (
-                    <FormItem>
-                      <FormLabel>Select Role</FormLabel>
-                      <Select
-                        onValueChange={(selectedValue) => {
-                          const selectedRole = selectedValue;
-                          setRole(selectedRole);
-                          fieldValues.onChange(selectedRole);
-                        }}
-                        //   defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select Role" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="PI">PI</SelectItem>
-                          <SelectItem value="Co-PI">Co-PI</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  control={form.control}
+                  items={["PI", "Co-PI"]}
+                  data={role}
+                  setData={setRole}
+                  required
                 />
               </div>
             </div>

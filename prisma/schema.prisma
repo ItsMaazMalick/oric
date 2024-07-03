@@ -57,9 +57,9 @@ model User {
 
 // 1 - 
 model ResearchPublication {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId         String   @db.ObjectId
+  id             String         @id @default(auto()) @map("_id") @db.ObjectId
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String         @db.ObjectId
   year           String
   country        String
   journalName    String
@@ -74,16 +74,16 @@ model ResearchPublication {
   link           String
   countries      String
   addressing     String
-  approvedStatus String   @default("pending")
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  approvedStatus ApprovedStatus @default(pending)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
 }
 
 // 2 -  
 model BookAuthoredEdited {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId         String   @db.ObjectId
+  id             String         @id @default(auto()) @map("_id") @db.ObjectId
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String         @db.ObjectId
   isbn           String
   role           String
   pages          Int
@@ -95,16 +95,16 @@ model BookAuthoredEdited {
   affiliation    String
   link           String
   addressing     String
-  approvedStatus String   @default("pending")
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  approvedStatus ApprovedStatus @default(pending)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
 }
 
 // 3 - 
 model ResearchProject {
-  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
-  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId               String   @db.ObjectId
+  id                   String         @id @default(auto()) @map("_id") @db.ObjectId
+  user                 User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId               String         @db.ObjectId
   date                 String
   agency               String
   name                 String
@@ -121,16 +121,16 @@ model ResearchProject {
   completion           String
   remarks              String?
   file                 String
-  approvedStatus       String   @default("pending")
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
+  approvedStatus       ApprovedStatus @default(pending)
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
 }
 
 // 4 - 
 model Training {
-  id               String   @id @default(auto()) @map("_id") @db.ObjectId
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId           String   @db.ObjectId
+  id               String         @id @default(auto()) @map("_id") @db.ObjectId
+  user             User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           String         @db.ObjectId
   eventType        String
   applicantRole    String
   startDate        String
@@ -141,18 +141,18 @@ model Training {
   audienceType     String
   organizer        String
   country          String
-  approvedStatus   String   @default("pending")
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  approvedStatus   ApprovedStatus @default(pending)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
 }
 
 // 5 - 
 
 // 7 -
 model Thesis {
-  id               String   @id @default(auto()) @map("_id") @db.ObjectId
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId           String   @db.ObjectId
+  id               String         @id @default(auto()) @map("_id") @db.ObjectId
+  user             User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           String         @db.ObjectId
   role             String
   nameOfSupervisor String?
   year             String
@@ -162,16 +162,16 @@ model Thesis {
   university       String
   studentName      String
   degreeStage      String
-  approvedStatus   String   @default("pending")
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  approvedStatus   ApprovedStatus @default(pending)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
 }
 
 // 8 - 
 model PolicyAdvocacy {
-  id                      String   @id @default(auto()) @map("_id") @db.ObjectId
-  user                    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId                  String   @db.ObjectId
+  id                      String         @id @default(auto()) @map("_id") @db.ObjectId
+  user                    User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                  String         @db.ObjectId
   year                    String
   nameOfGovernmentBody    String
   nameOfResearcher        String
@@ -181,16 +181,16 @@ model PolicyAdvocacy {
   partners                String
   advocacyTools           String
   policyCaseStudyCopy     String
-  approvedStatus          String   @default("pending")
-  createdAt               DateTime @default(now())
-  updatedAt               DateTime @updatedAt
+  approvedStatus          ApprovedStatus @default(pending)
+  createdAt               DateTime       @default(now())
+  updatedAt               DateTime       @updatedAt
 }
 
 // 9 - 
 model LinksEstablished {
-  id                           String   @id @default(auto()) @map("_id") @db.ObjectId
-  user                         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId                       String   @db.ObjectId
+  id                           String         @id @default(auto()) @map("_id") @db.ObjectId
+  user                         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                       String         @db.ObjectId
   linkageType                  String
   scope                        String
   nameOfCollaboratingAgency    String
@@ -198,16 +198,16 @@ model LinksEstablished {
   scopeOfCollaboration         String
   linkageDate                  String
   mouCopy                      String
-  approvedStatus               String   @default("pending")
-  createdAt                    DateTime @default(now())
-  updatedAt                    DateTime @updatedAt
+  approvedStatus               ApprovedStatus @default(pending)
+  createdAt                    DateTime       @default(now())
+  updatedAt                    DateTime       @updatedAt
 }
 
 // 10 - 
 model ContractResearchAward {
-  id                      String   @id @default(auto()) @map("_id") @db.ObjectId
-  user                    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId                  String   @db.ObjectId
+  id                      String         @id @default(auto()) @map("_id") @db.ObjectId
+  user                    User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                  String         @db.ObjectId
   scope                   String
   sponsoringAgencyCountry String
   contractAwardingAgency  String
@@ -221,16 +221,16 @@ model ContractResearchAward {
   endingDate              String
   dateOfContract          String
   contractResearchCopy    String?
-  approvedStatus          String   @default("pending")
-  createdAt               DateTime @default(now())
-  updatedAt               DateTime @updatedAt
+  approvedStatus          ApprovedStatus @default(pending)
+  createdAt               DateTime       @default(now())
+  updatedAt               DateTime       @updatedAt
 }
 
 // 11 - 
 model CivicEngagementEvent {
-  id                      String   @id @default(auto()) @map("_id") @db.ObjectId
-  user                    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId                  String   @db.ObjectId
+  id                      String         @id @default(auto()) @map("_id") @db.ObjectId
+  user                    User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                  String         @db.ObjectId
   type                    String
   role                    String
   title                   String
@@ -240,16 +240,16 @@ model CivicEngagementEvent {
   collaboratingAgency     String
   collaboratingAgencyName String
   briefReport             String
-  approvedStatus          String   @default("pending")
-  createdAt               DateTime @default(now())
-  updatedAt               DateTime @updatedAt
+  approvedStatus          ApprovedStatus @default(pending)
+  createdAt               DateTime       @default(now())
+  updatedAt               DateTime       @updatedAt
 }
 
 // 12 - 
 model ConsultancyContract {
-  id                 String   @id @default(auto()) @map("_id") @db.ObjectId
-  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId             String   @db.ObjectId
+  id                 String         @id @default(auto()) @map("_id") @db.ObjectId
+  user               User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId             String         @db.ObjectId
   consultancyType    String
   titleOfConsultancy String
   role               String
@@ -261,16 +261,16 @@ model ConsultancyContract {
   keyDeliverables    String
   remarks            String?
   copyOfContract     String
-  approvedStatus     String   @default("pending")
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
+  approvedStatus     ApprovedStatus @default(pending)
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
 }
 
 // 13 - 
 model PatentsTrademark {
-  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
-  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId               String   @db.ObjectId
+  id                   String         @id @default(auto()) @map("_id") @db.ObjectId
+  user                 User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId               String         @db.ObjectId
   typeOfIP             String
   scope                String
   date                 String
@@ -281,16 +281,16 @@ model PatentsTrademark {
   keyScientificAspects String
   commertialPartners   String?
   evidence             String
-  approvedStatus       String   @default("pending")
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
+  approvedStatus       ApprovedStatus @default(pending)
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
 }
 
 // 14 - 
 model ResearchProductsProcess {
-  id                       String   @id @default(auto()) @map("_id") @db.ObjectId
-  user                     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId                   String   @db.ObjectId
+  id                       String         @id @default(auto()) @map("_id") @db.ObjectId
+  user                     User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                   String         @db.ObjectId
   type                     String
   category                 String
   developmentStatus        String
@@ -302,32 +302,32 @@ model ResearchProductsProcess {
   collaboratingPartnerName String?
   financialSupport         Float
   evidence                 String
-  approvedStatus           String   @default("pending")
-  createdAt                DateTime @default(now())
-  updatedAt                DateTime @updatedAt
+  approvedStatus           ApprovedStatus @default(pending)
+  createdAt                DateTime       @default(now())
+  updatedAt                DateTime       @updatedAt
 }
 
 // 15 - 
 model ScienceArtsProduct {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId         String   @db.ObjectId
+  id             String         @id @default(auto()) @map("_id") @db.ObjectId
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String         @db.ObjectId
   category       String
   date           String
   scope          String
   title          String
   departmentName String
   evidence       String
-  approvedStatus String   @default("pending")
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  approvedStatus ApprovedStatus @default(pending)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
 }
 
 // 16 - 
 model AgreementSigned {
-  id                         String   @id @default(auto()) @map("_id") @db.ObjectId
-  user                       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId                     String   @db.ObjectId
+  id                         String         @id @default(auto()) @map("_id") @db.ObjectId
+  user                       User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                     String         @db.ObjectId
   typeOfLinkage              String
   linkageEstablishmentDate   String
   scope                      String
@@ -336,72 +336,72 @@ model AgreementSigned {
   duration                   String
   areaOfFocus                String
   mouCopy                    String
-  approvedStatus             String   @default("pending")
-  createdAt                  DateTime @default(now())
-  updatedAt                  DateTime @updatedAt
+  approvedStatus             ApprovedStatus @default(pending)
+  createdAt                  DateTime       @default(now())
+  updatedAt                  DateTime       @updatedAt
 }
 
 model NationalInternationalAwards {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId         String   @db.ObjectId
+  id             String         @id @default(auto()) @map("_id") @db.ObjectId
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String         @db.ObjectId
   date           String
   titleOfAward   String
   awardingAgency String
   amountOfPrize  Float?
   evidence       String
-  approvedStatus String   @default("pending")
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  approvedStatus ApprovedStatus @default(pending)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
 }
 
 model Hec {
-  id                    String   @id @default(auto()) @map("_id") @db.ObjectId
-  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId                String   @db.ObjectId
+  id                    String         @id @default(auto()) @map("_id") @db.ObjectId
+  user                  User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                String         @db.ObjectId
   date                  String
   dataProvidedTo        String
   programOfOrganization String
   evidence              String
-  approvedStatus        String   @default("pending")
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  approvedStatus        ApprovedStatus @default(pending)
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
 }
 
 // 17 - 
 model Community {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId         String   @db.ObjectId
+  id             String         @id @default(auto()) @map("_id") @db.ObjectId
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String         @db.ObjectId
   date           String
   role           String
   type           String
   title          String
   evidence       String
-  approvedStatus String   @default("pending")
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  approvedStatus ApprovedStatus @default(pending)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
 }
 
 // 18 - 
 model Mentorship {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId         String   @db.ObjectId
+  id             String         @id @default(auto()) @map("_id") @db.ObjectId
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String         @db.ObjectId
   programName    String
   noOfStudents   Float
   role           String
   details        String
   evidence       String
-  approvedStatus String   @default("pending")
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  approvedStatus ApprovedStatus @default(pending)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
 }
 
 model StudentOrganization {
-  id               String   @id @default(auto()) @map("_id") @db.ObjectId
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId           String   @db.ObjectId
+  id               String         @id @default(auto()) @map("_id") @db.ObjectId
+  user             User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           String         @db.ObjectId
   organizationName String
   noOfMenbers      Int
   membersName      String
@@ -409,7 +409,13 @@ model StudentOrganization {
   objectives       String
   link             String?
   evidence         String
-  approvedStatus   String   @default("pending")
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  approvedStatus   ApprovedStatus @default(pending)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+enum ApprovedStatus {
+  pending
+  accepted
+  rejected
 }

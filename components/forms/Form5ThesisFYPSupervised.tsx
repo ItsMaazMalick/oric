@@ -30,6 +30,7 @@ import {
 } from "../ui/select";
 import { FormError } from "./FormError";
 import { FormSuccess } from "./FormSuccess";
+import { DynamicSelectInput } from "../InputFields/dynamicselectInput";
 
 export function Form5ThesisFYPSupervised({
   id,
@@ -123,38 +124,18 @@ export function Form5ThesisFYPSupervised({
             <div className="flex flex-col w-full gap-4 lg:flex-row">
               {/* ROLE */}
               <div className="w-full lg:w-[30%]">
-                <FormField
-                  control={form.control}
+                <DynamicSelectInput
+                  label="Applicant Role"
                   name="role"
-                  render={({ field: { value, ...fieldValues } }) => (
-                    <FormItem>
-                      <FormLabel>Applicant Role</FormLabel>
-                      <Select
-                        onValueChange={(selectedValue) => {
-                          const selectedRole = selectedValue;
-                          setRole(selectedRole);
-                          fieldValues.onChange(selectedRole);
-                        }}
-                        //   defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select Role" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="Co-Supervisor">
-                            Co-Supervisor
-                          </SelectItem>
-                          <SelectItem value="Supervisor">Supervisor</SelectItem>
-                          <SelectItem value="Member Supervisory Committee">
-                            Member Supervisory Committee
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  control={form.control}
+                  items={[
+                    "Co-Supervisor",
+                    "Supervisor",
+                    "Member Supervisory Committee",
+                  ]}
+                  data={role}
+                  setData={setRole}
+                  required
                 />
               </div>
               {/* CO_SUPERVISOR */}

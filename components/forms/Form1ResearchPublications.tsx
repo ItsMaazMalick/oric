@@ -34,6 +34,7 @@ import {
 import { FormError } from "./FormError";
 import { FormSuccess } from "./FormSuccess";
 import { useRouter } from "next/navigation";
+import { RequiredTag } from "../InputFields/required-tag";
 
 export function Form1ResearchPublications({
   id,
@@ -142,7 +143,10 @@ export function Form1ResearchPublications({
                   name="year"
                   render={({ field: { value, ...fieldValues } }) => (
                     <FormItem>
-                      <FormLabel>Select Year</FormLabel>
+                      <FormLabel className="text-xs md:text-base">
+                        Select Year
+                        <RequiredTag />
+                      </FormLabel>
                       <Select
                         onValueChange={(selectedValue) => {
                           const selectedYear = selectedValue;
@@ -154,7 +158,7 @@ export function Form1ResearchPublications({
                         }}
                         //   defaultValue={field.value}
                       >
-                        <FormControl>
+                        <FormControl className="text-xs md:text-base">
                           <SelectTrigger>
                             <SelectValue placeholder="Select Year" />
                           </SelectTrigger>
@@ -167,7 +171,7 @@ export function Form1ResearchPublications({
                           ))}
                         </SelectContent>
                       </Select>
-                      <FormMessage />
+                      <FormMessage className="text-xs sm:text-base" />
                     </FormItem>
                   )}
                 />
@@ -176,10 +180,11 @@ export function Form1ResearchPublications({
               {/* COUNTRY OF PUB */}
               <div className="w-full lg:w-3/4">
                 <SelectInput
-                  label="Country of Pub."
+                  label="Country of Pub"
                   name="country"
                   control={form.control}
                   items={countries}
+                  required
                 />
               </div>
             </div>
@@ -188,18 +193,21 @@ export function Form1ResearchPublications({
               label="Journal Name"
               name="journalName"
               control={form.control}
+              required
             />
             {/* BOOK TITLE */}
             <TextInput
               label="Title of Research Paper"
               name="title"
               control={form.control}
+              required
             />
             {/* AUTHORS NAME */}
             <TextInput
               label="Author's Name"
               name="authorName"
               control={form.control}
+              required
             />
             <div className="flex flex-col w-full gap-4 lg:flex-row">
               {/* CATEGORY */}
@@ -210,12 +218,14 @@ export function Form1ResearchPublications({
                     name="category"
                     control={form.control}
                     items={["HEC Cat-W", "HEC Cat-X", "HEC Cat-Y", "HEC Cat-Z"]}
+                    required
                   />
                 ) : (
                   <TextInput
                     label="Category"
                     name="category"
                     control={form.control}
+                    required
                   />
                 )}
               </div>
@@ -232,6 +242,7 @@ export function Form1ResearchPublications({
                     "Corr. Author",
                     "Other",
                   ]}
+                  required
                 />
               </div>
             </div>
@@ -239,7 +250,12 @@ export function Form1ResearchPublications({
             <div className="flex flex-col w-full gap-4 lg:flex-row">
               {/* ISSN */}
               <div className="w-full lg:w-[40%]">
-                <TextInput label="ISSN" name="issn" control={form.control} />
+                <TextInput
+                  label="ISSN"
+                  name="issn"
+                  control={form.control}
+                  required
+                />
               </div>
               {/* VOLUME */}
               <div className="w-full lg:w-[30%]">
@@ -247,6 +263,7 @@ export function Form1ResearchPublications({
                   label="Volume (Issue) page no(s)"
                   name="volume"
                   control={form.control}
+                  required
                 />
               </div>
               {/* PAGE NO */}
@@ -256,6 +273,7 @@ export function Form1ResearchPublications({
                   name="pages"
                   type="number"
                   control={form.control}
+                  required
                 />
               </div>
             </div>
@@ -268,6 +286,7 @@ export function Form1ResearchPublications({
                   name="affiliation"
                   control={form.control}
                   items={["No", "Yes"]}
+                  required
                 />
               </div>
               <div className="w-full lg:w-[70%]">
@@ -276,6 +295,7 @@ export function Form1ResearchPublications({
                   label="Web. Link"
                   name="link"
                   control={form.control}
+                  required
                 />
               </div>
             </div>

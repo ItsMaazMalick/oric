@@ -7,6 +7,7 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
+import { RequiredTag } from "./required-tag";
 type TextInputProps = {
   label: string;
   control: any;
@@ -14,6 +15,7 @@ type TextInputProps = {
   type?: string;
   placeholder?: string;
   description?: string;
+  required?: boolean;
 };
 
 export default function TextInput({
@@ -23,6 +25,7 @@ export default function TextInput({
   type,
   placeholder,
   description,
+  required,
 }: TextInputProps) {
   return (
     <FormField
@@ -30,7 +33,10 @@ export default function TextInput({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="text-xs md:text-base">{label}</FormLabel>
+          <FormLabel className="text-xs md:text-base">
+            {label}
+            {required && <RequiredTag />}
+          </FormLabel>
           <FormControl className="text-xs md:text-base">
             <Input
               type={type ? type : "text"}

@@ -38,6 +38,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { RequiredTag } from "../InputFields/required-tag";
+import { DynamicSelectInput } from "../InputFields/dynamicselectInput";
 
 export function Form2BookAuthoredEdited({
   id,
@@ -130,44 +132,23 @@ export function Form2BookAuthoredEdited({
             <div className="flex flex-col w-full gap-4 lg:flex-row">
               {/* ISBN */}
               <div className="w-full lg:w-[40%]">
-                <TextInput label="ISBN" name="isbn" control={form.control} />
+                <TextInput
+                  label="ISBN"
+                  name="isbn"
+                  control={form.control}
+                  required
+                />
               </div>
               {/* ROLE */}
               <div className="w-full lg:w-[30%]">
-                <FormField
-                  control={form.control}
+                <DynamicSelectInput
+                  label="Applicant Role"
                   name="role"
-                  render={({ field: { value, ...fieldValues } }) => (
-                    <FormItem>
-                      <FormLabel>Applicant Role</FormLabel>
-                      <Select
-                        onValueChange={(selectedValue) => {
-                          const selectedAuthor = selectedValue;
-                          setAuthor(selectedAuthor);
-                          fieldValues.onChange(selectedAuthor);
-                        }}
-                        //   defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select Role" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="Book Author">
-                            Book Author
-                          </SelectItem>
-                          <SelectItem value="Chapter Author">
-                            Chapter Author
-                          </SelectItem>
-                          <SelectItem value="Book Editor">
-                            Book Editor
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  control={form.control}
+                  items={["Book Author", "Chapter Author", "Book Editor"]}
+                  data={author}
+                  setData={setAuthor}
+                  required
                 />
               </div>
               {/* PAGE NO */}
@@ -177,6 +158,7 @@ export function Form2BookAuthoredEdited({
                   name="pages"
                   control={form.control}
                   type="number"
+                  required
                 />
               </div>
             </div>
@@ -188,6 +170,7 @@ export function Form2BookAuthoredEdited({
                   name="year"
                   control={form.control}
                   items={years}
+                  required
                 />
               </div>
 
@@ -198,6 +181,7 @@ export function Form2BookAuthoredEdited({
                   name="country"
                   control={form.control}
                   items={countries}
+                  required
                 />
               </div>
             </div>
@@ -206,6 +190,7 @@ export function Form2BookAuthoredEdited({
               label="Book Title"
               name="bookTitle"
               control={form.control}
+              required
             />
             {/* TITLE OF RESEARCH PAPER */}
             {author === "Chapter Author" && (
@@ -220,6 +205,7 @@ export function Form2BookAuthoredEdited({
               label="Publisher Name"
               name="publisherName"
               control={form.control}
+              required
             />
 
             <div className="flex flex-col w-full gap-4 lg:flex-row">
@@ -230,6 +216,7 @@ export function Form2BookAuthoredEdited({
                   name="affiliation"
                   control={form.control}
                   items={["No", "Yes"]}
+                  required
                 />
               </div>
               <div className="w-full lg:w-[70%]">
@@ -238,6 +225,7 @@ export function Form2BookAuthoredEdited({
                   label="Web. Link"
                   name="link"
                   control={form.control}
+                  required
                 />
               </div>
             </div>
