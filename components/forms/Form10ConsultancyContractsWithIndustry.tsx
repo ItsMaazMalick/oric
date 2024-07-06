@@ -24,10 +24,10 @@ import { FormSuccess } from "./FormSuccess";
 
 export function Form10ConsultancyContractsWithIndustry({
   id,
-  userCookie,
+  updateData,
 }: {
   id: string;
-  userCookie: string;
+  updateData?: any;
 }) {
   const [loading, setLoading] = useState(false);
 
@@ -40,16 +40,16 @@ export function Form10ConsultancyContractsWithIndustry({
   const form = useForm<z.infer<typeof consultancyContractSchema>>({
     resolver: zodResolver(consultancyContractSchema),
     defaultValues: {
-      consultancyType: "",
-      titleOfConsultancy: "",
-      role: "",
-      companyName: "",
-      companyCountry: "",
-      contractValue: 0,
-      startDate: "",
-      endDate: "",
-      keyDeliverables: "",
-      remarks: "",
+      consultancyType: updateData?.consultancyType || "",
+      titleOfConsultancy: updateData?.titleOfConsultancy || "",
+      role: updateData?.role || "",
+      companyName: updateData?.companyName || "",
+      companyCountry: updateData?.companyCountry || "",
+      contractValue: updateData?.contractValue || 0,
+      startDate: updateData?.startDate || "",
+      endDate: updateData?.endDate || "",
+      keyDeliverables: updateData?.keyDeliverables || "",
+      remarks: updateData?.remarks || "",
     },
   });
 
@@ -240,7 +240,7 @@ export function Form10ConsultancyContractsWithIndustry({
                   loading={form.formState.isSubmitting}
                   className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
                 >
-                  Submit
+                  {updateData ? "Update" : "Submit"}
                 </FormSubmitButton>
               </div>
             </div>

@@ -35,10 +35,10 @@ import {
 
 export function Form17CommunityWork({
   id,
-  userCookie,
+  updateData,
 }: {
   id: string;
-  userCookie: string;
+  updateData?: any;
 }) {
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState("");
@@ -50,10 +50,10 @@ export function Form17CommunityWork({
   const form = useForm<z.infer<typeof communitySchema>>({
     resolver: zodResolver(communitySchema),
     defaultValues: {
-      date: "",
-      role: "",
-      type: "",
-      title: "",
+      date: updateData?.date || "",
+      role: updateData?.role || "",
+      type: updateData?.type || "",
+      title: updateData?.title || "",
     },
   });
 
@@ -178,7 +178,7 @@ export function Form17CommunityWork({
                   loading={form.formState.isSubmitting}
                   className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
                 >
-                  Submit
+                  {updateData ? "Update" : "Submit"}
                 </FormSubmitButton>
               </div>
             </div>

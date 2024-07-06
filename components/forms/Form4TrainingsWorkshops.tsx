@@ -39,10 +39,10 @@ import { DynamicSelectInput } from "../InputFields/dynamicselectInput";
 
 export function Form4TrainingsWorkshops({
   id,
-  userCookie,
+  updateData,
 }: {
   id: string;
-  userCookie: string;
+  updateData?: any;
 }) {
   const [loading, setLoading] = useState(false);
   const [role, setRole] = useState("");
@@ -54,16 +54,16 @@ export function Form4TrainingsWorkshops({
   const form = useForm<z.infer<typeof traningsWorkshopSchema>>({
     resolver: zodResolver(traningsWorkshopSchema),
     defaultValues: {
-      eventType: "1",
-      applicantRole: "2",
-      startDate: "3",
-      endDate: "4",
-      eventTitle: "5",
-      noOfParticipants: 0,
-      majorFocusArea: "6",
-      audienceType: "7",
-      organizer: "8",
-      country: "9",
+      eventType: updateData?.eventType || "1",
+      applicantRole: updateData?.applicantRole || "2",
+      startDate: updateData?.startDate || "3",
+      endDate: updateData?.endDate || "4",
+      eventTitle: updateData?.eventTitle || "5",
+      noOfParticipants: updateData?.noOfParticipants || 0,
+      majorFocusArea: updateData?.majorFocusArea || "6",
+      audienceType: updateData?.audienceType || "7",
+      organizer: updateData?.organizer || "8",
+      country: updateData?.country || "9",
     },
   });
 
@@ -242,7 +242,7 @@ export function Form4TrainingsWorkshops({
                   loading={form.formState.isSubmitting}
                   className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
                 >
-                  Submit
+                  {updateData ? "Update" : "Submit"}
                 </FormSubmitButton>
               </div>
             </div>

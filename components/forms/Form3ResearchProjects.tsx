@@ -37,10 +37,10 @@ import { FormError } from "./FormError";
 
 export function Form3ResearchProjects({
   id,
-  userCookie,
+  updateData,
 }: {
   id: string;
-  userCookie: string;
+  updateData?: any;
 }) {
   const [file, setFile] = useState("");
   const [nill, setNill] = useState(false);
@@ -51,21 +51,21 @@ export function Form3ResearchProjects({
   const form = useForm<z.infer<typeof researchProjectSchema>>({
     resolver: zodResolver(researchProjectSchema),
     defaultValues: {
-      date: "",
-      fundingAgency: "",
-      nameOfResearch: "",
-      status: "",
-      type: "",
-      role: "",
-      grantAmount: 0,
-      title: "",
-      startDate: "",
-      endDate: "",
-      totalFunding: 0,
-      collaboratingPartner: "",
-      coFundingPartner: "",
-      completion: "",
-      remarks: "",
+      date: updateData?.date || "",
+      fundingAgency: updateData?.fundingAgency || "",
+      nameOfResearch: updateData?.nameOfResearch || "",
+      status: updateData?.status || "",
+      type: updateData?.type || "",
+      role: updateData?.role || "",
+      grantAmount: updateData?.grantAmount || 0,
+      title: updateData?.title || "",
+      startDate: updateData?.startDate || "",
+      endDate: updateData?.endDate || "",
+      totalFunding: updateData?.totalFunding || 0,
+      collaboratingPartner: updateData?.collaboratingPartner || "",
+      coFundingPartner: updateData?.coFundingPartner || "",
+      completion: updateData?.completion || "",
+      remarks: updateData?.remarks || "",
     },
   });
   const onSubmit = async (values: z.infer<typeof researchProjectSchema>) => {
@@ -315,7 +315,7 @@ export function Form3ResearchProjects({
                   loading={form.formState.isSubmitting}
                   className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
                 >
-                  Submit
+                  {updateData ? "Update" : "Submit"}
                 </FormSubmitButton>
               </div>
             </div>

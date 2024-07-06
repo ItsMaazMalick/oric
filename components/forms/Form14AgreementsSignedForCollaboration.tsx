@@ -43,10 +43,10 @@ import {
 
 export function Form14AgreementsSignedForCollaboration({
   id,
-  userCookie,
+  updateData,
 }: {
   id: string;
-  userCookie: string;
+  updateData?: any;
 }) {
   const [loading, setLoading] = useState(false);
 
@@ -59,13 +59,13 @@ export function Form14AgreementsSignedForCollaboration({
   const form = useForm<z.infer<typeof agreementSignedSchema>>({
     resolver: zodResolver(agreementSignedSchema),
     defaultValues: {
-      typeOfLinkage: "",
-      linkageEstablishmentDate: "",
-      scope: "",
-      collaboratingAgency: "",
-      collaboratingAgencyCountry: "",
-      duration: "",
-      areaOfFocus: "",
+      typeOfLinkage: updateData?.typeOfLinkage || "",
+      linkageEstablishmentDate: updateData?.linkageEstablishmentDate || "",
+      scope: updateData?.scope || "",
+      collaboratingAgency: updateData?.collaboratingAgency || "",
+      collaboratingAgencyCountry: updateData?.collaboratingAgencyCountry || "",
+      duration: updateData?.duration || "",
+      areaOfFocus: updateData?.areaOfFocus || "",
     },
   });
 
@@ -226,7 +226,7 @@ export function Form14AgreementsSignedForCollaboration({
                   loading={form.formState.isSubmitting}
                   className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
                 >
-                  Submit
+                  {updateData ? "Update" : "Submit"}
                 </FormSubmitButton>
               </div>
             </div>

@@ -43,10 +43,10 @@ import {
 
 export function Form18MentorshipProgrammes({
   id,
-  userCookie,
+  updateData,
 }: {
   id: string;
-  userCookie: string;
+  updateData?: any;
 }) {
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState("");
@@ -58,10 +58,10 @@ export function Form18MentorshipProgrammes({
   const form = useForm<z.infer<typeof mentorshipSchema>>({
     resolver: zodResolver(mentorshipSchema),
     defaultValues: {
-      programName: "",
-      noOfStudents: 0,
-      role: "",
-      details: "",
+      programName: updateData?.programName || "",
+      noOfStudents: updateData?.noOfStudents || 0,
+      role: updateData?.role || "",
+      details: updateData?.details || "",
     },
   });
 
@@ -198,7 +198,7 @@ export function Form18MentorshipProgrammes({
                     loading={form.formState.isSubmitting}
                     className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
                   >
-                    Submit
+                    {updateData ? "Update" : "Submit"}
                   </FormSubmitButton>
                 </div>
               </div>

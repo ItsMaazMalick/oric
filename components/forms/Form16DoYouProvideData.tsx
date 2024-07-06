@@ -35,10 +35,10 @@ import {
 
 export function Form16DoYouProvideData({
   id,
-  userCookie,
+  updateData,
 }: {
   id: string;
-  userCookie: string;
+  updateData?: any;
 }) {
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState("");
@@ -50,9 +50,9 @@ export function Form16DoYouProvideData({
   const form = useForm<z.infer<typeof hecSchema>>({
     resolver: zodResolver(hecSchema),
     defaultValues: {
-      date: "",
-      dataProvidedTo: "",
-      programOfOrganization: "",
+      date: updateData?.date || "",
+      dataProvidedTo: updateData?.dataProvidedTo || "",
+      programOfOrganization: updateData?.programOfOrganization || "",
     },
   });
 
@@ -173,7 +173,7 @@ export function Form16DoYouProvideData({
                   loading={form.formState.isSubmitting}
                   className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
                 >
-                  Submit
+                  {updateData ? "Update" : "Submit"}
                 </FormSubmitButton>
               </div>
             </div>

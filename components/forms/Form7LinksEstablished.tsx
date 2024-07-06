@@ -24,10 +24,10 @@ import { useRouter } from "next/navigation";
 
 export function Form7LinksEstablished({
   id,
-  userCookie,
+  updateData,
 }: {
   id: string;
-  userCookie: string;
+  updateData?: any;
 }) {
   const [loading, setLoading] = useState(false);
 
@@ -41,12 +41,13 @@ export function Form7LinksEstablished({
   const form = useForm<z.infer<typeof linksEstablishedSchema>>({
     resolver: zodResolver(linksEstablishedSchema),
     defaultValues: {
-      linkageType: "",
-      scope: "",
-      nameOfCollaboratingAgency: "",
-      countryOfCollaboratingAgency: "",
-      scopeOfCollaboration: "",
-      linkageDate: "",
+      linkageType: updateData?.linkageType || "",
+      scope: updateData?.scope || "",
+      nameOfCollaboratingAgency: updateData?.nameOfCollaboratingAgency || "",
+      countryOfCollaboratingAgency:
+        updateData?.countryOfCollaboratingAgency || "",
+      scopeOfCollaboration: updateData?.scopeOfCollaboration || "",
+      linkageDate: updateData?.linkageDate || "",
     },
   });
 
@@ -200,7 +201,7 @@ export function Form7LinksEstablished({
                   loading={form.formState.isSubmitting}
                   className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
                 >
-                  Submit
+                  {updateData ? "Update" : "Submit"}
                 </FormSubmitButton>
               </div>
             </div>

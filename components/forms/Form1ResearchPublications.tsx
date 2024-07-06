@@ -38,10 +38,10 @@ import { RequiredTag } from "../InputFields/required-tag";
 
 export function Form1ResearchPublications({
   id,
-  userCookie,
+  updateData,
 }: {
   id: string;
-  userCookie: string;
+  updateData?: any;
 }) {
   const [loading, setLoading] = useState(false);
   const [year, setYear] = useState(new Date().getFullYear().toString());
@@ -59,20 +59,20 @@ export function Form1ResearchPublications({
   const form = useForm<z.infer<typeof researchPublicationSchema>>({
     resolver: zodResolver(researchPublicationSchema),
     defaultValues: {
-      year: "1",
-      country: "2",
-      journalName: "3",
-      title: "4",
-      authorName: "5",
-      category: "6",
-      status: "7",
-      issn: "8",
-      volume: "9",
-      pages: 0,
-      affiliation: "11",
-      link: "12",
-      countries: "13",
-      addressing: "14",
+      year: updateData?.year || "",
+      country: updateData?.country || "",
+      journalName: updateData?.journalName || "",
+      title: updateData?.title || "",
+      authorName: updateData?.authorName || "",
+      category: updateData?.category || "",
+      status: updateData?.status || "",
+      issn: updateData?.issn || "",
+      volume: updateData?.volume || "",
+      pages: updateData?.pages || 0,
+      affiliation: updateData?.affiliation || "",
+      link: updateData?.link || "",
+      countries: updateData?.countries || "13",
+      addressing: updateData?.addressing || "14",
     },
   });
 
@@ -156,7 +156,7 @@ export function Form1ResearchPublications({
                           );
                           fieldValues.onChange(selectedYear);
                         }}
-                        //   defaultValue={field.value}
+                        defaultValue={value}
                       >
                         <FormControl className="text-xs md:text-base">
                           <SelectTrigger>
@@ -319,7 +319,7 @@ export function Form1ResearchPublications({
                   loading={form.formState.isSubmitting}
                   className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
                 >
-                  Submit
+                  {updateData ? "Update" : "Submit"}
                 </FormSubmitButton>
               </div>
             </div>

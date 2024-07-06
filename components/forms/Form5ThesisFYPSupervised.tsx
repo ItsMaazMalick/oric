@@ -34,10 +34,10 @@ import { DynamicSelectInput } from "../InputFields/dynamicselectInput";
 
 export function Form5ThesisFYPSupervised({
   id,
-  userCookie,
+  updateData,
 }: {
   id: string;
-  userCookie: string;
+  updateData?: any;
 }) {
   const [loading, setLoading] = useState(false);
 
@@ -50,15 +50,15 @@ export function Form5ThesisFYPSupervised({
   const form = useForm<z.infer<typeof thesisSchema>>({
     resolver: zodResolver(thesisSchema),
     defaultValues: {
-      role: "",
-      nameOfSupervisor: "1",
-      year: "",
-      degreeLevel: "",
-      degreeProgram: "",
-      department: "",
-      university: "",
-      studentName: "",
-      degreeStage: "",
+      role: updateData?.role || "",
+      nameOfSupervisor: updateData?.nameOfSupervisor || "1",
+      year: updateData?.year || "",
+      degreeLevel: updateData?.degreeLevel || "",
+      degreeProgram: updateData?.degreeProgram || "",
+      department: updateData?.department || "",
+      university: updateData?.university || "",
+      studentName: updateData?.studentName || "",
+      degreeStage: updateData?.degreeStage || "",
     },
   });
 
@@ -236,7 +236,7 @@ export function Form5ThesisFYPSupervised({
                   loading={form.formState.isSubmitting}
                   className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
                 >
-                  Submit
+                  {updateData ? "Update" : "Submit"}
                 </FormSubmitButton>
               </div>
             </div>

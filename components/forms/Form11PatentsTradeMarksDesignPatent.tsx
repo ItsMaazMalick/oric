@@ -44,10 +44,10 @@ import {
 
 export function Form11PatentsTradeMarksDesignPatent({
   id,
-  userCookie,
+  updateData,
 }: {
   id: string;
-  userCookie: string;
+  updateData?: any;
 }) {
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState("");
@@ -59,15 +59,15 @@ export function Form11PatentsTradeMarksDesignPatent({
   const form = useForm<z.infer<typeof patentsTradeSchema>>({
     resolver: zodResolver(patentsTradeSchema),
     defaultValues: {
-      typeOfIP: "",
-      scope: "",
-      date: "",
-      namesOfInventors: "",
-      inventionTitle: "",
-      IPStatus: "",
-      royaltyRevenue: 0,
-      keyScientificAspects: "",
-      commertialPartners: "",
+      typeOfIP: updateData?.typeOfIP || "",
+      scope: updateData?.scope || "",
+      date: updateData?.date || "",
+      namesOfInventors: updateData?.namesOfInventors || "",
+      inventionTitle: updateData?.inventionTitle || "",
+      IPStatus: updateData?.IPStatus || "",
+      royaltyRevenue: updateData?.royaltyRevenue || 0,
+      keyScientificAspects: updateData?.keyScientificAspects || "",
+      commertialPartners: updateData?.commertialPartners || "",
     },
   });
 
@@ -255,7 +255,7 @@ export function Form11PatentsTradeMarksDesignPatent({
                   loading={form.formState.isSubmitting}
                   className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
                 >
-                  Submit
+                  {updateData ? "Update" : "Submit"}
                 </FormSubmitButton>
               </div>
             </div>

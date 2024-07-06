@@ -7,6 +7,7 @@ import { z } from "zod";
 import {
   patentsTradeSchema,
   researchProductsSchema,
+  formStatusSchema,
   researchProjectSchema,
 } from "@/lib/validations/formValidations";
 
@@ -88,4 +89,69 @@ export async function saveResearchProductsNill(id: string) {
   });
   return { success: "Data saved successfully" };
   revalidatePath("/user/dashboard-add-record");
+}
+
+export async function deleteResearchProducts(id: string) {
+  try {
+    if (!id) {
+      return { error: "Id is required" };
+    }
+    const existingRecord = await prisma.researchProductsProcess.findUnique({
+      where: { id },
+    });
+    if (!existingRecord) {
+      return { error: "No record found" };
+    }
+    await prisma.researchProductsProcess.delete({
+      where: { id },
+    });
+    return { success: "Record successfully deleted" };
+  } catch (error) {
+    return { error: "Something went wrong" };
+  } finally {
+    revalidatePath("/user/dashboard/add-record");
+  }
+}
+
+export async function getResearchProducts(userId: string, id: string) {
+  try {
+    const data = await prisma.researchProductsProcess.findUnique({
+      where: {
+        id,
+        userId,
+      },
+    });
+    return data;
+  } catch (error) {
+    return null;
+  }
+}
+
+export async function updateResearchProductsStatus(
+  values: z.infer<typeof formStatusSchema>,
+  id: string
+) {
+  try {
+    const validData = formStatusSchema.safeParse(values);
+    if (!validData?.success) {
+      return { error: "Invalid data provided" };
+    }
+
+    const { status } = validData.data;
+
+    const res = await prisma.researchProductsProcess.update({
+      where: { id },
+      data: {
+        approvedStatus:
+          status === "pending"
+            ? "pending"
+            : status === "accepted"
+            ? "accepted"
+            : "rejected",
+      },
+    });
+    return { success: "Status updated" };
+  } catch (error) {
+    return { error: "Something went wrong" };
+  }
 }

@@ -40,10 +40,7 @@ export default function SelectInput({
             {label}
             {required && <RequiredTag />}
           </FormLabel>
-          <Select
-            onValueChange={field.onChange}
-            //   defaultValue={field.value}
-          >
+          <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl className="text-xs md:text-base">
               <SelectTrigger>
                 <SelectValue placeholder={`Select ${label}`} />

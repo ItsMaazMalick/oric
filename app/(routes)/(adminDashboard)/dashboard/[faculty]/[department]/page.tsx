@@ -1,4 +1,5 @@
-import AdminDataTable from "@/components/tables/AdminDataTable";
+import { getAllRecordsForAdmin } from "@/app/actions/user/admin-records";
+import AdminDataTableAdmin from "@/components/tables/AdminDataTable-Admin";
 import {
   Accordion,
   AccordionContent,
@@ -12,11 +13,7 @@ const Department = async ({
 }: {
   params: { faculty: string; department: string };
 }) => {
-  const res = await fetch(
-    `${process.env.PUBLIC_URL}/api/admin/records/${params.faculty}/${params.department}`,
-    { cache: "no-store" }
-  );
-  const { books } = await res.json();
+  const { books }: any = await getAllRecordsForAdmin(params.faculty);
 
   return (
     <Accordion
@@ -31,7 +28,7 @@ const Department = async ({
           </AccordionTrigger>
           <AccordionContent>
             {/* <Test researchPublications={researchPublications} /> */}
-            <AdminDataTable data={book} index={index + 1} />
+            <AdminDataTableAdmin data={book} index={index + 1} />
           </AccordionContent>
         </AccordionItem>
       ))}

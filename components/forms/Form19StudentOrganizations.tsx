@@ -43,10 +43,10 @@ import {
 
 export function Form19StudentOrganizations({
   id,
-  userCookie,
+  updateData,
 }: {
   id: string;
-  userCookie: string;
+  updateData?: any;
 }) {
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState("");
@@ -58,12 +58,12 @@ export function Form19StudentOrganizations({
   const form = useForm<z.infer<typeof studentOrganizationSchema>>({
     resolver: zodResolver(studentOrganizationSchema),
     defaultValues: {
-      organizationName: "",
-      noOfMenbers: 0,
-      membersName: "",
-      role: "",
-      objectives: "",
-      link: "",
+      organizationName: updateData?.organizationName || "",
+      noOfMenbers: updateData?.noOfMenbers || 0,
+      membersName: updateData?.membersName || "",
+      role: updateData?.role || "",
+      objectives: updateData?.objectives || "",
+      link: updateData?.link || "",
     },
   });
 
@@ -213,7 +213,7 @@ export function Form19StudentOrganizations({
                   loading={form.formState.isSubmitting}
                   className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
                 >
-                  Submit
+                  {updateData ? "Update" : "Submit"}
                 </FormSubmitButton>
               </div>
             </div>

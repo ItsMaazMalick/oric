@@ -44,10 +44,10 @@ import {
 
 export function Form9CivicEngagementEvents({
   id,
-  userCookie,
+  updateData,
 }: {
   id: string;
-  userCookie: string;
+  updateData?: any;
 }) {
   const [loading, setLoading] = useState(false);
 
@@ -60,14 +60,14 @@ export function Form9CivicEngagementEvents({
   const form = useForm<z.infer<typeof civicEngagementSchema>>({
     resolver: zodResolver(civicEngagementSchema),
     defaultValues: {
-      type: "",
-      role: "",
-      title: "",
-      communityInvolved: "",
-      outcomes: "",
-      date: "",
-      collaboratingAgency: "",
-      collaboratingAgencyName: "",
+      type: updateData?.type || "",
+      role: updateData?.role || "",
+      title: updateData?.title || "",
+      communityInvolved: updateData?.communityInvolved || "",
+      outcomes: updateData?.outcomes || "",
+      date: updateData?.date || "",
+      collaboratingAgency: updateData?.collaboratingAgency || "",
+      collaboratingAgencyName: updateData?.collaboratingAgencyName || "",
     },
   });
 
@@ -249,7 +249,7 @@ export function Form9CivicEngagementEvents({
                   loading={form.formState.isSubmitting}
                   className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
                 >
-                  Submit
+                  {updateData ? "Update" : "Submit"}
                 </FormSubmitButton>
               </div>
             </div>

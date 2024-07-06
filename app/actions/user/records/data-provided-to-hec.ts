@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import {
   agreementSignedSchema,
+  formStatusSchema,
   hecSchema,
   nationalInternationalAwardsSchema,
   patentsTradeSchema,
@@ -78,4 +79,69 @@ export async function saveDataProvidedToHecNill(id: string) {
   });
   return { success: "Data saved successfully" };
   revalidatePath("/user/dashboard-add-record");
+}
+
+export async function deleteDataProvidedToHec(id: string) {
+  try {
+    if (!id) {
+      return { error: "Id is required" };
+    }
+    const existingRecord = await prisma.hec.findUnique({
+      where: { id },
+    });
+    if (!existingRecord) {
+      return { error: "No record found" };
+    }
+    await prisma.hec.delete({
+      where: { id },
+    });
+    return { success: "Record successfully deleted" };
+  } catch (error) {
+    return { error: "Something went wrong" };
+  } finally {
+    revalidatePath("/user/dashboard/add-record");
+  }
+}
+
+export async function getDataProvidedToHec(userId: string, id: string) {
+  try {
+    const data = await prisma.hec.findUnique({
+      where: {
+        id,
+        userId,
+      },
+    });
+    return data;
+  } catch (error) {
+    return null;
+  }
+}
+
+export async function updateDataProvidedToHecStatus(
+  values: z.infer<typeof formStatusSchema>,
+  id: string
+) {
+  try {
+    const validData = formStatusSchema.safeParse(values);
+    if (!validData?.success) {
+      return { error: "Invalid data provided" };
+    }
+
+    const { status } = validData.data;
+
+    const res = await prisma.hec.update({
+      where: { id },
+      data: {
+        approvedStatus:
+          status === "pending"
+            ? "pending"
+            : status === "accepted"
+            ? "accepted"
+            : "rejected",
+      },
+    });
+    return { success: "Status updated" };
+  } catch (error) {
+    return { error: "Something went wrong" };
+  }
 }

@@ -44,10 +44,10 @@ import {
 
 export function Form6PolicyAdvocacyORCaseStudies({
   id,
-  userCookie,
+  updateData,
 }: {
   id: string;
-  userCookie: string;
+  updateData?: any;
 }) {
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState("");
@@ -59,14 +59,14 @@ export function Form6PolicyAdvocacyORCaseStudies({
   const form = useForm<z.infer<typeof policyAdvocacySchema>>({
     resolver: zodResolver(policyAdvocacySchema),
     defaultValues: {
-      year: "",
-      nameOfGovernmentBody: "",
-      nameOfResearcher: "",
-      designationOfResearcher: "",
-      areaAdvocated: "",
-      brief: "",
-      partners: "",
-      advocacyTools: "",
+      year: updateData?.year || "",
+      nameOfGovernmentBody: updateData?.nameOfGovernmentBody || "",
+      nameOfResearcher: updateData?.nameOfResearcher || "",
+      designationOfResearcher: updateData?.designationOfResearcher || "",
+      areaAdvocated: updateData?.areaAdvocated || "",
+      brief: updateData?.brief || "",
+      partners: updateData?.partners || "",
+      advocacyTools: updateData?.advocacyTools || "",
     },
   });
 
@@ -237,7 +237,7 @@ export function Form6PolicyAdvocacyORCaseStudies({
                   loading={form.formState.isSubmitting}
                   className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
                 >
-                  Submit
+                  {updateData ? "Update" : "Submit"}
                 </FormSubmitButton>
               </div>
             </div>

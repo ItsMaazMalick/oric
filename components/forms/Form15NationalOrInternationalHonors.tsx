@@ -35,10 +35,10 @@ import {
 
 export function Form15NationalOrInternationalHonors({
   id,
-  userCookie,
+  updateData,
 }: {
   id: string;
-  userCookie: string;
+  updateData?: any;
 }) {
   const [loading, setLoading] = useState(false);
 
@@ -51,10 +51,10 @@ export function Form15NationalOrInternationalHonors({
   const form = useForm<z.infer<typeof nationalInternationalAwardsSchema>>({
     resolver: zodResolver(nationalInternationalAwardsSchema),
     defaultValues: {
-      date: "",
-      titleOfAward: "",
-      awardingAgency: "",
-      amountOfPrize: 0,
+      date: updateData?.date || "",
+      titleOfAward: updateData?.titleOfAward || "",
+      awardingAgency: updateData?.awardingAgency || "",
+      amountOfPrize: updateData?.amountOfPrize || 0,
     },
   });
 
@@ -189,7 +189,7 @@ export function Form15NationalOrInternationalHonors({
                   loading={form.formState.isSubmitting}
                   className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
                 >
-                  Submit
+                  {updateData ? "Update" : "Submit"}
                 </FormSubmitButton>
               </div>
             </div>

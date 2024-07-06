@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import {
   civicEngagementSchema,
+  formStatusSchema,
   consultancyContractSchema,
   contractResearchSchema,
   researchProjectSchema,
@@ -89,4 +90,69 @@ export async function saveConsultancyContractsNill(id: string) {
   });
   return { success: "Data saved successfully" };
   revalidatePath("/user/dashboard-add-record");
+}
+
+export async function deleteConsultancyContracts(id: string) {
+  try {
+    if (!id) {
+      return { error: "Id is required" };
+    }
+    const existingRecord = await prisma.consultancyContract.findUnique({
+      where: { id },
+    });
+    if (!existingRecord) {
+      return { error: "No record found" };
+    }
+    await prisma.consultancyContract.delete({
+      where: { id },
+    });
+    return { success: "Record successfully deleted" };
+  } catch (error) {
+    return { error: "Something went wrong" };
+  } finally {
+    revalidatePath("/user/dashboard/add-record");
+  }
+}
+
+export async function getConsultancyContracts(userId: string, id: string) {
+  try {
+    const data = await prisma.consultancyContract.findUnique({
+      where: {
+        id,
+        userId,
+      },
+    });
+    return data;
+  } catch (error) {
+    return null;
+  }
+}
+
+export async function updateConsultancyContractsStatus(
+  values: z.infer<typeof formStatusSchema>,
+  id: string
+) {
+  try {
+    const validData = formStatusSchema.safeParse(values);
+    if (!validData?.success) {
+      return { error: "Invalid data provided" };
+    }
+
+    const { status } = validData.data;
+
+    const res = await prisma.consultancyContract.update({
+      where: { id },
+      data: {
+        approvedStatus:
+          status === "pending"
+            ? "pending"
+            : status === "accepted"
+            ? "accepted"
+            : "rejected",
+      },
+    });
+    return { success: "Status updated" };
+  } catch (error) {
+    return { error: "Something went wrong" };
+  }
 }

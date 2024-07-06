@@ -1,58 +1,339 @@
-export const header1 = [
-  {
-    title: "Year",
-    key: "year",
-  },
-  {
-    title: "Country",
-    key: "country",
-  },
-  {
-    title: "Journal Name",
-    key: "journalName",
-  },
-  {
-    title: "Title",
-    key: "title",
-  },
-  {
-    title: "Author Name",
-    key: "authorName",
-  },
-  {
-    title: "Category",
-    key: "category",
-  },
-  {
-    title: "Status",
-    key: "status",
-  },
-  {
-    title: "ISSN",
-    key: "issn",
-  },
-  {
-    title: "Volume",
-    key: "volume",
-  },
-  {
-    title: "Pages",
-    key: "pages",
-  },
-  {
-    title: "Affiliation",
-    key: "affiliation",
-  },
-  {
-    title: "Link",
-    key: "link",
-  },
-  {
-    title: "Countries",
-    key: "countries",
-  },
-  {
-    title: "Addressing",
-    key: "addressing",
-  },
+export const modalHeaders = [
+  [
+    {
+      title: "Year",
+      key: "year",
+    },
+    {
+      title: "Country",
+      key: "country",
+    },
+    {
+      title: "Journal Name",
+      key: "journalName",
+    },
+    {
+      title: "Title",
+      key: "title",
+    },
+    {
+      title: "Author Name",
+      key: "authorName",
+    },
+    {
+      title: "Category",
+      key: "category",
+    },
+    {
+      title: "Status",
+      key: "status",
+    },
+    {
+      title: "ISSN",
+      key: "issn",
+    },
+    {
+      title: "Volume",
+      key: "volume",
+    },
+    {
+      title: "Pages",
+      key: "pages",
+    },
+    {
+      title: "Affiliation",
+      key: "affiliation",
+    },
+    {
+      title: "Link",
+      key: "link",
+    },
+    {
+      title: "Countries",
+      key: "countries",
+    },
+    {
+      title: "Addressing",
+      key: "addressing",
+    },
+  ],
+  [
+    {
+      title: "ISBN",
+      key: "isbn",
+    },
+    {
+      title: "Applicant Role",
+      key: "role",
+    },
+    {
+      title: "Pages",
+      key: "pages",
+    },
+    {
+      title: "Year",
+      key: "year",
+    },
+    {
+      title: "Country",
+      key: "country",
+    },
+    {
+      title: "Title of Book",
+      key: "bookTitle",
+    },
+    {
+      title: "Title of Chapter",
+      key: "chapterTitle",
+    },
+    {
+      title: "Publisher Name",
+      key: "publisherName",
+    },
+    {
+      title: "Affiliation with AIOU",
+      key: "affiliation",
+    },
+    {
+      title: "Web Link",
+      key: "link",
+    },
+    {
+      title: "Addressing any SDG",
+      key: "addressing",
+    },
+  ],
+  [
+    {
+      title: "Year",
+      key: "date",
+    },
+    {
+      title: "Funding Agency",
+      key: "agency",
+    },
+    {
+      title: "Name of Research",
+      key: "name",
+    },
+    {
+      title: "Status",
+      key: "status",
+    },
+    {
+      title: "Type",
+      key: "type",
+    },
+    {
+      title: "Role",
+      key: "role",
+    },
+    {
+      title: "Grand Amount",
+      key: "grantAmount",
+    },
+    {
+      title: "Title of Research Project",
+      key: "title",
+    },
+    {
+      title: "Start Date",
+      key: "startDate",
+    },
+    {
+      title: "End Date",
+      key: "endDate",
+    },
+    {
+      title: "Total Funding",
+      key: "totalFunding",
+    },
+    {
+      title: "Collaborating Partner",
+      key: "collaboratingPartner",
+    },
+    {
+      title: "Co-Funding Partner",
+      key: "coFundingPartner",
+    },
+    {
+      title: "Completion",
+      key: "completion",
+    },
+    {
+      title: "Remarks",
+      key: "remarks",
+    },
+    {
+      title: "File",
+      key: "file",
+    },
+  ],
+  [
+    { title: "Type of Event", key: "eventType" },
+    { title: "Applicant Role", key: "applicantRole" },
+    { title: "Start Date", key: "startDate" },
+    { title: "End Date", key: "endDate" },
+    { title: "Title of Event", key: "eventTitle" },
+    { title: "No of Participants", key: "noOfParticipants" },
+    { title: "Major Focus Area", key: "majorFocusArea" },
+    { title: "Audience Type", key: "audienceType" },
+    { title: "Organizer", key: "organizer" },
+    { title: "Country", key: "country" },
+  ],
+  [
+    { title: "Role", key: "role" },
+    { title: "Name of Supervisor", key: "nameOfSupervisor" },
+    { title: "Year", key: "year" },
+    { title: "Degree Level", key: "degreeLevel" },
+    { title: "Degree Program", key: "degreeProgram" },
+    { title: "Department", key: "department" },
+    { title: "University", key: "university" },
+    { title: "Student Name", key: "studentName" },
+    { title: "Degree Stage", key: "degreeStage" },
+  ],
+  [
+    { title: "Year", key: "year" },
+    { title: "Name of Government Body", key: "nameOfGovernmentBody" },
+    { title: "Name of Researcher", key: "nameOfResearcher" },
+    { title: "Designation of Researcher", key: "designationOfResearcher" },
+    { title: "Area Advocated", key: "areaAdvocated" },
+    { title: "Brief", key: "brief" },
+    { title: "Partners", key: "partners" },
+    { title: "Advocacy Tools", key: "advocacyTools" },
+    { title: "Policy Case Study Copy", key: "policyCaseStudyCopy" },
+  ],
+  [
+    { title: "Linkage Type", key: "linkageType" },
+    { title: "Scope", key: "scope" },
+    { title: "Name of Collaborating Agency", key: "nameOfCollaboratingAgency" },
+    {
+      title: "Country of Collaborating Agency",
+      key: "countryOfCollaboratingAgency",
+    },
+    { title: "Scope of Collaboration", key: "scopeOfCollaboration" },
+    { title: "Linkage Date", key: "linkageDate" },
+    { title: "MoU Copy", key: "mouCopy" },
+  ],
+  [
+    { title: "Scope", key: "scope" },
+    { title: "Sponsoring Agency Country", key: "sponsoringAgencyCountry" },
+    { title: "Contract Awarding Agency", key: "contractAwardingAgency" },
+    { title: "Title", key: "title" },
+    { title: "Amount Of Contract", key: "amountOfContract" },
+    { title: "Role", key: "role" },
+    { title: "Name of PI", key: "nameOfPI" },
+    { title: "Designation of PI", key: "designationOfPI" },
+    { title: "Organization of PI", key: "organizationOfPI" },
+    { title: "Starting Date", key: "startingDate" },
+    { title: "Ending Date", key: "endingDate" },
+    { title: "Date of Contract", key: "dateOfContract" },
+    { title: "Contract Resrarch Copy", key: "contractResearchCopy" },
+  ],
+  [
+    { title: "Type", key: "type" },
+    { title: "Role", key: "role" },
+    { title: "Title", key: "title" },
+    { title: "Community Involved", key: "communityInvolved" },
+    { title: "Outcomes", key: "outcomes" },
+    { title: "Date", key: "date" },
+    { title: "Collaborating Agency", key: "collaboratingAgency" },
+    { title: "Collaborating Agency Name", key: "collaboratingAgencyName" },
+    { title: "Brief Report", key: "briefReport" },
+  ],
+  [
+    { title: "Type", key: "consultancyType" },
+    { title: "Title", key: "titleOfConsultancy" },
+    { title: "Role", key: "role" },
+    { title: "Company Name", key: "companyName" },
+    { title: "Company Country", key: "companyCountry" },
+    { title: "Contract Value", key: "contractValue" },
+    { title: "Start Date", key: "startDate" },
+    { title: "End Date", key: "endDate" },
+    { title: "Key Deliverables", key: "keyDeliverables" },
+    { title: "Remarks", key: "remarks" },
+    { title: "Copy of Contract", key: "copyOfContract" },
+  ],
+  [
+    { title: "Type", key: "typeOfIP" },
+    { title: "Scope", key: "scope" },
+    { title: "Date", key: "date" },
+    { title: "Name of Inventors", key: "namesOfInventors" },
+    { title: "Invention Title", key: "inventionTitle" },
+    { title: "IP Status", key: "IPStatus" },
+    { title: "Royalty Revenue", key: "royaltyRevenue" },
+    { title: "Key Scientific Aspects", key: "keyScientificAspects" },
+    { title: "Commertial Partners", key: "commertialPartners" },
+    { title: "Evidence", key: "evidence" },
+  ],
+  [
+    { title: "Type", key: "type" },
+    { title: "Category", key: "category" },
+    { title: "Development Status", key: "developmentStatus" },
+    { title: "Date", key: "date" },
+    { title: "Name of Inventors", key: "nameOfInventors" },
+    { title: "Title", key: "title" },
+    { title: "Key Scientific Aspects", key: "keyScientificAspects" },
+    { title: "Field of Use", key: "fieldOfUse" },
+    { title: "Collaborating Partners Name", key: "collaboratingPartnerName" },
+    { title: "Financial Support", key: "financialSupport" },
+    { title: "Evidence", key: "evidence" },
+  ],
+  [
+    { title: "Category", key: "category" },
+    { title: "Date", key: "date" },
+    { title: "Scope", key: "scope" },
+    { title: "Title", key: "title" },
+    { title: "Department Name", key: "departmentName" },
+    { title: "Evidence", key: "evidence" },
+  ],
+  [
+    { title: "Type of Linkage", key: "typeOfLinkage" },
+    { title: "Linkage Establishment Date", key: "linkageEstablishmentDate" },
+    { title: "Scope", key: "scope" },
+    { title: "Collaborating Agency", key: "collaboratingAgency" },
+    {
+      title: "Collaborating Agency Country",
+      key: "collaboratingAgencyCountry",
+    },
+    { title: "Duration", key: "duration" },
+    { title: "Area of Focus", key: "areaOfFocus" },
+    { title: "MoU Copy", key: "mouCopy" },
+  ],
+  [
+    { title: "Date", key: "date" },
+    { title: "Title of Award", key: "titleOfAward" },
+    { title: "Awarding Agency", key: "awardingAgency" },
+    { title: "Amount of Prize", key: "amountOfPrize" },
+    { title: "Evidence", key: "evidence" },
+  ],
+  [
+    { title: "Date", key: "date" },
+    { title: "Data provided to", key: "dataProvidedTo" },
+    { title: "Program Organization", key: "programOfOrganization" },
+    { title: "Evidence", key: "evidence" },
+  ],
+  [
+    { title: "Date", key: "date" },
+    { title: "Role", key: "role" },
+    { title: "Type", key: "type" },
+    { title: "Title", key: "title" },
+    { title: "Evidence", key: "evidence" },
+  ],
+  [
+    { title: "Name of Program", key: "programName" },
+    { title: "No of Students", key: "noOfStudents" },
+    { title: "Role", key: "role" },
+    { title: "Details", key: "details" },
+    { title: "Evidence", key: "evidence" },
+  ],
+  [
+    { title: "Organization Name", key: "organizationName" },
+    { title: "No of Members", key: "noOfMenbers" },
+    { title: "Members Name", key: "membersName" },
+    { title: "Role", key: "role" },
+    { title: "Objectives", key: "objectives" },
+    { title: "Web Link", key: "link" },
+    { title: "Evidence", key: "evidence" },
+  ],
 ];

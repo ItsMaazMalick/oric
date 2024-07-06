@@ -44,10 +44,10 @@ import { DynamicSelectInput } from "../InputFields/dynamicselectInput";
 
 export function Form8ContractResearchAwarded({
   id,
-  userCookie,
+  updateData,
 }: {
   id: string;
-  userCookie: string;
+  updateData?: any;
 }) {
   const [loading, setLoading] = useState(false);
 
@@ -61,18 +61,18 @@ export function Form8ContractResearchAwarded({
   const form = useForm<z.infer<typeof contractResearchSchema>>({
     resolver: zodResolver(contractResearchSchema),
     defaultValues: {
-      scope: "",
-      sponsoringAgencyCountry: "",
-      contractAwardingAgency: "",
-      title: "",
-      amountOfContract: 0,
-      role: "",
-      nameOfPI: "",
-      designationOfPI: "",
-      organizationOfPI: "",
-      startingDate: "",
-      endingDate: "",
-      dateOfContract: "",
+      scope: updateData?.scope || "",
+      sponsoringAgencyCountry: updateData?.sponsoringAgencyCountry || "",
+      contractAwardingAgency: updateData?.contractAwardingAgency || "",
+      title: updateData?.title || "",
+      amountOfContract: updateData?.amountOfContract || 0,
+      role: updateData?.role || "",
+      nameOfPI: updateData?.nameOfPI || "",
+      designationOfPI: updateData?.designationOfPI || "",
+      organizationOfPI: updateData?.organizationOfPI || "",
+      startingDate: updateData?.startingDate || "",
+      endingDate: updateData?.endingDate || "",
+      dateOfContract: updateData?.dateOfContract || "",
     },
   });
 
@@ -276,7 +276,7 @@ export function Form8ContractResearchAwarded({
                   loading={form.formState.isSubmitting}
                   className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
                 >
-                  Submit
+                  {updateData ? "Update" : "Submit"}
                 </FormSubmitButton>
               </div>
             </div>

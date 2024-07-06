@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import {
   bookAuthoredSchema,
+  formStatusSchema,
   researchProjectSchema,
   thesisSchema,
 } from "@/lib/validations/formValidations";
@@ -83,4 +84,69 @@ export async function saveThesisNill(id: string) {
   });
   return { success: "Data saved successfully" };
   revalidatePath("/user/dashboard-add-record");
+}
+
+export async function deleteThesis(id: string) {
+  try {
+    if (!id) {
+      return { error: "Id is required" };
+    }
+    const existingRecord = await prisma.thesis.findUnique({
+      where: { id },
+    });
+    if (!existingRecord) {
+      return { error: "No record found" };
+    }
+    await prisma.thesis.delete({
+      where: { id },
+    });
+    return { success: "Record successfully deleted" };
+  } catch (error) {
+    return { error: "Something went wrong" };
+  } finally {
+    revalidatePath("/user/dashboard/add-record");
+  }
+}
+
+export async function getThesis(userId: string, id: string) {
+  try {
+    const data = await prisma.thesis.findUnique({
+      where: {
+        id,
+        userId,
+      },
+    });
+    return data;
+  } catch (error) {
+    return null;
+  }
+}
+
+export async function updateThesisStatus(
+  values: z.infer<typeof formStatusSchema>,
+  id: string
+) {
+  try {
+    const validData = formStatusSchema.safeParse(values);
+    if (!validData?.success) {
+      return { error: "Invalid data provided" };
+    }
+
+    const { status } = validData.data;
+
+    const res = await prisma.thesis.update({
+      where: { id },
+      data: {
+        approvedStatus:
+          status === "pending"
+            ? "pending"
+            : status === "accepted"
+            ? "accepted"
+            : "rejected",
+      },
+    });
+    return { success: "Status updated" };
+  } catch (error) {
+    return { error: "Something went wrong" };
+  }
 }

@@ -29,61 +29,43 @@ export default async function FormMain({ index }: { index: number }) {
     <>
       <div className="p-4 border-2 border-primary rounded-lg">
         {index === 0 ? (
-          <Form1ResearchPublications id={id || ""} userCookie={userCookie} />
+          <Form1ResearchPublications id={id || ""} />
         ) : index === 1 ? (
-          <Form2BookAuthoredEdited id={id || ""} userCookie={userCookie} />
+          <Form2BookAuthoredEdited id={id || ""} />
         ) : index === 2 ? (
-          <Form3ResearchProjects id={id || ""} userCookie={userCookie} />
+          <Form3ResearchProjects id={id || ""} />
         ) : index === 3 ? (
-          <Form4TrainingsWorkshops id={id || ""} userCookie={userCookie} />
+          <Form4TrainingsWorkshops id={id || ""} />
         ) : index === 4 ? (
-          <Form5ThesisFYPSupervised id={id || ""} userCookie={userCookie} />
+          <Form5ThesisFYPSupervised id={id || ""} />
         ) : index === 5 ? (
-          <Form6PolicyAdvocacyORCaseStudies
-            id={id || ""}
-            userCookie={userCookie}
-          />
+          <Form6PolicyAdvocacyORCaseStudies id={id || ""} />
         ) : index === 6 ? (
-          <Form7LinksEstablished id={id || ""} userCookie={userCookie} />
+          <Form7LinksEstablished id={id || ""} />
         ) : index === 7 ? (
-          <Form8ContractResearchAwarded id={id || ""} userCookie={userCookie} />
+          <Form8ContractResearchAwarded id={id || ""} />
         ) : index === 8 ? (
-          <Form9CivicEngagementEvents id={id || ""} userCookie={userCookie} />
+          <Form9CivicEngagementEvents id={id || ""} />
         ) : index === 9 ? (
-          <Form10ConsultancyContractsWithIndustry
-            id={id || ""}
-            userCookie={userCookie}
-          />
+          <Form10ConsultancyContractsWithIndustry id={id || ""} />
         ) : index === 10 ? (
-          <Form11PatentsTradeMarksDesignPatent
-            id={id || ""}
-            userCookie={userCookie}
-          />
+          <Form11PatentsTradeMarksDesignPatent id={id || ""} />
         ) : index === 11 ? (
-          <Form12ResearchProductsProcessPrototype
-            id={id || ""}
-            userCookie={userCookie}
-          />
+          <Form12ResearchProductsProcessPrototype id={id || ""} />
         ) : index === 12 ? (
-          <Form13ScienceArtsProducts id={id || ""} userCookie={userCookie} />
+          <Form13ScienceArtsProducts id={id || ""} />
         ) : index === 13 ? (
-          <Form14AgreementsSignedForCollaboration
-            id={id || ""}
-            userCookie={userCookie}
-          />
+          <Form14AgreementsSignedForCollaboration id={id || ""} />
         ) : index === 14 ? (
-          <Form15NationalOrInternationalHonors
-            id={id || ""}
-            userCookie={userCookie}
-          />
+          <Form15NationalOrInternationalHonors id={id || ""} />
         ) : index === 15 ? (
-          <Form16DoYouProvideData id={id || ""} userCookie={userCookie} />
+          <Form16DoYouProvideData id={id || ""} />
         ) : index === 16 ? (
-          <Form17CommunityWork id={id || ""} userCookie={userCookie} />
+          <Form17CommunityWork id={id || ""} />
         ) : index === 17 ? (
-          <Form18MentorshipProgrammes id={id || ""} userCookie={userCookie} />
+          <Form18MentorshipProgrammes id={id || ""} />
         ) : (
-          <Form19StudentOrganizations id={id || ""} userCookie={userCookie} />
+          <Form19StudentOrganizations id={id || ""} />
         )}
       </div>
       <div className="w-full mt-4 border-t-2 border-primary" />

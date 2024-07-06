@@ -45,10 +45,10 @@ import {
 
 export function Form13ScienceArtsProducts({
   id,
-  userCookie,
+  updateData,
 }: {
   id: string;
-  userCookie: string;
+  updateData?: any;
 }) {
   const [loading, setLoading] = useState(false);
 
@@ -61,11 +61,11 @@ export function Form13ScienceArtsProducts({
   const form = useForm<z.infer<typeof scienceArtsProductsSchema>>({
     resolver: zodResolver(scienceArtsProductsSchema),
     defaultValues: {
-      category: "",
-      date: "",
-      scope: "",
-      title: "",
-      departmentName: "",
+      category: updateData?.category || "",
+      date: updateData?.date || "",
+      scope: updateData?.scope || "",
+      title: updateData?.title || "",
+      departmentName: updateData?.departmentName || "",
     },
   });
 
@@ -209,7 +209,7 @@ export function Form13ScienceArtsProducts({
                   loading={form.formState.isSubmitting}
                   className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
                 >
-                  Submit
+                  {updateData ? "Update" : "Submit"}
                 </FormSubmitButton>
               </div>
             </div>

@@ -43,10 +43,10 @@ import { DynamicSelectInput } from "../InputFields/dynamicselectInput";
 
 export function Form2BookAuthoredEdited({
   id,
-  userCookie,
+  updateData,
 }: {
   id: string;
-  userCookie: string;
+  updateData?: any;
 }) {
   const [loading, setLoading] = useState(false);
   const [author, setAuthor] = useState("");
@@ -58,17 +58,17 @@ export function Form2BookAuthoredEdited({
   const form = useForm<z.infer<typeof bookAuthoredSchema>>({
     resolver: zodResolver(bookAuthoredSchema),
     defaultValues: {
-      isbn: "",
-      role: "",
-      pages: 0,
-      year: "",
-      country: "",
-      bookTitle: "",
-      chapterTitle: "",
-      publisherName: "",
-      affiliation: "",
-      link: "",
-      addressing: "SDG",
+      isbn: updateData?.isbn || "",
+      role: updateData?.role || "",
+      pages: updateData?.pages || 0,
+      year: updateData?.year || "",
+      country: updateData?.country || "",
+      bookTitle: updateData?.bookTitle || "",
+      chapterTitle: updateData?.chapterTitle || "",
+      publisherName: updateData?.publisherName || "",
+      affiliation: updateData?.affiliation || "",
+      link: updateData?.link || "",
+      addressing: updateData?.addressing || "SDG",
     },
   });
 
@@ -244,7 +244,7 @@ export function Form2BookAuthoredEdited({
                   loading={form.formState.isSubmitting}
                   className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
                 >
-                  Submit
+                  {updateData ? "Update" : "Submit"}
                 </FormSubmitButton>
               </div>
             </div>

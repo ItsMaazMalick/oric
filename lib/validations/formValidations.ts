@@ -217,3 +217,18 @@ export const studentOrganizationSchema = z.object({
   objectives: requireString,
   link: optionalString,
 });
+
+export const formStatusSchema = z.object({
+  status: z.string().min(1, "Status is required"),
+});
+
+export const adminLoginSchema = z.object({
+  email: z.string().email("Enter a valid email").min(1, "Email is required"),
+  password: z.string().min(1, "Password is required"),
+});
+
+export const adminSignupSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Enter a valid email").min(1, "Email is required"),
+  password: z.string().min(1, "Password is required"),
+});

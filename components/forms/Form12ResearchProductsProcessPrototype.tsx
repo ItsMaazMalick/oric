@@ -45,10 +45,10 @@ import {
 
 export function Form12ResearchProductsProcessPrototype({
   id,
-  userCookie,
+  updateData,
 }: {
   id: string;
-  userCookie: string;
+  updateData?: any;
 }) {
   const [loading, setLoading] = useState(false);
 
@@ -61,16 +61,16 @@ export function Form12ResearchProductsProcessPrototype({
   const form = useForm<z.infer<typeof researchProductsSchema>>({
     resolver: zodResolver(researchProductsSchema),
     defaultValues: {
-      type: "",
-      category: "",
-      developmentStatus: "",
-      date: "",
-      nameOfInventors: "",
-      title: "",
-      keyScientificAspects: "",
-      fieldOfUse: "",
-      collaboratingPartnerName: "",
-      financialSupport: 0,
+      type: updateData?.type || "",
+      category: updateData?.category || "",
+      developmentStatus: updateData?.developmentStatus || "",
+      date: updateData?.date || "",
+      nameOfInventors: updateData?.nameOfInventors || "",
+      title: updateData?.title || "",
+      keyScientificAspects: updateData?.keyScientificAspects || "",
+      fieldOfUse: updateData?.fieldOfUse || "",
+      collaboratingPartnerName: updateData?.collaboratingPartnerName || "",
+      financialSupport: updateData?.financialSupport || 0,
     },
   });
 
@@ -265,7 +265,7 @@ export function Form12ResearchProductsProcessPrototype({
                   loading={form.formState.isSubmitting}
                   className="flex mx-auto text-xs bg-primary text-primary-foreground md:text-base"
                 >
-                  Submit
+                  {updateData ? "Update" : "Submit"}
                 </FormSubmitButton>
               </div>
             </div>

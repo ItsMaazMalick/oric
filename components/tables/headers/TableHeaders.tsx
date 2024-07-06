@@ -10,29 +10,109 @@ import {
   Trash2,
 } from "lucide-react";
 import Link from "next/link";
-import { header1 } from "./headers";
+import { modalHeaders } from "./headers";
+import { DeleteUserRecord } from "@/components/dialog/delete-dialog";
+
+const firstCell = (row: any) => {
+  return (
+    <div className="font-bold">
+      <p
+        className={`text-xs text-white text-center rounded-md w-fit px-2 ${
+          row.original.approvedStatus === "accepted"
+            ? "bg-green-500"
+            : row.original.approvedStatus === "pending"
+            ? "bg-orange-400"
+            : "bg-destructive"
+        }`}
+      >
+        {row.original.approvedStatus}
+      </p>
+      {row?.original?.user?.name}
+    </div>
+  );
+};
+
+const filterCell = (column: any, value: string) => {
+  return (
+    <Button
+      variant="ghost"
+      onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+    >
+      {value}
+      <ArrowUpDown size={15} className="ml-1" />
+    </Button>
+  );
+};
+
+const linkCell = (row: any, value: string) => {
+  return (
+    <>
+      {row.getValue(value) === "NILL" ? (
+        <div>{row.getValue(value)}</div>
+      ) : (
+        <Link href={row.getValue(value)} target="_blank">
+          {row.getValue("link")}
+        </Link>
+      )}
+    </>
+  );
+};
+
+const fileCell = (row: any, value: string) => {
+  return (
+    <>
+      {row.getValue(value) === "NILL" ? (
+        "NILL"
+      ) : (
+        <Link href={row.getValue(value)} target="_blank">
+          <Button variant={"secondary"}>VIEW File</Button>
+        </Link>
+      )}
+    </>
+  );
+};
+
+const actionCell = (row: any, title: string, index: number) => {
+  return (
+    <div className="flex items-center justify-center gap-6">
+      <ViewDialog
+        title={title}
+        headers={modalHeaders[index]}
+        data={row.original}
+      >
+        <div className="cursor-pointer text-[10px] flex flex-col justify-center items-center text-primary">
+          <Eye />
+          View
+        </div>
+      </ViewDialog>
+      {row.original.approvedStatus !== "accepted" && (
+        <Link
+          href={`/user/dashboard/update-record/${index + 1}/${row.original.id}`}
+          className="cursor-pointer text-xs flex flex-col justify-center items-center text-secondary"
+        >
+          <FileCog />
+          Edit
+        </Link>
+      )}
+      <DeleteUserRecord id={row.original.id} index={index}>
+        <div className="cursor-pointer text-xs flex flex-col justify-center items-center text-destructive">
+          <Trash2 />
+          Delete
+        </div>
+      </DeleteUserRecord>
+    </div>
+  );
+};
 
 export const Table1Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
     header: "Username",
-    cell: ({ row }) => (
-      <div className="font-bold">{row?.original?.user?.name}</div>
-    ),
+    cell: ({ row }) => firstCell(row),
   },
   {
     accessorKey: "title",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Title
-          <ArrowUpDown size={15} className="ml-1" />
-        </Button>
-      );
-    },
+    header: ({ column }) => filterCell(column, "Title"),
     cell: ({ row }) => <div>{row.getValue("title")}</div>,
   },
   {
@@ -88,17 +168,7 @@ export const Table1Header: ColumnDef<any>[] = [
   {
     accessorKey: "link",
     header: "Web Link",
-    cell: ({ row }) => (
-      <>
-        {row.getValue("link") === "NILL" ? (
-          <div>{row.getValue("link")}</div>
-        ) : (
-          <Link href={row.getValue("link")} target="_blank">
-            {row.getValue("link")}
-          </Link>
-        )}
-      </>
-    ),
+    cell: ({ row }) => linkCell(row, "link"),
   },
   {
     accessorKey: "addressing",
@@ -108,30 +178,7 @@ export const Table1Header: ColumnDef<any>[] = [
   {
     accessorKey: "actions",
     header: () => <div className="text-center">Actions</div>,
-    cell: ({ row }) => (
-      <div className="flex items-center gap-6">
-        <ViewDialog
-          title="Research Publications"
-          headers={header1}
-          data={row.original}
-        >
-          <div className="cursor-pointer text-[10px] flex flex-col justify-center items-center text-primary">
-            <Eye />
-            View
-          </div>
-        </ViewDialog>
-        {row.original.approvedStatus !== "accepted" && (
-          <div className="cursor-pointer text-xs flex flex-col justify-center items-center text-secondary">
-            <FileCog />
-            Edit
-          </div>
-        )}
-        <div className="cursor-pointer text-xs flex flex-col justify-center items-center text-destructive">
-          <Trash2 />
-          Delete
-        </div>
-      </div>
-    ),
+    cell: ({ row }) => actionCell(row, "Research Publications", 0),
   },
 ];
 
@@ -139,23 +186,11 @@ export const Table2Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
     header: "Username",
-    cell: ({ row }) => (
-      <div className="font-bold">{row?.original?.user?.name}</div>
-    ),
+    cell: ({ row }) => firstCell(row),
   },
   {
     accessorKey: "bookTitle",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Title
-          <ArrowUpDown size={15} className="ml-1" />
-        </Button>
-      );
-    },
+    header: ({ column }) => filterCell(column, "Title"),
     cell: ({ row }) => <div>{row.getValue("bookTitle")}</div>,
   },
   {
@@ -191,22 +226,17 @@ export const Table2Header: ColumnDef<any>[] = [
   {
     accessorKey: "link",
     header: "Web Link",
-    cell: ({ row }) => (
-      <>
-        {row.getValue("link") === "NILL" ? (
-          <div>{row.getValue("link")}</div>
-        ) : (
-          <Link href={row.getValue("link")} target="_blank">
-            {row.getValue("link")}
-          </Link>
-        )}
-      </>
-    ),
+    cell: ({ row }) => linkCell(row, "link"),
   },
   {
     accessorKey: "addressing",
     header: "addressing",
     cell: ({ row }) => <div>{row.getValue("addressing")}</div>,
+  },
+  {
+    accessorKey: "actions",
+    header: () => <div className="text-center">Actions</div>,
+    cell: ({ row }) => actionCell(row, "Book Authored / Edited", 1),
   },
 ];
 
@@ -214,23 +244,11 @@ export const Table3Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
     header: "Username",
-    cell: ({ row }) => (
-      <div className="font-bold">{row?.original?.user?.name}</div>
-    ),
+    cell: ({ row }) => firstCell(row),
   },
   {
     accessorKey: "title",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Title
-          <ArrowUpDown size={15} className="ml-1" />
-        </Button>
-      );
-    },
+    header: ({ column }) => filterCell(column, "Title"),
     cell: ({ row }) => <div>{row.getValue("title")}</div>,
   },
   {
@@ -314,17 +332,12 @@ export const Table3Header: ColumnDef<any>[] = [
     header: ({ column }) => {
       return <div className="w-[100px] text-center">File</div>;
     },
-    cell: ({ row }) => (
-      <>
-        {row.getValue("file") === "NILL" ? (
-          "NILL"
-        ) : (
-          <Link href={row.getValue("file")} target="_blank">
-            <Button variant={"secondary"}>VIEW File</Button>
-          </Link>
-        )}
-      </>
-    ),
+    cell: ({ row }) => fileCell(row, "file"),
+  },
+  {
+    accessorKey: "actions",
+    header: () => <div className="text-center">Actions</div>,
+    cell: ({ row }) => actionCell(row, "Research Projects", 2),
   },
 ];
 
@@ -332,23 +345,11 @@ export const Table4Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
     header: "Username",
-    cell: ({ row }) => (
-      <div className="font-bold">{row?.original?.user?.name}</div>
-    ),
+    cell: ({ row }) => firstCell(row),
   },
   {
     accessorKey: "eventType",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Event Type
-          <ArrowUpDown size={15} className="ml-1" />
-        </Button>
-      );
-    },
+    header: ({ column }) => filterCell(column, "Event Type"),
     cell: ({ row }) => <div>{row.getValue("eventType")}</div>,
   },
   {
@@ -396,29 +397,22 @@ export const Table4Header: ColumnDef<any>[] = [
     header: "Country",
     cell: ({ row }) => <div>{row.getValue("country")}</div>,
   },
+  {
+    accessorKey: "actions",
+    header: () => <div className="text-center">Actions</div>,
+    cell: ({ row }) => actionCell(row, "Research Publications", 3),
+  },
 ];
 
 export const Table5Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
     header: "Username",
-    cell: ({ row }) => (
-      <div className="font-bold">{row?.original?.user?.name}</div>
-    ),
+    cell: ({ row }) => firstCell(row),
   },
   {
     accessorKey: "role",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Role
-          <ArrowUpDown size={15} className="ml-1" />
-        </Button>
-      );
-    },
+    header: ({ column }) => filterCell(column, "Role"),
     cell: ({ row }) => <div>{row.getValue("role")}</div>,
   },
   {
@@ -461,29 +455,22 @@ export const Table5Header: ColumnDef<any>[] = [
     header: "Degree Stage",
     cell: ({ row }) => <div>{row.getValue("degreeStage")}</div>,
   },
+  {
+    accessorKey: "actions",
+    header: () => <div className="text-center">Actions</div>,
+    cell: ({ row }) => actionCell(row, "Research Publications", 4),
+  },
 ];
 
 export const Table6Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
     header: "Username",
-    cell: ({ row }) => (
-      <div className="font-bold">{row?.original?.user?.name}</div>
-    ),
+    cell: ({ row }) => firstCell(row),
   },
   {
     accessorKey: "year",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Year
-          <ArrowUpDown size={15} className="ml-1" />
-        </Button>
-      );
-    },
+    header: ({ column }) => filterCell(column, "Year"),
     cell: ({ row }) => <div>{row.getValue("year")}</div>,
   },
   {
@@ -524,17 +511,12 @@ export const Table6Header: ColumnDef<any>[] = [
   {
     accessorKey: "policyCaseStudyCopy",
     header: "Policy Case Study Copy",
-    cell: ({ row }) => (
-      <>
-        {row.getValue("policyCaseStudyCopy") === "NILL" ? (
-          "NILL"
-        ) : (
-          <Link href={row.getValue("policyCaseStudyCopy")} target="_blank">
-            <Button variant={"secondary"}>VIEW File</Button>
-          </Link>
-        )}
-      </>
-    ),
+    cell: ({ row }) => fileCell(row, "policyCaseStudyCopy"),
+  },
+  {
+    accessorKey: "actions",
+    header: () => <div className="text-center">Actions</div>,
+    cell: ({ row }) => actionCell(row, "Research Publications", 5),
   },
 ];
 
@@ -542,23 +524,11 @@ export const Table7Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
     header: "Username",
-    cell: ({ row }) => (
-      <div className="font-bold">{row?.original?.user?.name}</div>
-    ),
+    cell: ({ row }) => firstCell(row),
   },
   {
     accessorKey: "linkageType",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Type
-          <ArrowUpDown size={15} className="ml-1" />
-        </Button>
-      );
-    },
+    header: ({ column }) => filterCell(column, "Type"),
     cell: ({ row }) => <div>{row.getValue("linkageType")}</div>,
   },
   {
@@ -591,17 +561,12 @@ export const Table7Header: ColumnDef<any>[] = [
   {
     accessorKey: "mouCopy",
     header: "Status",
-    cell: ({ row }) => (
-      <>
-        {row.getValue("mouCopy") === "NILL" ? (
-          "NILL"
-        ) : (
-          <Link href={row.getValue("mouCopy")} target="_blank">
-            <Button variant={"secondary"}>VIEW File</Button>
-          </Link>
-        )}
-      </>
-    ),
+    cell: ({ row }) => fileCell(row, "mouCopy"),
+  },
+  {
+    accessorKey: "actions",
+    header: () => <div className="text-center">Actions</div>,
+    cell: ({ row }) => actionCell(row, "Research Publications", 6),
   },
 ];
 
@@ -609,23 +574,11 @@ export const Table8Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
     header: "Username",
-    cell: ({ row }) => (
-      <div className="font-bold">{row?.original?.user?.name}</div>
-    ),
+    cell: ({ row }) => firstCell(row),
   },
   {
     accessorKey: "title",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Title
-          <ArrowUpDown size={15} className="ml-1" />
-        </Button>
-      );
-    },
+    header: ({ column }) => filterCell(column, "Title"),
     cell: ({ row }) => <div>{row.getValue("title")}</div>,
   },
   {
@@ -686,17 +639,12 @@ export const Table8Header: ColumnDef<any>[] = [
   {
     accessorKey: "contractResearchCopy",
     header: "Contract Research Copy",
-    cell: ({ row }) => (
-      <>
-        {row.getValue("contractResearchCopy") === "NILL" ? (
-          "NILL"
-        ) : (
-          <Link href={row.getValue("contractResearchCopy")} target="_blank">
-            <Button variant={"secondary"}>VIEW File</Button>
-          </Link>
-        )}
-      </>
-    ),
+    cell: ({ row }) => fileCell(row, "contractResearchCopy"),
+  },
+  {
+    accessorKey: "actions",
+    header: () => <div className="text-center">Actions</div>,
+    cell: ({ row }) => actionCell(row, "Research Publications", 7),
   },
 ];
 
@@ -704,23 +652,11 @@ export const Table9Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
     header: "Username",
-    cell: ({ row }) => (
-      <div className="font-bold">{row?.original?.user?.name}</div>
-    ),
+    cell: ({ row }) => firstCell(row),
   },
   {
     accessorKey: "title",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Title
-          <ArrowUpDown size={15} className="ml-1" />
-        </Button>
-      );
-    },
+    header: ({ column }) => filterCell(column, "Title"),
     cell: ({ row }) => <div>{row.getValue("title")}</div>,
   },
   {
@@ -761,17 +697,12 @@ export const Table9Header: ColumnDef<any>[] = [
   {
     accessorKey: "briefReport",
     header: "Brief Report",
-    cell: ({ row }) => (
-      <>
-        {row.getValue("briefReport") === "NILL" ? (
-          "NILL"
-        ) : (
-          <Link href={row.getValue("briefReport")} target="_blank">
-            <Button variant={"secondary"}>VIEW File</Button>
-          </Link>
-        )}
-      </>
-    ),
+    cell: ({ row }) => fileCell(row, "briefReport"),
+  },
+  {
+    accessorKey: "actions",
+    header: () => <div className="text-center">Actions</div>,
+    cell: ({ row }) => actionCell(row, "Research Publications", 8),
   },
 ];
 
@@ -779,23 +710,11 @@ export const Table10Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
     header: "Username",
-    cell: ({ row }) => (
-      <div className="font-bold">{row?.original?.user?.name}</div>
-    ),
+    cell: ({ row }) => firstCell(row),
   },
   {
     accessorKey: "titleOfConsultancy",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Title
-          <ArrowUpDown size={15} className="ml-1" />
-        </Button>
-      );
-    },
+    header: ({ column }) => filterCell(column, "Title"),
     cell: ({ row }) => <div>{row.getValue("titleOfConsultancy")}</div>,
   },
   {
@@ -846,17 +765,12 @@ export const Table10Header: ColumnDef<any>[] = [
   {
     accessorKey: "copyOfContract",
     header: "Copy of Contract",
-    cell: ({ row }) => (
-      <>
-        {row.getValue("copyOfContract") === "NILL" ? (
-          "NILL"
-        ) : (
-          <Link href={row.getValue("copyOfContract")} target="_blank">
-            <Button variant={"secondary"}>VIEW File</Button>
-          </Link>
-        )}
-      </>
-    ),
+    cell: ({ row }) => fileCell(row, "copyOfContract"),
+  },
+  {
+    accessorKey: "actions",
+    header: () => <div className="text-center">Actions</div>,
+    cell: ({ row }) => actionCell(row, "Research Publications", 9),
   },
 ];
 
@@ -864,23 +778,11 @@ export const Table11Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
     header: "Username",
-    cell: ({ row }) => (
-      <div className="font-bold">{row?.original?.user?.name}</div>
-    ),
+    cell: ({ row }) => firstCell(row),
   },
   {
     accessorKey: "typeOfIP",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Type of IP
-          <ArrowUpDown size={15} className="ml-1" />
-        </Button>
-      );
-    },
+    header: ({ column }) => filterCell(column, "Type of IP"),
     cell: ({ row }) => <div>{row.getValue("typeOfIP")}</div>,
   },
   {
@@ -926,17 +828,12 @@ export const Table11Header: ColumnDef<any>[] = [
   {
     accessorKey: "evidence",
     header: "Evidence",
-    cell: ({ row }) => (
-      <>
-        {row.getValue("evidence") === "NILL" ? (
-          "NILL"
-        ) : (
-          <Link href={row.getValue("evidence")} target="_blank">
-            <Button variant={"secondary"}>VIEW File</Button>
-          </Link>
-        )}
-      </>
-    ),
+    cell: ({ row }) => fileCell(row, "evidence"),
+  },
+  {
+    accessorKey: "actions",
+    header: () => <div className="text-center">Actions</div>,
+    cell: ({ row }) => actionCell(row, "Research Publications", 10),
   },
 ];
 
@@ -944,23 +841,11 @@ export const Table12Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
     header: "Username",
-    cell: ({ row }) => (
-      <div className="font-bold">{row?.original?.user?.name}</div>
-    ),
+    cell: ({ row }) => firstCell(row),
   },
   {
     accessorKey: "type",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Type
-          <ArrowUpDown size={15} className="ml-1" />
-        </Button>
-      );
-    },
+    header: ({ column }) => filterCell(column, "Type"),
     cell: ({ row }) => <div>{row.getValue("type")}</div>,
   },
   {
@@ -1011,17 +896,12 @@ export const Table12Header: ColumnDef<any>[] = [
   {
     accessorKey: "evidence",
     header: "Evidence",
-    cell: ({ row }) => (
-      <>
-        {row.getValue("evidence") === "NILL" ? (
-          "NILL"
-        ) : (
-          <Link href={row.getValue("evidence")} target="_blank">
-            <Button variant={"secondary"}>VIEW File</Button>
-          </Link>
-        )}
-      </>
-    ),
+    cell: ({ row }) => fileCell(row, "evidence"),
+  },
+  {
+    accessorKey: "actions",
+    header: () => <div className="text-center">Actions</div>,
+    cell: ({ row }) => actionCell(row, "Research Publications", 11),
   },
 ];
 
@@ -1029,23 +909,11 @@ export const Table13Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
     header: "Username",
-    cell: ({ row }) => (
-      <div className="font-bold">{row?.original?.user?.name}</div>
-    ),
+    cell: ({ row }) => firstCell(row),
   },
   {
     accessorKey: "title",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Title
-          <ArrowUpDown size={15} className="ml-1" />
-        </Button>
-      );
-    },
+    header: ({ column }) => filterCell(column, "Title"),
     cell: ({ row }) => <div>{row.getValue("title")}</div>,
   },
   {
@@ -1071,17 +939,12 @@ export const Table13Header: ColumnDef<any>[] = [
   {
     accessorKey: "evidence",
     header: "Evidence",
-    cell: ({ row }) => (
-      <>
-        {row.getValue("evidence") === "NILL" ? (
-          "NILL"
-        ) : (
-          <Link href={row.getValue("evidence")} target="_blank">
-            <Button variant={"secondary"}>VIEW File</Button>
-          </Link>
-        )}
-      </>
-    ),
+    cell: ({ row }) => fileCell(row, "evidence"),
+  },
+  {
+    accessorKey: "actions",
+    header: () => <div className="text-center">Actions</div>,
+    cell: ({ row }) => actionCell(row, "Research Publications", 12),
   },
 ];
 
@@ -1089,23 +952,11 @@ export const Table14Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
     header: "Username",
-    cell: ({ row }) => (
-      <div className="font-bold">{row?.original?.user?.name}</div>
-    ),
+    cell: ({ row }) => firstCell(row),
   },
   {
     accessorKey: "typeOfLinkage",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Type
-          <ArrowUpDown size={15} className="ml-1" />
-        </Button>
-      );
-    },
+    header: ({ column }) => filterCell(column, "Type"),
     cell: ({ row }) => <div>{row.getValue("typeOfLinkage")}</div>,
   },
   {
@@ -1141,17 +992,12 @@ export const Table14Header: ColumnDef<any>[] = [
   {
     accessorKey: "mouCopy",
     header: "MoU Copy",
-    cell: ({ row }) => (
-      <>
-        {row.getValue("mouCopy") === "NILL" ? (
-          "NILL"
-        ) : (
-          <Link href={row.getValue("mouCopy")} target="_blank">
-            <Button variant={"secondary"}>VIEW File</Button>
-          </Link>
-        )}
-      </>
-    ),
+    cell: ({ row }) => fileCell(row, "mouCopy"),
+  },
+  {
+    accessorKey: "actions",
+    header: () => <div className="text-center">Actions</div>,
+    cell: ({ row }) => actionCell(row, "Research Publications", 13),
   },
 ];
 
@@ -1159,23 +1005,11 @@ export const Table15Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
     header: "Username",
-    cell: ({ row }) => (
-      <div className="font-bold">{row?.original?.user?.name}</div>
-    ),
+    cell: ({ row }) => firstCell(row),
   },
   {
     accessorKey: "titleOfAward",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Title
-          <ArrowUpDown size={15} className="ml-1" />
-        </Button>
-      );
-    },
+    header: ({ column }) => filterCell(column, "Title"),
     cell: ({ row }) => <div>{row.getValue("titleOfAward")}</div>,
   },
   {
@@ -1196,17 +1030,12 @@ export const Table15Header: ColumnDef<any>[] = [
   {
     accessorKey: "evidence",
     header: "Evidence",
-    cell: ({ row }) => (
-      <>
-        {row.getValue("evidence") === "NILL" ? (
-          "NILL"
-        ) : (
-          <Link href={row.getValue("evidence")} target="_blank">
-            <Button variant={"secondary"}>VIEW File</Button>
-          </Link>
-        )}
-      </>
-    ),
+    cell: ({ row }) => fileCell(row, "evidence"),
+  },
+  {
+    accessorKey: "actions",
+    header: () => <div className="text-center">Actions</div>,
+    cell: ({ row }) => actionCell(row, "Research Publications", 14),
   },
 ];
 
@@ -1214,23 +1043,11 @@ export const Table16Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
     header: "Username",
-    cell: ({ row }) => (
-      <div className="font-bold">{row?.original?.user?.name}</div>
-    ),
+    cell: ({ row }) => firstCell(row),
   },
   {
     accessorKey: "date",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Date
-          <ArrowUpDown size={15} className="ml-1" />
-        </Button>
-      );
-    },
+    header: ({ column }) => filterCell(column, "Date"),
     cell: ({ row }) => <div>{row.getValue("date")}</div>,
   },
   {
@@ -1246,17 +1063,12 @@ export const Table16Header: ColumnDef<any>[] = [
   {
     accessorKey: "evidence",
     header: "Evidence",
-    cell: ({ row }) => (
-      <>
-        {row.getValue("evidence") === "NILL" ? (
-          "NILL"
-        ) : (
-          <Link href={row.getValue("evidence")} target="_blank">
-            <Button variant={"secondary"}>VIEW File</Button>
-          </Link>
-        )}
-      </>
-    ),
+    cell: ({ row }) => fileCell(row, "evidence"),
+  },
+  {
+    accessorKey: "actions",
+    header: () => <div className="text-center">Actions</div>,
+    cell: ({ row }) => actionCell(row, "Research Publications", 15),
   },
 ];
 
@@ -1264,23 +1076,11 @@ export const Table17Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
     header: "Username",
-    cell: ({ row }) => (
-      <div className="font-bold">{row?.original?.user?.name}</div>
-    ),
+    cell: ({ row }) => firstCell(row),
   },
   {
     accessorKey: "title",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Title
-          <ArrowUpDown size={15} className="ml-1" />
-        </Button>
-      );
-    },
+    header: ({ column }) => filterCell(column, "Title"),
     cell: ({ row }) => <div>{row.getValue("title")}</div>,
   },
   {
@@ -1301,17 +1101,12 @@ export const Table17Header: ColumnDef<any>[] = [
   {
     accessorKey: "evidence",
     header: "Evidence",
-    cell: ({ row }) => (
-      <>
-        {row.getValue("evidence") === "NILL" ? (
-          "NILL"
-        ) : (
-          <Link href={row.getValue("evidence")} target="_blank">
-            <Button variant={"secondary"}>VIEW File</Button>
-          </Link>
-        )}
-      </>
-    ),
+    cell: ({ row }) => fileCell(row, "evidence"),
+  },
+  {
+    accessorKey: "actions",
+    header: () => <div className="text-center">Actions</div>,
+    cell: ({ row }) => actionCell(row, "Research Publications", 16),
   },
 ];
 
@@ -1319,23 +1114,11 @@ export const Table18Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
     header: "Username",
-    cell: ({ row }) => (
-      <div className="font-bold">{row?.original?.user?.name}</div>
-    ),
+    cell: ({ row }) => firstCell(row),
   },
   {
     accessorKey: "programName",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Name
-          <ArrowUpDown size={15} className="ml-1" />
-        </Button>
-      );
-    },
+    header: ({ column }) => filterCell(column, "Name"),
     cell: ({ row }) => <div>{row.getValue("programName")}</div>,
   },
   {
@@ -1356,17 +1139,12 @@ export const Table18Header: ColumnDef<any>[] = [
   {
     accessorKey: "evidence",
     header: "Evidence",
-    cell: ({ row }) => (
-      <>
-        {row.getValue("evidence") === "NILL" ? (
-          "NILL"
-        ) : (
-          <Link href={row.getValue("evidence")} target="_blank">
-            <Button variant={"secondary"}>VIEW File</Button>
-          </Link>
-        )}
-      </>
-    ),
+    cell: ({ row }) => fileCell(row, "evidence"),
+  },
+  {
+    accessorKey: "actions",
+    header: () => <div className="text-center">Actions</div>,
+    cell: ({ row }) => actionCell(row, "Research Publications", 17),
   },
 ];
 
@@ -1374,23 +1152,11 @@ export const Table19Header: ColumnDef<any>[] = [
   {
     accessorKey: "name",
     header: "Username",
-    cell: ({ row }) => (
-      <div className="font-bold">{row?.original?.user?.name}</div>
-    ),
+    cell: ({ row }) => firstCell(row),
   },
   {
     accessorKey: "organizationName",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Name
-          <ArrowUpDown size={15} className="ml-1" />
-        </Button>
-      );
-    },
+    header: ({ column }) => filterCell(column, "Name"),
     cell: ({ row }) => <div>{row.getValue("organizationName")}</div>,
   },
   {
@@ -1417,31 +1183,16 @@ export const Table19Header: ColumnDef<any>[] = [
   {
     accessorKey: "link",
     header: "Web Link",
-    cell: ({ row }) => (
-      <>
-        {row.getValue("link") === "NILL" ? (
-          <div>{row.getValue("link")}</div>
-        ) : (
-          <Link href={row.getValue("link")} target="_blank">
-            {row.getValue("link")}
-          </Link>
-        )}
-      </>
-    ),
+    cell: ({ row }) => linkCell(row, "link"),
   },
   {
     accessorKey: "evidence",
     header: "Evidence",
-    cell: ({ row }) => (
-      <>
-        {row.getValue("evidence") === "NILL" ? (
-          "NILL"
-        ) : (
-          <Link href={row.getValue("evidence")} target="_blank">
-            <Button variant={"secondary"}>VIEW File</Button>
-          </Link>
-        )}
-      </>
-    ),
+    cell: ({ row }) => fileCell(row, "evidence"),
+  },
+  {
+    accessorKey: "actions",
+    header: () => <div className="text-center">Actions</div>,
+    cell: ({ row }) => actionCell(row, "Research Publications", 18),
   },
 ];

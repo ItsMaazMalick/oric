@@ -4,12 +4,19 @@ import AdminMobileNavbar from "@/components/navigation/AdminMobileNavbar";
 import { NavLinks } from "@/components/navigation/NavLinks";
 import TooltipComponent from "@/components/tooltip/TooltipComponent";
 import Link from "next/link";
+import { getAdminSession } from "@/app/actions/session";
+import { redirect } from "next/navigation";
 
-export default function AdminDashboardLayout({
+export default async function AdminDashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getAdminSession();
+  if (!session?.success) {
+    redirect("/admin/login");
+  }
+
   return (
     <div className={`w-full bg-grayBackground text-primary lg:px-28`}>
       <div className="w-full bg-primary-foreground h-[56px] mb-2 flex justify-between items-center px-2 shadow-md sticky top-0 z-50">
@@ -29,9 +36,9 @@ export default function AdminDashboardLayout({
 
         {/* USER BUTTON */}
         <div className="flex gap-2">
-          <TooltipComponent title="Maaz Malick">
+          <TooltipComponent title={session.name || ""}>
             <div className="w-10 h-10 bg-primary text-primary-foreground rounded-full flex justify-center items-center font-bold border">
-              M
+              {session.name?.charAt(0)}
             </div>
           </TooltipComponent>
 
