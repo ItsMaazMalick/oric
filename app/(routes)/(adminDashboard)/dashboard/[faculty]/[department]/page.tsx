@@ -13,7 +13,10 @@ const Department = async ({
 }: {
   params: { faculty: string; department: string };
 }) => {
-  const { books }: any = await getAllRecordsForAdmin(params.faculty);
+  const { books }: any = await getAllRecordsForAdmin(
+    params.faculty,
+    params.department
+  );
 
   return (
     <Accordion

@@ -5,7 +5,10 @@ import { getUser } from "./auth";
 
 // ALL RECORDS
 // TODO:
-export async function getAllRecordsForAdmin(faculty: string) {
+export async function getAllRecordsForAdmin(
+  faculty: string,
+  department: string
+) {
   // if (!id || !userCookie) {
   //   return { status: 401, success: false, message: "Unauthorized" };
   // }
@@ -19,7 +22,7 @@ export async function getAllRecordsForAdmin(faculty: string) {
     where: {
       user: {
         faculty,
-        // department,
+        department,
       },
     },
     include: {
@@ -36,7 +39,7 @@ export async function getAllRecordsForAdmin(faculty: string) {
     where: {
       user: {
         faculty,
-        // department,
+        department,
       },
     },
     include: {
@@ -53,7 +56,7 @@ export async function getAllRecordsForAdmin(faculty: string) {
     where: {
       user: {
         faculty,
-        // department,
+        department,
       },
     },
     include: {
@@ -70,7 +73,7 @@ export async function getAllRecordsForAdmin(faculty: string) {
     where: {
       user: {
         faculty,
-        // department,
+        department,
       },
     },
     include: {
@@ -87,7 +90,7 @@ export async function getAllRecordsForAdmin(faculty: string) {
     where: {
       user: {
         faculty,
-        // department,
+        department,
       },
     },
     include: {
@@ -104,7 +107,7 @@ export async function getAllRecordsForAdmin(faculty: string) {
     where: {
       user: {
         faculty,
-        // department,
+        department,
       },
     },
     include: {
@@ -122,7 +125,7 @@ export async function getAllRecordsForAdmin(faculty: string) {
     where: {
       user: {
         faculty,
-        // department,
+        department,
       },
     },
     include: {
@@ -139,7 +142,7 @@ export async function getAllRecordsForAdmin(faculty: string) {
     where: {
       user: {
         faculty,
-        // department,
+        department,
       },
     },
     include: {
@@ -157,7 +160,7 @@ export async function getAllRecordsForAdmin(faculty: string) {
     where: {
       user: {
         faculty,
-        // department,
+        department,
       },
     },
     include: {
@@ -174,7 +177,7 @@ export async function getAllRecordsForAdmin(faculty: string) {
     where: {
       user: {
         faculty,
-        // department,
+        department,
       },
     },
     include: {
@@ -192,7 +195,7 @@ export async function getAllRecordsForAdmin(faculty: string) {
     where: {
       user: {
         faculty,
-        // department,
+        department,
       },
     },
     include: {
@@ -211,7 +214,7 @@ export async function getAllRecordsForAdmin(faculty: string) {
       where: {
         user: {
           faculty,
-          // department,
+          department,
         },
       },
       include: {
@@ -230,7 +233,7 @@ export async function getAllRecordsForAdmin(faculty: string) {
     where: {
       user: {
         faculty,
-        // department,
+        department,
       },
     },
     include: {
@@ -248,7 +251,7 @@ export async function getAllRecordsForAdmin(faculty: string) {
     where: {
       user: {
         faculty,
-        // department,
+        department,
       },
     },
     include: {
@@ -267,7 +270,7 @@ export async function getAllRecordsForAdmin(faculty: string) {
       where: {
         user: {
           faculty,
-          // department,
+          department,
         },
       },
       include: {
@@ -285,7 +288,7 @@ export async function getAllRecordsForAdmin(faculty: string) {
     where: {
       user: {
         faculty,
-        // department,
+        department,
       },
     },
     include: {
@@ -303,7 +306,7 @@ export async function getAllRecordsForAdmin(faculty: string) {
     where: {
       user: {
         faculty,
-        // department,
+        department,
       },
     },
     include: {
@@ -321,7 +324,7 @@ export async function getAllRecordsForAdmin(faculty: string) {
     where: {
       user: {
         faculty,
-        // department,
+        department,
       },
     },
     include: {
@@ -339,7 +342,7 @@ export async function getAllRecordsForAdmin(faculty: string) {
     where: {
       user: {
         faculty,
-        // department,
+        department,
       },
     },
     include: {
