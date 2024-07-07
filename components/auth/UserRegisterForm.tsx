@@ -133,7 +133,12 @@ const UserRegisterForm = () => {
               label="Title"
               name="title"
               control={form.control}
-              items={["Dr", "Mr", "Ms", "Mrs"]}
+              items={[
+                { value: "Dr", label: "Dr" },
+                { value: "Mr", label: "Mr" },
+                { value: "Ms", label: "Ms" },
+                { value: "Mrs", label: "Mrs" },
+              ]}
             />
           </div>
           {/* NAME */}
@@ -251,7 +256,11 @@ const UserRegisterForm = () => {
               label="Gender"
               name="gender"
               control={form.control}
-              items={["Male", "Female", "Other"]}
+              items={[
+                { value: "Male", label: "Male" },
+                { value: "Female", label: "Female" },
+                { value: "Other", label: "Other" },
+              ]}
             />
           </div>
           {/* FACULTY */}
