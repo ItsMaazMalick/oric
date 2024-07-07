@@ -42,6 +42,37 @@ export async function saveNationalInternationalHonors(
   revalidatePath("/user/dashboard/add-record");
 }
 
+export async function updateNationalInternationalHonors(
+  values: z.infer<typeof nationalInternationalAwardsSchema>,
+  file: string,
+  id: string
+) {
+  const validData = nationalInternationalAwardsSchema.safeParse(values);
+  if (!validData?.success) {
+    return { error: "Invalid data provided" };
+  }
+
+  const existingRecord = await prisma.nationalInternationalAwards.findUnique({
+    where: { id },
+  });
+  if (!existingRecord) {
+    return { error: "No record found" };
+  }
+
+  await prisma.nationalInternationalAwards.update({
+    where: { id },
+    data: {
+      date: validData.data.date,
+      titleOfAward: validData.data.titleOfAward,
+      awardingAgency: validData.data.awardingAgency,
+      amountOfPrize: validData.data.amountOfPrize,
+      evidence: file,
+    },
+  });
+  return { success: "Data saved Successfully" };
+  revalidatePath("/user/dashboard/add-record");
+}
+
 export async function saveNationalInternationalHonorsNill(id: string) {
   if (!id) {
     return { error: "Id is required" };

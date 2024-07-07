@@ -44,6 +44,37 @@ export async function saveCommunityWork(
   revalidatePath("/user/dashboard/add-record");
 }
 
+export async function updateCommunityWork(
+  values: z.infer<typeof communitySchema>,
+  file: string,
+  id: string
+) {
+  const validData = communitySchema.safeParse(values);
+  if (!validData?.success) {
+    return { error: "Invalid data provided" };
+  }
+
+  const existingRecord = await prisma.community.findUnique({
+    where: { id },
+  });
+  if (!existingRecord) {
+    return { error: "No record found" };
+  }
+
+  await prisma.community.update({
+    where: { id },
+    data: {
+      date: validData.data.date,
+      role: validData.data.role,
+      type: validData.data.type,
+      title: validData.data.title,
+      evidence: file,
+    },
+  });
+  return { success: "Data saved Successfully" };
+  revalidatePath("/user/dashboard/add-record");
+}
+
 export async function saveCommunityWorkNill(id: string) {
   if (!id) {
     return { error: "Id is required" };

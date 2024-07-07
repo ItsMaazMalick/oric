@@ -6,9 +6,9 @@ import * as z from "zod";
 import {
   saveConsultancyContracts,
   saveConsultancyContractsNill,
+  updateConsultancyContracts,
 } from "@/app/actions/user/records/consultancy-contracts";
 import { Form } from "@/components/ui/form";
-import { countries } from "@/constants/data";
 import UploadButtonComponent from "@/lib/UploadButtonComponent";
 import { consultancyContractSchema } from "@/lib/validations/formValidations";
 import Link from "next/link";
@@ -21,6 +21,7 @@ import FormSubmitButton from "../button/FormSubmitButton";
 import { Checkbox } from "../ui/checkbox";
 import { FormError } from "./FormError";
 import { FormSuccess } from "./FormSuccess";
+import { countries } from "@/constants/countries";
 
 export function Form10ConsultancyContractsWithIndustry({
   id,
@@ -56,18 +57,29 @@ export function Form10ConsultancyContractsWithIndustry({
   const onSubmit = async (
     values: z.infer<typeof consultancyContractSchema>
   ) => {
-    if (!file) {
-      alert("Image is required");
-      setError("Image is required");
-      return;
+    if (updateData) {
+      const result = await updateConsultancyContracts(
+        values,
+        file || updateData.copyOfContract,
+        updateData.id
+      );
+      setSuccess(result?.success);
+      setError(result?.error);
+      router.push("/user/dashboard/add-record");
     } else {
-      const res = await saveConsultancyContracts(values, file, id);
-      setNill(false);
-      setFile("");
-      setSuccess(res.success);
-      setError(res.error);
-      form.reset();
-      router.refresh();
+      if (!file) {
+        alert("Image is required");
+        setError("Image is required");
+        return;
+      } else {
+        const res = await saveConsultancyContracts(values, file, id);
+        setNill(false);
+        setFile("");
+        setSuccess(res.success);
+        setError(res.error);
+        form.reset();
+        router.refresh();
+      }
     }
   };
 
@@ -83,19 +95,21 @@ export function Form10ConsultancyContractsWithIndustry({
 
   return (
     <>
-      <div className="flex items-center w-16 p-2 mb-4 space-x-2 border-2 rounded-md border-primary">
-        <Checkbox
-          onClick={() => setNill((prev) => !prev)}
-          id="nill"
-          checked={nill}
-        />
-        <label
-          htmlFor="nill"
-          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-        >
-          Nill
-        </label>
-      </div>
+      {!updateData && (
+        <div className="flex items-center w-16 p-2 mb-4 space-x-2 border-2 rounded-md border-primary">
+          <Checkbox
+            onClick={() => setNill((prev) => !prev)}
+            id="nill"
+            checked={nill}
+          />
+          <label
+            htmlFor="nill"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            Nill
+          </label>
+        </div>
+      )}
       {nill ? (
         <>
           <div className="flex items-center justify-center w-full font-bold text-destructive">

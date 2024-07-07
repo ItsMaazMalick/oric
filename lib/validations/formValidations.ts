@@ -18,8 +18,8 @@ export const researchPublicationSchema = z.object({
   pages: requiredInt,
   affiliation: requireString,
   link: requireString,
-  countries: requireString,
-  addressing: requireString,
+  countries: z.array(z.string()).min(1, "Countrioes are required"),
+  addressing: z.array(z.string()).min(1, "Countrioes are required"),
 });
 
 export const bookAuthoredSchema = z.object({
@@ -33,14 +33,14 @@ export const bookAuthoredSchema = z.object({
   publisherName: requireString,
   affiliation: requireString,
   link: requireString,
-  addressing: requireString,
+  addressing: z.array(z.string()).min(1, "Countrioes are required"),
 });
 
 // 3 - Research Projects
 export const researchProjectSchema = z.object({
   date: requireString,
-  fundingAgency: requireString,
-  nameOfResearch: requireString,
+  agency: requireString,
+  name: requireString,
   status: requireString,
   type: requireString,
   role: requireString,
@@ -63,7 +63,7 @@ export const traningsWorkshopSchema = z.object({
   eventTitle: requireString,
   noOfParticipants: requiredInt,
   majorFocusArea: requireString,
-  audienceType: requireString,
+  audienceType: z.array(z.string()).min(1, "Audience type are required"),
   organizer: requireString,
   country: requireString,
 });

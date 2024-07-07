@@ -22,7 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { countries, years } from "@/constants/data";
+
 import { FormEvent, useLayoutEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -39,8 +39,11 @@ import { Checkbox } from "../ui/checkbox";
 import {
   saveContractResearch,
   saveContractResearchNill,
+  updateContractResearch,
 } from "@/app/actions/user/records/contract-research";
 import { DynamicSelectInput } from "../InputFields/dynamicselectInput";
+import { nationalInternational } from "@/constants/national-international";
+import { countries } from "@/constants/countries";
 
 export function Form8ContractResearchAwarded({
   id,
@@ -77,13 +80,20 @@ export function Form8ContractResearchAwarded({
   });
 
   const onSubmit = async (values: z.infer<typeof contractResearchSchema>) => {
-    const res = await saveContractResearch(values, file, id);
-    setNill(false);
-    setFile("");
-    setSuccess(res.success);
-    setError(res.error);
-    form.reset();
-    router.refresh();
+    if (updateData) {
+      const result = await updateContractResearch(values, file, updateData.id);
+      setSuccess(result?.success);
+      setError(result?.error);
+      router.push("/user/dashboard/add-record");
+    } else {
+      const res = await saveContractResearch(values, file, id);
+      setNill(false);
+      setFile("");
+      setSuccess(res.success);
+      setError(res.error);
+      form.reset();
+      router.refresh();
+    }
   };
 
   const handleNill = async (e: FormEvent<HTMLFormElement>) => {
@@ -98,19 +108,21 @@ export function Form8ContractResearchAwarded({
 
   return (
     <>
-      <div className="flex items-center w-16 p-2 mb-4 space-x-2 border-2 rounded-md border-primary">
-        <Checkbox
-          onClick={() => setNill((prev) => !prev)}
-          id="nill"
-          checked={nill}
-        />
-        <label
-          htmlFor="nill"
-          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-        >
-          Nill
-        </label>
-      </div>
+      {!updateData && (
+        <div className="flex items-center w-16 p-2 mb-4 space-x-2 border-2 rounded-md border-primary">
+          <Checkbox
+            onClick={() => setNill((prev) => !prev)}
+            id="nill"
+            checked={nill}
+          />
+          <label
+            htmlFor="nill"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            Nill
+          </label>
+        </div>
+      )}
       {nill ? (
         <>
           <div className="flex items-center justify-center w-full font-bold text-destructive">
@@ -143,7 +155,7 @@ export function Form8ContractResearchAwarded({
                   label="National/International"
                   name="scope"
                   control={form.control}
-                  items={["National", "International"]}
+                  items={nationalInternational}
                 />
               </div>
               {/* sponsoring_agency_country */}

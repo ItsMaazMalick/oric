@@ -72,8 +72,8 @@ model ResearchPublication {
   pages          Int
   affiliation    String
   link           String
-  countries      String
-  addressing     String
+  countries      String[]
+  addressing     String[]
   approvedStatus ApprovedStatus @default(pending)
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
@@ -94,7 +94,7 @@ model BookAuthoredEdited {
   publisherName  String
   affiliation    String
   link           String
-  addressing     String
+  addressing     String[]
   approvedStatus ApprovedStatus @default(pending)
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
@@ -138,7 +138,7 @@ model Training {
   eventTitle       String
   noOfParticipants Int
   majorFocusArea   String
-  audienceType     String
+  audienceType     String[]
   organizer        String
   country          String
   approvedStatus   ApprovedStatus @default(pending)

@@ -45,6 +45,43 @@ export async function saveResearchProducts(
   revalidatePath("/user/dashboard/add-record");
 }
 
+export async function updateResearchProducts(
+  values: z.infer<typeof researchProductsSchema>,
+  file: string,
+  id: string
+) {
+  const validData = researchProductsSchema.safeParse(values);
+  if (!validData?.success) {
+    return { error: "Invalid data provided" };
+  }
+
+  const existingRecord = await prisma.researchProductsProcess.findUnique({
+    where: { id },
+  });
+  if (!existingRecord) {
+    return { error: "No record found" };
+  }
+
+  await prisma.researchProductsProcess.update({
+    where: { id },
+    data: {
+      type: validData.data.type,
+      category: validData.data.category,
+      developmentStatus: validData.data.developmentStatus,
+      date: validData.data.date,
+      nameOfInventors: validData.data.nameOfInventors,
+      title: validData.data.title,
+      keyScientificAspects: validData.data.keyScientificAspects,
+      fieldOfUse: validData.data.fieldOfUse,
+      collaboratingPartnerName: validData.data.collaboratingPartnerName,
+      financialSupport: validData.data.financialSupport,
+      evidence: file,
+    },
+  });
+  return { success: "Data saved Successfully" };
+  revalidatePath("/user/dashboard/add-record");
+}
+
 export async function saveResearchProductsNill(id: string) {
   if (!id) {
     return { error: "Id is required" };

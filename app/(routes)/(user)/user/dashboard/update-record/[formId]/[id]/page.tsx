@@ -89,7 +89,7 @@ export default async function UpdateRecord({
       <div className="pt-4 pl-4">
         <BackButton />
       </div>
-      <div className="p-2 bg-white mt-4 rounded-md">
+      <div className="p-2 md:p-4 bg-white mt-4 rounded-md ring-2">
         {index === 1 ? (
           <Form1ResearchPublications id={data.userId} updateData={data} />
         ) : index === 2 ? (

@@ -40,6 +40,39 @@ export async function saveLinksEstablished(
   revalidatePath("/user/dashboard/add-record");
 }
 
+export async function updateLinksEstablished(
+  values: z.infer<typeof linksEstablishedSchema>,
+  file: string,
+  id: string
+) {
+  const validData = linksEstablishedSchema.safeParse(values);
+  if (!validData?.success) {
+    return { error: "Invalid data provided" };
+  }
+
+  const existingRecord = await prisma.linksEstablished.findUnique({
+    where: { id },
+  });
+  if (!existingRecord) {
+    return { error: "No record found" };
+  }
+
+  await prisma.linksEstablished.update({
+    where: { id },
+    data: {
+      linkageType: validData.data.linkageType,
+      scope: validData.data.scope,
+      nameOfCollaboratingAgency: validData.data.nameOfCollaboratingAgency,
+      countryOfCollaboratingAgency: validData.data.countryOfCollaboratingAgency,
+      scopeOfCollaboration: validData.data.scopeOfCollaboration,
+      linkageDate: validData.data.linkageDate,
+      mouCopy: file,
+    },
+  });
+  return { success: "Data saved Successfully" };
+  revalidatePath("/user/dashboard/add-record");
+}
+
 export async function saveLinksEstablishedNill(id: string) {
   if (!id) {
     return { error: "Id is required" };

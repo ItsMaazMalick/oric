@@ -11,7 +11,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { countries } from "@/constants/data";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -19,9 +18,9 @@ import { useForm } from "react-hook-form";
 import {
   saveTrainingsWorkshops,
   saveTrainingsWorkshopsNill,
+  updateTrainingsWorkshops,
 } from "@/app/actions/user/records/tranings-workshop";
 import { traningsWorkshopSchema } from "@/lib/validations/formValidations";
-import MultiSelectInput from "../InputFields/MultiSelectInput";
 import SelectInput from "../InputFields/selectInput";
 import TextInput from "../InputFields/textInput";
 import FormSubmitButton from "../button/FormSubmitButton";
@@ -36,6 +35,8 @@ import {
   SelectValue,
 } from "../ui/select";
 import { DynamicSelectInput } from "../InputFields/dynamicselectInput";
+import { countries } from "@/constants/countries";
+import { MultiSelectInput } from "../InputFields/MultiSelectInput";
 
 export function Form4TrainingsWorkshops({
   id,
@@ -54,26 +55,33 @@ export function Form4TrainingsWorkshops({
   const form = useForm<z.infer<typeof traningsWorkshopSchema>>({
     resolver: zodResolver(traningsWorkshopSchema),
     defaultValues: {
-      eventType: updateData?.eventType || "1",
-      applicantRole: updateData?.applicantRole || "2",
-      startDate: updateData?.startDate || "3",
-      endDate: updateData?.endDate || "4",
-      eventTitle: updateData?.eventTitle || "5",
+      eventType: updateData?.eventType || "",
+      applicantRole: updateData?.applicantRole || "",
+      startDate: updateData?.startDate || "",
+      endDate: updateData?.endDate || "",
+      eventTitle: updateData?.eventTitle || "",
       noOfParticipants: updateData?.noOfParticipants || 0,
-      majorFocusArea: updateData?.majorFocusArea || "6",
-      audienceType: updateData?.audienceType || "7",
-      organizer: updateData?.organizer || "8",
-      country: updateData?.country || "9",
+      majorFocusArea: updateData?.majorFocusArea || "",
+      audienceType: updateData?.audienceType || [],
+      organizer: updateData?.organizer || "",
+      country: updateData?.country || "",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof traningsWorkshopSchema>) => {
-    const res = await saveTrainingsWorkshops(values, id);
-    setNill(false);
-    setSuccess(res.success);
-    setError(res.error);
-    form.reset();
-    router.refresh();
+    if (updateData) {
+      const result = await updateTrainingsWorkshops(values, updateData.id);
+      setSuccess(result?.success);
+      setError(result?.error);
+      router.push("/user/dashboard/add-record");
+    } else {
+      const res = await saveTrainingsWorkshops(values, id);
+      setNill(false);
+      setSuccess(res.success);
+      setError(res.error);
+      form.reset();
+      router.refresh();
+    }
   };
 
   const handleNill = async (e: FormEvent<HTMLFormElement>) => {
@@ -88,19 +96,21 @@ export function Form4TrainingsWorkshops({
 
   return (
     <>
-      <div className="flex items-center w-16 p-2 mb-4 space-x-2 border-2 rounded-md border-primary">
-        <Checkbox
-          onClick={() => setNill((prev) => !prev)}
-          id="nill"
-          checked={nill}
-        />
-        <label
-          htmlFor="nill"
-          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-        >
-          Nill
-        </label>
-      </div>
+      {!updateData && (
+        <div className="flex items-center w-16 p-2 mb-4 space-x-2 border-2 rounded-md border-primary">
+          <Checkbox
+            onClick={() => setNill((prev) => !prev)}
+            id="nill"
+            checked={nill}
+          />
+          <label
+            htmlFor="nill"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            Nill
+          </label>
+        </div>
+      )}
       {nill ? (
         <>
           <div className="flex items-center justify-center w-full font-bold text-destructive">
@@ -133,7 +143,12 @@ export function Form4TrainingsWorkshops({
                   label="Type of Event"
                   name="eventType"
                   control={form.control}
-                  items={["Training", "Workshop", "Seminar", "Conference"]}
+                  items={[
+                    { value: "Training", label: "Training" },
+                    { value: "Workshop", label: "Workshop" },
+                    { value: "Seminar", label: "Seminar" },
+                    { value: "Conference", label: "Conference" },
+                  ]}
                 />
               </div>
               {/* ROLE */}
@@ -210,7 +225,14 @@ export function Form4TrainingsWorkshops({
                 <MultiSelectInput
                   label="Audience Type"
                   name="audienceType"
-                  data={["Student", "Faculty", "Researchers", "Community"]}
+                  options={[
+                    { value: "Student", label: "Student" },
+                    { value: "Faculty", label: "Faculty" },
+                    { value: "Researchers", label: "Researchers" },
+                    { value: "Community", label: "Community" },
+                  ]}
+                  control={form.control}
+                  required
                 />
               </div>
             </div>

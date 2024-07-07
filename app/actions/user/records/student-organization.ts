@@ -48,6 +48,39 @@ export async function saveStudentOrganization(
   revalidatePath("/user/dashboard/add-record");
 }
 
+export async function updateStudentOrganization(
+  values: z.infer<typeof studentOrganizationSchema>,
+  file: string,
+  id: string
+) {
+  const validData = studentOrganizationSchema.safeParse(values);
+  if (!validData?.success) {
+    return { error: "Invalid data provided" };
+  }
+
+  const existingRecord = await prisma.studentOrganization.findUnique({
+    where: { id },
+  });
+  if (!existingRecord) {
+    return { error: "No record found" };
+  }
+
+  await prisma.studentOrganization.update({
+    where: { id },
+    data: {
+      organizationName: validData.data.organizationName,
+      noOfMenbers: validData.data.noOfMenbers,
+      membersName: validData.data.membersName,
+      role: validData.data.role,
+      objectives: validData.data.objectives,
+      link: validData.data.link,
+      evidence: file,
+    },
+  });
+  return { success: "Data saved Successfully" };
+  revalidatePath("/user/dashboard/add-record");
+}
+
 export async function saveStudentOrganizationNill(id: string) {
   if (!id) {
     return { error: "Id is required" };

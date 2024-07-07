@@ -6,6 +6,8 @@ import * as z from "zod";
 import {
   saveResearchPublications,
   saveResearchPublicationsNill,
+  updateResearchPublications,
+  updateResearchPublicationsStatus,
 } from "@/app/actions/user/records/researchPublications";
 import {
   Form,
@@ -15,11 +17,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { SDG, countries, years } from "@/constants/data";
 import { researchPublicationSchema } from "@/lib/validations/formValidations";
 import { FormEvent, useState } from "react";
 import { useForm } from "react-hook-form";
-import MultiSelectInput from "../InputFields/MultiSelectInput";
 import SelectInput from "../InputFields/selectInput";
 import TextInput from "../InputFields/textInput";
 import FormSubmitButton from "../button/FormSubmitButton";
@@ -35,6 +35,12 @@ import { FormError } from "./FormError";
 import { FormSuccess } from "./FormSuccess";
 import { useRouter } from "next/navigation";
 import { RequiredTag } from "../InputFields/required-tag";
+import { countries } from "@/constants/countries";
+import { years } from "@/constants/data";
+import { SDG } from "@/constants/sdg";
+import { yesNo } from "@/constants/yes-no";
+import { MultiSelectInput } from "../InputFields/MultiSelectInput";
+import { updateResearchPublicationStatus } from "@/app/actions/admin/update-form-status";
 
 export function Form1ResearchPublications({
   id,
@@ -48,8 +54,6 @@ export function Form1ResearchPublications({
   const [category, setCategory] = useState(
     parseInt(year) < 2019 ? "text" : "select"
   );
-  const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
-  const [selectedSdg, setSelectedSdg] = useState<string[]>([]);
   const [nill, setNill] = useState(false);
   const [success, setSuccess] = useState<string | undefined>("");
   const [error, setError] = useState<string | undefined>("");
@@ -71,18 +75,25 @@ export function Form1ResearchPublications({
       pages: updateData?.pages || 0,
       affiliation: updateData?.affiliation || "",
       link: updateData?.link || "",
-      countries: updateData?.countries || "13",
-      addressing: updateData?.addressing || "14",
+      countries: updateData?.countries || [],
+      addressing: updateData?.addressing || [],
     },
   });
 
   const onSubmit = async (
     values: z.infer<typeof researchPublicationSchema>
   ) => {
-    const result = await saveResearchPublications(values, id);
-    setSuccess(result?.success);
-    setError(result?.error);
-    router.refresh();
+    if (updateData) {
+      const result = await updateResearchPublications(values, updateData.id);
+      setSuccess(result?.success);
+      setError(result?.error);
+      router.push("/user/dashboard/add-record");
+    } else {
+      const result = await saveResearchPublications(values, id);
+      setSuccess(result?.success);
+      setError(result?.error);
+      router.refresh();
+    }
   };
 
   const handleNill = async (e: FormEvent<HTMLFormElement>) => {
@@ -97,19 +108,21 @@ export function Form1ResearchPublications({
 
   return (
     <>
-      <div className="flex items-center w-16 p-2 mb-4 space-x-2 border-2 rounded-md border-primary">
-        <Checkbox
-          onClick={() => setNill((prev) => !prev)}
-          id="nill"
-          checked={nill}
-        />
-        <label
-          htmlFor="nill"
-          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-        >
-          Nill
-        </label>
-      </div>
+      {!updateData && (
+        <div className="flex items-center w-16 p-2 mb-4 space-x-2 border-2 rounded-md border-primary">
+          <Checkbox
+            onClick={() => setNill((prev) => !prev)}
+            id="nill"
+            checked={nill}
+          />
+          <label
+            htmlFor="nill"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            Nill
+          </label>
+        </div>
+      )}
       {nill ? (
         <>
           <div className="flex items-center justify-center w-full font-bold text-destructive">
@@ -164,9 +177,9 @@ export function Form1ResearchPublications({
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent className="max-h-[300px]">
-                          {years.map((year) => (
-                            <SelectItem key={year} value={year}>
-                              {year}
+                          {years.map((year, index) => (
+                            <SelectItem key={index} value={year.value}>
+                              {year.label}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -217,7 +230,12 @@ export function Form1ResearchPublications({
                     label="Category"
                     name="category"
                     control={form.control}
-                    items={["HEC Cat-W", "HEC Cat-X", "HEC Cat-Y", "HEC Cat-Z"]}
+                    items={[
+                      { value: "HEC Cat-W", label: "HEC Cat-W" },
+                      { value: "HEC Cat-X", label: "HEC Cat-X" },
+                      { value: "HEC Cat-Y", label: "HEC Cat-Y" },
+                      { value: "HEC Cat-Z", label: "HEC Cat-Z" },
+                    ]}
                     required
                   />
                 ) : (
@@ -236,11 +254,11 @@ export function Form1ResearchPublications({
                   name="status"
                   control={form.control}
                   items={[
-                    "1st Author",
-                    "2nd Author",
-                    "3rd Author",
-                    "Corr. Author",
-                    "Other",
+                    { value: "1st Author", label: "1st Author" },
+                    { value: "2nd Author", label: "2nd Author" },
+                    { value: "3rd Author", label: "3rd Author" },
+                    { value: "Corr. Author", label: "Corr. Author" },
+                    { value: "Other", label: "Other" },
                   ]}
                   required
                 />
@@ -285,7 +303,7 @@ export function Form1ResearchPublications({
                   label="Affiliation with AIOU"
                   name="affiliation"
                   control={form.control}
-                  items={["No", "Yes"]}
+                  items={yesNo}
                   required
                 />
               </div>
@@ -303,14 +321,30 @@ export function Form1ResearchPublications({
             <MultiSelectInput
               label="Other Countries"
               name="countries"
-              data={countries}
+              options={countries}
+              control={form.control}
+              required
             />
-            {/* ADDRESSING */}
             <MultiSelectInput
               label="Addressing any SDG"
               name="addressing"
-              data={SDG}
+              options={SDG}
+              control={form.control}
+              required
             />
+            {/* ADDRESSING */}
+            {/* <MultiSelectInput
+              label="Addressing any SDG"
+              name="addressing"
+              data={values}
+            /> */}
+            {/* <MultiSelectInput
+              label="Select Year"
+              name="year"
+              options={years}
+              control={form.control}
+              required
+            /> */}
             <div>
               {success && <FormSuccess message={success} className="my-2" />}
               {error && <FormError message={error} className="my-2" />}

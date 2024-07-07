@@ -171,9 +171,32 @@ export const Table1Header: ColumnDef<any>[] = [
     cell: ({ row }) => linkCell(row, "link"),
   },
   {
+    accessorKey: "countries",
+    header: "Other Countries",
+    cell: ({ row }) => {
+      const countries: string[] = row.getValue("countries");
+      return (
+        <div className="w-[170px]">
+          {countries.map((country: string) => (
+            <li key={country}>{country}</li>
+          ))}
+        </div>
+      );
+    },
+  },
+  {
     accessorKey: "addressing",
     header: "addressing",
-    cell: ({ row }) => <div>{row.getValue("addressing")}</div>,
+    cell: ({ row }) => {
+      const addressing: string[] = row.getValue("addressing");
+      return (
+        <div className="w-[300px]">
+          {addressing.map((adr: string) => (
+            <li key={adr}>{adr}</li>
+          ))}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "actions",
@@ -231,7 +254,16 @@ export const Table2Header: ColumnDef<any>[] = [
   {
     accessorKey: "addressing",
     header: "addressing",
-    cell: ({ row }) => <div>{row.getValue("addressing")}</div>,
+    cell: ({ row }) => {
+      const addressing: string[] = row.getValue("addressing");
+      return (
+        <div className="w-[300px]">
+          {addressing.map((adr: string) => (
+            <li key={adr}>{adr}</li>
+          ))}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "actions",
@@ -384,8 +416,17 @@ export const Table4Header: ColumnDef<any>[] = [
   },
   {
     accessorKey: "audienceType",
-    header: "Audiecne Type",
-    cell: ({ row }) => <div>{row.getValue("audienceType")}</div>,
+    header: "Audience Type",
+    cell: ({ row }) => {
+      const audienceType: string[] = row.getValue("audienceType");
+      return (
+        <div className="w-[130px]">
+          {audienceType.map((audience: string) => (
+            <li key={audience}>{audience}</li>
+          ))}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "organizer",
@@ -753,9 +794,9 @@ export const Table10Header: ColumnDef<any>[] = [
     cell: ({ row }) => <div>{row.getValue("endDate")}</div>,
   },
   {
-    accessorKey: "keyDeliverable",
+    accessorKey: "keyDeliverables",
     header: "Key Deliverable",
-    cell: ({ row }) => <div>{row.getValue("keyDeliverable")}</div>,
+    cell: ({ row }) => <div>{row.getValue("keyDeliverables")}</div>,
   },
   {
     accessorKey: "remarks",

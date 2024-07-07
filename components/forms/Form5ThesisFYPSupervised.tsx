@@ -3,7 +3,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
-import { saveThesis, saveThesisNill } from "@/app/actions/user/records/thesis";
+import {
+  saveThesis,
+  saveThesisNill,
+  updateThesis,
+} from "@/app/actions/user/records/thesis";
 import {
   Form,
   FormControl,
@@ -51,7 +55,7 @@ export function Form5ThesisFYPSupervised({
     resolver: zodResolver(thesisSchema),
     defaultValues: {
       role: updateData?.role || "",
-      nameOfSupervisor: updateData?.nameOfSupervisor || "1",
+      nameOfSupervisor: updateData?.nameOfSupervisor || "",
       year: updateData?.year || "",
       degreeLevel: updateData?.degreeLevel || "",
       degreeProgram: updateData?.degreeProgram || "",
@@ -63,12 +67,19 @@ export function Form5ThesisFYPSupervised({
   });
 
   const onSubmit = async (values: z.infer<typeof thesisSchema>) => {
-    const res = await saveThesis(values, id);
-    setNill(false);
-    setSuccess(res.success);
-    setError(res.error);
-    form.reset();
-    router.refresh();
+    if (updateData) {
+      const result = await updateThesis(values, updateData.id);
+      setSuccess(result?.success);
+      setError(result?.error);
+      router.push("/user/dashboard/add-record");
+    } else {
+      const res = await saveThesis(values, id);
+      setNill(false);
+      setSuccess(res.success);
+      setError(res.error);
+      form.reset();
+      router.refresh();
+    }
   };
 
   const handleNill = async (e: FormEvent<HTMLFormElement>) => {
@@ -83,19 +94,21 @@ export function Form5ThesisFYPSupervised({
 
   return (
     <>
-      <div className="flex items-center w-16 p-2 mb-4 space-x-2 border-2 rounded-md border-primary">
-        <Checkbox
-          onClick={() => setNill((prev) => !prev)}
-          id="nill"
-          checked={nill}
-        />
-        <label
-          htmlFor="nill"
-          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-        >
-          Nill
-        </label>
-      </div>
+      {!updateData && (
+        <div className="flex items-center w-16 p-2 mb-4 space-x-2 border-2 rounded-md border-primary">
+          <Checkbox
+            onClick={() => setNill((prev) => !prev)}
+            id="nill"
+            checked={nill}
+          />
+          <label
+            htmlFor="nill"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            Nill
+          </label>
+        </div>
+      )}
       {nill ? (
         <>
           <div className="flex items-center justify-center w-full font-bold text-destructive">
@@ -171,10 +184,16 @@ export function Form5ThesisFYPSupervised({
                   name="degreeLevel"
                   control={form.control}
                   items={[
-                    "BS",
-                    "Masters (16 years)",
-                    "Masters (18 years)",
-                    "PhD",
+                    { value: "BS", label: "BS" },
+                    {
+                      value: "Masters (16 years)",
+                      label: "Masters (16 years)",
+                    },
+                    {
+                      value: "Masters (18 years)",
+                      label: "Masters (18 years)",
+                    },
+                    { value: "PhD", label: "PhD" },
                   ]}
                 />
               </div>
@@ -220,10 +239,13 @@ export function Form5ThesisFYPSupervised({
                   name="degreeStage"
                   control={form.control}
                   items={[
-                    "Synopsis Approved",
-                    "Research Work Completed",
-                    "Thesis Submitted",
-                    "Degree Awarded",
+                    { value: "Synopsis Approved", label: "Synopsis Approved" },
+                    {
+                      value: "Research Work Completed",
+                      label: "Research Work Completed",
+                    },
+                    { value: "Thesis Submitted", label: "Thesis Submitted" },
+                    { value: "Degree Awarded", label: "Degree Awarded" },
                   ]}
                 />
               </div>

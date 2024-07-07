@@ -46,6 +46,43 @@ export async function saveConsultancyContracts(
   revalidatePath("/user/dashboard/add-record");
 }
 
+export async function updateConsultancyContracts(
+  values: z.infer<typeof consultancyContractSchema>,
+  file: string,
+  id: string
+) {
+  const validData = consultancyContractSchema.safeParse(values);
+  if (!validData?.success) {
+    return { error: "Invalid data provided" };
+  }
+
+  const existingRecord = await prisma.consultancyContract.findUnique({
+    where: { id },
+  });
+  if (!existingRecord) {
+    return { error: "No record found" };
+  }
+
+  await prisma.consultancyContract.update({
+    where: { id },
+    data: {
+      consultancyType: validData.data.consultancyType,
+      titleOfConsultancy: validData.data.titleOfConsultancy,
+      role: validData.data.role,
+      companyName: validData.data.companyName,
+      companyCountry: validData.data.companyCountry,
+      contractValue: validData.data.contractValue,
+      startDate: validData.data.startDate,
+      endDate: validData.data.endDate,
+      keyDeliverables: validData.data.keyDeliverables,
+      remarks: validData.data.remarks,
+      copyOfContract: file,
+    },
+  });
+  return { success: "Data saved Successfully" };
+  revalidatePath("/user/dashboard/add-record");
+}
+
 export async function saveConsultancyContractsNill(id: string) {
   if (!id) {
     return { error: "Id is required" };

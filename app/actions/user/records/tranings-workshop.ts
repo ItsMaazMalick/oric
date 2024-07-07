@@ -43,6 +43,41 @@ export async function saveTrainingsWorkshops(
   revalidatePath("/user/dashboard/add-record");
 }
 
+export async function updateTrainingsWorkshops(
+  values: z.infer<typeof traningsWorkshopSchema>,
+  id: string
+) {
+  const validData = traningsWorkshopSchema.safeParse(values);
+  if (!validData?.success) {
+    return { error: "Invalid data provided" };
+  }
+
+  const existingRecord = await prisma.training.findUnique({
+    where: { id },
+  });
+  if (!existingRecord) {
+    return { error: "No record found" };
+  }
+
+  await prisma.training.update({
+    where: { id },
+    data: {
+      eventType: validData.data.eventType,
+      applicantRole: validData.data.applicantRole,
+      startDate: validData.data.startDate,
+      endDate: validData.data.endDate,
+      eventTitle: validData.data.eventTitle,
+      noOfParticipants: validData.data.noOfParticipants,
+      majorFocusArea: validData.data.majorFocusArea,
+      audienceType: validData.data.audienceType,
+      organizer: validData.data.organizer,
+      country: validData.data.country,
+    },
+  });
+  return { success: "Data saved Successfully" };
+  revalidatePath("/user/dashboard/add-record");
+}
+
 export async function saveTrainingsWorkshopsNill(id: string) {
   if (!id) {
     return { error: "Id is required" };
@@ -74,7 +109,7 @@ export async function saveTrainingsWorkshopsNill(id: string) {
       eventTitle: "NILL",
       noOfParticipants: 0,
       majorFocusArea: "NILL",
-      audienceType: "NILL",
+      audienceType: [],
       organizer: "NILL",
       country: "NILL",
       user: {

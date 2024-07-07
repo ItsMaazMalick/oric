@@ -43,6 +43,42 @@ export async function saveBookAuthoredEdited(
   revalidatePath("/user/dashboard/add-record");
 }
 
+export async function updateBookAuthoredEdited(
+  values: z.infer<typeof bookAuthoredSchema>,
+  id: string
+) {
+  const validData = bookAuthoredSchema.safeParse(values);
+  if (!validData?.success) {
+    return { error: "Invalid data provided" };
+  }
+
+  const existingRecord = await prisma.bookAuthoredEdited.findUnique({
+    where: { id },
+  });
+  if (!existingRecord) {
+    return { error: "No record found" };
+  }
+
+  await prisma.bookAuthoredEdited.update({
+    where: { id },
+    data: {
+      isbn: validData.data.isbn,
+      role: validData.data.role,
+      pages: validData.data.pages,
+      year: validData.data.year,
+      country: validData.data.country,
+      bookTitle: validData.data.bookTitle,
+      chapterTitle: validData.data.chapterTitle,
+      publisherName: validData.data.publisherName,
+      affiliation: validData.data.affiliation,
+      link: validData.data.link,
+      addressing: validData.data.addressing,
+    },
+  });
+  return { success: "Data saved Successfully" };
+  revalidatePath("/user/dashboard/add-record");
+}
+
 export async function saveBookAuthoredEditedNill(id: string) {
   if (!id) {
     return { error: "Id is required" };

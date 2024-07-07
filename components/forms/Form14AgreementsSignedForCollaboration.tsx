@@ -13,7 +13,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { countries } from "@/constants/data";
 import { validateForm16 } from "@/lib/validator";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -39,7 +38,10 @@ import { Checkbox } from "../ui/checkbox";
 import {
   saveAgreementsSigned,
   saveAgreementsSignedNill,
+  updateAgreementsSigned,
 } from "@/app/actions/user/records/agreements-signed";
+import { nationalInternational } from "@/constants/national-international";
+import { countries } from "@/constants/countries";
 
 export function Form14AgreementsSignedForCollaboration({
   id,
@@ -70,18 +72,29 @@ export function Form14AgreementsSignedForCollaboration({
   });
 
   const onSubmit = async (values: z.infer<typeof agreementSignedSchema>) => {
-    if (!file) {
-      alert("Image is required");
-      setError("Image is required");
-      return;
+    if (updateData) {
+      const result = await updateAgreementsSigned(
+        values,
+        file || updateData.mouCopy,
+        updateData.id
+      );
+      setSuccess(result?.success);
+      setError(result?.error);
+      router.push("/user/dashboard/add-record");
     } else {
-      const res = await saveAgreementsSigned(values, file, id);
-      setNill(false);
-      setFile("");
-      setSuccess(res.success);
-      setError(res.error);
-      form.reset();
-      router.refresh();
+      if (!file) {
+        alert("Image is required");
+        setError("Image is required");
+        return;
+      } else {
+        const res = await saveAgreementsSigned(values, file, id);
+        setNill(false);
+        setFile("");
+        setSuccess(res.success);
+        setError(res.error);
+        form.reset();
+        router.refresh();
+      }
     }
   };
 
@@ -97,19 +110,21 @@ export function Form14AgreementsSignedForCollaboration({
 
   return (
     <>
-      <div className="flex items-center w-16 p-2 mb-4 space-x-2 border-2 rounded-md border-primary">
-        <Checkbox
-          onClick={() => setNill((prev) => !prev)}
-          id="nill"
-          checked={nill}
-        />
-        <label
-          htmlFor="nill"
-          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-        >
-          Nill
-        </label>
-      </div>
+      {!updateData && (
+        <div className="flex items-center w-16 p-2 mb-4 space-x-2 border-2 rounded-md border-primary">
+          <Checkbox
+            onClick={() => setNill((prev) => !prev)}
+            id="nill"
+            checked={nill}
+          />
+          <label
+            htmlFor="nill"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            Nill
+          </label>
+        </div>
+      )}
       {nill ? (
         <>
           <div className="flex items-center justify-center w-full font-bold text-destructive">
@@ -142,7 +157,11 @@ export function Form14AgreementsSignedForCollaboration({
                   label="Type of Linkage"
                   name="typeOfLinkage"
                   control={form.control}
-                  items={["Academic", "Research", "Both"]}
+                  items={[
+                    { value: "Academic", label: "Academic" },
+                    { value: "Research", label: "Research" },
+                    { value: "Both", label: "Both" },
+                  ]}
                 />
               </div>
               {/* sponsoring_agency_address */}
@@ -161,7 +180,7 @@ export function Form14AgreementsSignedForCollaboration({
                   label="Scope"
                   name="scope"
                   control={form.control}
-                  items={["National", "International"]}
+                  items={nationalInternational}
                 />
               </div>
             </div>

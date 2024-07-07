@@ -46,6 +46,45 @@ export async function saveContractResearch(
   revalidatePath("/user/dashboard/add-record");
 }
 
+export async function updateContractResearch(
+  values: z.infer<typeof contractResearchSchema>,
+  file: string,
+  id: string
+) {
+  const validData = contractResearchSchema.safeParse(values);
+  if (!validData?.success) {
+    return { error: "Invalid data provided" };
+  }
+
+  const existingRecord = await prisma.contractResearchAward.findUnique({
+    where: { id },
+  });
+  if (!existingRecord) {
+    return { error: "No record found" };
+  }
+
+  await prisma.contractResearchAward.update({
+    where: { id },
+    data: {
+      scope: validData.data.scope,
+      sponsoringAgencyCountry: validData.data.sponsoringAgencyCountry,
+      contractAwardingAgency: validData.data.contractAwardingAgency,
+      title: validData.data.title,
+      amountOfContract: validData.data.amountOfContract,
+      role: validData.data.role,
+      nameOfPI: validData.data.nameOfPI,
+      designationOfPI: validData.data.designationOfPI,
+      organizationOfPI: validData.data.organizationOfPI,
+      startingDate: validData.data.startingDate,
+      endingDate: validData.data.endingDate,
+      dateOfContract: validData.data.dateOfContract,
+      contractResearchCopy: file,
+    },
+  });
+  return { success: "Data saved Successfully" };
+  revalidatePath("/user/dashboard/add-record");
+}
+
 export async function saveContractResearchNill(id: string) {
   if (!id) {
     return { error: "Id is required" };

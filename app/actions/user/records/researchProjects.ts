@@ -22,8 +22,8 @@ export async function saveResearchProjects(
   await prisma.researchProject.create({
     data: {
       date: validData.data.date,
-      agency: validData.data.fundingAgency,
-      name: validData.data.nameOfResearch,
+      agency: validData.data.agency,
+      name: validData.data.name,
       status: validData.data.status,
       type: validData.data.type,
       role: validData.data.role,
@@ -42,6 +42,48 @@ export async function saveResearchProjects(
           id,
         },
       },
+    },
+  });
+  return { success: "Data saved Successfully" };
+  revalidatePath("/user/dashboard/add-record");
+}
+
+export async function updateResearchProjects(
+  values: z.infer<typeof researchProjectSchema>,
+  file: string,
+  id: string
+) {
+  const validData = researchProjectSchema.safeParse(values);
+  if (!validData?.success) {
+    return { error: "Invalid data provided" };
+  }
+
+  const existingRecord = await prisma.researchProject.findUnique({
+    where: { id },
+  });
+  if (!existingRecord) {
+    return { error: "No record found" };
+  }
+
+  await prisma.researchProject.update({
+    where: { id },
+    data: {
+      date: validData.data.date,
+      agency: validData.data.agency,
+      name: validData.data.name,
+      status: validData.data.status,
+      type: validData.data.type,
+      role: validData.data.role,
+      grantAmount: validData.data.grantAmount,
+      title: validData.data.title,
+      startDate: validData.data.startDate,
+      endDate: validData.data.endDate,
+      totalFunding: validData.data.totalFunding,
+      collaboratingPartner: validData.data.collaboratingPartner,
+      coFundingPartner: validData.data.coFundingPartner,
+      completion: validData.data.completion,
+      remarks: validData.data.remarks,
+      file,
     },
   });
   return { success: "Data saved Successfully" };

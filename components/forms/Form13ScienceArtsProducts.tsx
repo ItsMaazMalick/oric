@@ -22,7 +22,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { countries, years } from "@/constants/data";
 
 import { FormEvent, useLayoutEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
@@ -41,7 +40,9 @@ import FormSubmitButton from "../button/FormSubmitButton";
 import {
   saveScienceArtsProducts,
   saveScienceArtsProductsNill,
+  updateScienceArtsProducts,
 } from "@/app/actions/user/records/science-arts-products";
+import { nationalInternational } from "@/constants/national-international";
 
 export function Form13ScienceArtsProducts({
   id,
@@ -72,18 +73,29 @@ export function Form13ScienceArtsProducts({
   const onSubmit = async (
     values: z.infer<typeof scienceArtsProductsSchema>
   ) => {
-    if (!file) {
-      alert("Image is required");
-      setError("Image is required");
-      return;
+    if (updateData) {
+      const result = await updateScienceArtsProducts(
+        values,
+        file || updateData.evidence,
+        updateData.id
+      );
+      setSuccess(result?.success);
+      setError(result?.error);
+      router.push("/user/dashboard/add-record");
     } else {
-      const res = await saveScienceArtsProducts(values, file, id);
-      setNill(false);
-      setFile("");
-      setSuccess(res.success);
-      setError(res.error);
-      form.reset();
-      router.refresh();
+      if (!file) {
+        alert("Image is required");
+        setError("Image is required");
+        return;
+      } else {
+        const res = await saveScienceArtsProducts(values, file, id);
+        setNill(false);
+        setFile("");
+        setSuccess(res.success);
+        setError(res.error);
+        form.reset();
+        router.refresh();
+      }
     }
   };
 
@@ -99,19 +111,21 @@ export function Form13ScienceArtsProducts({
 
   return (
     <>
-      <div className="flex items-center w-16 p-2 mb-4 space-x-2 border-2 rounded-md border-primary">
-        <Checkbox
-          onClick={() => setNill((prev) => !prev)}
-          id="nill"
-          checked={nill}
-        />
-        <label
-          htmlFor="nill"
-          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-        >
-          Nill
-        </label>
-      </div>
+      {!updateData && (
+        <div className="flex items-center w-16 p-2 mb-4 space-x-2 border-2 rounded-md border-primary">
+          <Checkbox
+            onClick={() => setNill((prev) => !prev)}
+            id="nill"
+            checked={nill}
+          />
+          <label
+            htmlFor="nill"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            Nill
+          </label>
+        </div>
+      )}
       {nill ? (
         <>
           <div className="flex items-center justify-center w-full font-bold text-destructive">
@@ -144,12 +158,24 @@ export function Form13ScienceArtsProducts({
                   name="category"
                   control={form.control}
                   items={[
-                    "Science Products Display",
-                    "Arts Products Display",
-                    "Books Exibition",
-                    "Design Products Display",
-                    "Posters Exhibition",
-                    "FYP Display",
+                    {
+                      value: "Science Products Display",
+                      label: "Science Products Display",
+                    },
+                    {
+                      value: "Arts Products Display",
+                      label: "Arts Products Display",
+                    },
+                    { value: "Books Exibition", label: "Books Exibition" },
+                    {
+                      value: "Design Products Display",
+                      label: "Design Products Display",
+                    },
+                    {
+                      value: "Posters Exhibition",
+                      label: "Posters Exhibition",
+                    },
+                    { value: "FYP Display", label: "FYP Display" },
                   ]}
                 />
               </div>
@@ -167,7 +193,7 @@ export function Form13ScienceArtsProducts({
                   label="Scope"
                   name="scope"
                   control={form.control}
-                  items={["National", "International"]}
+                  items={nationalInternational}
                 />
               </div>
             </div>

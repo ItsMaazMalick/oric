@@ -19,7 +19,10 @@ type TextInputProps = {
   label: string;
   name: string;
   control: any;
-  items: string[];
+  items: {
+    value: string;
+    label: string;
+  }[];
   required?: boolean;
 };
 
@@ -47,9 +50,9 @@ export default function SelectInput({
               </SelectTrigger>
             </FormControl>
             <SelectContent className="max-h-[300px]">
-              {items.map((item: string, index: number) => (
-                <SelectItem key={index} value={item}>
-                  {item}
+              {items.map((item, index) => (
+                <SelectItem key={index} value={item.value}>
+                  {item.label}
                 </SelectItem>
               ))}
             </SelectContent>

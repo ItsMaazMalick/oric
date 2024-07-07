@@ -50,6 +50,49 @@ export async function saveResearchPublications(
   }
 }
 
+export async function updateResearchPublications(
+  values: z.infer<typeof researchPublicationSchema>,
+  id: string
+) {
+  try {
+    const validData = researchPublicationSchema.safeParse(values);
+    if (!validData?.success) {
+      return { error: "Invalid data provided" };
+    }
+
+    const existingRecord = await prisma.researchPublication.findUnique({
+      where: { id },
+    });
+    if (!existingRecord) {
+      return { error: "No record found" };
+    }
+
+    await prisma.researchPublication.update({
+      where: { id },
+      data: {
+        year: validData.data.year,
+        country: validData.data.country,
+        journalName: validData.data.journalName,
+        title: validData.data.title,
+        authorName: validData.data.authorName,
+        category: validData.data.category,
+        status: validData.data.status,
+        issn: validData.data.issn,
+        volume: validData.data.volume,
+        pages: validData.data.pages,
+        affiliation: validData.data.affiliation,
+        link: validData.data.link,
+        countries: validData.data.countries,
+        addressing: validData.data.addressing,
+      },
+    });
+    return { success: "Data saved Successfully" };
+  } catch (error) {
+    console.log(error);
+    return { error: "Something went wrong" };
+  }
+}
+
 export async function saveResearchPublicationsNill(id: string) {
   if (!id) {
     return { error: "Id is required" };
@@ -86,8 +129,8 @@ export async function saveResearchPublicationsNill(id: string) {
       pages: 0,
       affiliation: "NILL",
       link: "NILL",
-      countries: "NILL",
-      addressing: "NILL",
+      countries: [],
+      addressing: [],
       user: {
         connect: {
           id,

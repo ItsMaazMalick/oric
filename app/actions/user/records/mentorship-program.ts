@@ -45,6 +45,37 @@ export async function saveMentorshipProgram(
   revalidatePath("/user/dashboard/add-record");
 }
 
+export async function updateMentorshipProgram(
+  values: z.infer<typeof mentorshipSchema>,
+  file: string,
+  id: string
+) {
+  const validData = mentorshipSchema.safeParse(values);
+  if (!validData?.success) {
+    return { error: "Invalid data provided" };
+  }
+
+  const existingRecord = await prisma.mentorship.findUnique({
+    where: { id },
+  });
+  if (!existingRecord) {
+    return { error: "No record found" };
+  }
+
+  await prisma.mentorship.update({
+    where: { id },
+    data: {
+      programName: validData.data.programName,
+      noOfStudents: validData.data.noOfStudents,
+      role: validData.data.role,
+      details: validData.data.details,
+      evidence: file,
+    },
+  });
+  return { success: "Data saved Successfully" };
+  revalidatePath("/user/dashboard/add-record");
+}
+
 export async function saveMentorshipProgramNill(id: string) {
   if (!id) {
     return { error: "Id is required" };

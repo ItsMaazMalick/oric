@@ -43,6 +43,41 @@ export async function saveCivicEngagement(
   revalidatePath("/user/dashboard/add-record");
 }
 
+export async function updateCivicEngagement(
+  values: z.infer<typeof civicEngagementSchema>,
+  file: string,
+  id: string
+) {
+  const validData = civicEngagementSchema.safeParse(values);
+  if (!validData?.success) {
+    return { error: "Invalid data provided" };
+  }
+
+  const existingRecord = await prisma.civicEngagementEvent.findUnique({
+    where: { id },
+  });
+  if (!existingRecord) {
+    return { error: "No record found" };
+  }
+
+  await prisma.civicEngagementEvent.update({
+    where: { id },
+    data: {
+      type: validData.data.type,
+      role: validData.data.role,
+      title: validData.data.title,
+      communityInvolved: validData.data.communityInvolved,
+      outcomes: validData.data.outcomes,
+      date: validData.data.date,
+      collaboratingAgency: validData.data.collaboratingAgency,
+      collaboratingAgencyName: validData.data.collaboratingAgencyName,
+      briefReport: file,
+    },
+  });
+  return { success: "Data saved Successfully" };
+  revalidatePath("/user/dashboard/add-record");
+}
+
 export async function saveCivicEngagementNill(id: string) {
   if (!id) {
     return { error: "Id is required" };

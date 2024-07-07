@@ -19,10 +19,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { SDG, countries, years } from "@/constants/data";
 import { FormEvent, useState } from "react";
 import { useForm } from "react-hook-form";
-import MultiSelectInput from "../InputFields/MultiSelectInput";
 import SelectInput from "../InputFields/selectInput";
 import TextInput from "../InputFields/textInput";
 import FormSubmitButton from "../button/FormSubmitButton";
@@ -132,7 +130,11 @@ export function UpdateStatusForm({
           label="Status"
           name="status"
           control={form.control}
-          items={["pending", "accepted", "rejected"]}
+          items={[
+            { value: "pending", label: "pending" },
+            { value: "accepted", label: "accepted" },
+            { value: "rejected", label: "rejected" },
+          ]}
           required
         />
         {success && <FormSuccess message={success} className="my-2" />}

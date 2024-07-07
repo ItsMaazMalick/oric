@@ -31,6 +31,7 @@ import { Checkbox } from "../ui/checkbox";
 import {
   saveNationalInternationalHonors,
   saveNationalInternationalHonorsNill,
+  updateNationalInternationalHonors,
 } from "@/app/actions/user/records/national-international-honors";
 
 export function Form15NationalOrInternationalHonors({
@@ -61,18 +62,29 @@ export function Form15NationalOrInternationalHonors({
   const onSubmit = async (
     values: z.infer<typeof nationalInternationalAwardsSchema>
   ) => {
-    if (!file) {
-      alert("Image is required");
-      setError("Image is required");
-      return;
+    if (updateData) {
+      const result = await updateNationalInternationalHonors(
+        values,
+        file || updateData.evidence,
+        updateData.id
+      );
+      setSuccess(result?.success);
+      setError(result?.error);
+      router.push("/user/dashboard/add-record");
     } else {
-      const res = await saveNationalInternationalHonors(values, file, id);
-      setNill(false);
-      setFile("");
-      setSuccess(res.success);
-      setError(res.error);
-      form.reset();
-      router.refresh();
+      if (!file) {
+        alert("Image is required");
+        setError("Image is required");
+        return;
+      } else {
+        const res = await saveNationalInternationalHonors(values, file, id);
+        setNill(false);
+        setFile("");
+        setSuccess(res.success);
+        setError(res.error);
+        form.reset();
+        router.refresh();
+      }
     }
   };
 
@@ -88,19 +100,21 @@ export function Form15NationalOrInternationalHonors({
 
   return (
     <>
-      <div className="flex items-center w-16 p-2 mb-4 space-x-2 border-2 rounded-md border-primary">
-        <Checkbox
-          onClick={() => setNill((prev) => !prev)}
-          id="nill"
-          checked={nill}
-        />
-        <label
-          htmlFor="nill"
-          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-        >
-          Nill
-        </label>
-      </div>
+      {!updateData && (
+        <div className="flex items-center w-16 p-2 mb-4 space-x-2 border-2 rounded-md border-primary">
+          <Checkbox
+            onClick={() => setNill((prev) => !prev)}
+            id="nill"
+            checked={nill}
+          />
+          <label
+            htmlFor="nill"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            Nill
+          </label>
+        </div>
+      )}
       {nill ? (
         <>
           <div className="flex items-center justify-center w-full font-bold text-destructive">

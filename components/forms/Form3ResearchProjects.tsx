@@ -12,12 +12,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { SDG, years } from "@/constants/data";
+import { years } from "@/constants/data";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FormEvent, useLayoutEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import MultiSelectInput from "../InputFields/MultiSelectInput";
 import SelectInput from "../InputFields/selectInput";
 import TextInput from "../InputFields/textInput";
 import { toast } from "../ui/use-toast";
@@ -26,6 +25,7 @@ import Image from "next/image";
 import {
   saveResearchProjects,
   saveResearchProjectsNill,
+  updateResearchProjects,
 } from "@/app/actions/user/records/researchProjects";
 import { Checkbox } from "../ui/checkbox";
 import Link from "next/link";
@@ -52,8 +52,8 @@ export function Form3ResearchProjects({
     resolver: zodResolver(researchProjectSchema),
     defaultValues: {
       date: updateData?.date || "",
-      fundingAgency: updateData?.fundingAgency || "",
-      nameOfResearch: updateData?.nameOfResearch || "",
+      agency: updateData?.agency || "",
+      name: updateData?.name || "",
       status: updateData?.status || "",
       type: updateData?.type || "",
       role: updateData?.role || "",
@@ -69,18 +69,29 @@ export function Form3ResearchProjects({
     },
   });
   const onSubmit = async (values: z.infer<typeof researchProjectSchema>) => {
-    if (!file) {
-      alert("Image is required");
-      setError("Image is required");
-      return;
+    if (updateData) {
+      const result = await updateResearchProjects(
+        values,
+        file || updateData.file,
+        updateData.id
+      );
+      setSuccess(result?.success);
+      setError(result?.error);
+      router.push("/user/dashboard/add-record");
     } else {
-      const res = await saveResearchProjects(values, file, id);
-      setNill(false);
-      setFile("");
-      setSuccess(res.success);
-      setError(res.error);
-      form.reset();
-      router.refresh();
+      if (!file) {
+        alert("Image is required");
+        setError("Image is required");
+        return;
+      } else {
+        const res = await saveResearchProjects(values, file, id);
+        setNill(false);
+        setFile("");
+        setSuccess(res.success);
+        setError(res.error);
+        form.reset();
+        router.refresh();
+      }
     }
   };
 
@@ -96,19 +107,21 @@ export function Form3ResearchProjects({
 
   return (
     <>
-      <div className="flex items-center w-16 p-2 mb-4 space-x-2 border-2 rounded-md border-primary">
-        <Checkbox
-          onClick={() => setNill((prev) => !prev)}
-          id="nill"
-          checked={nill}
-        />
-        <label
-          htmlFor="nill"
-          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-        >
-          Nill
-        </label>
-      </div>
+      {!updateData && (
+        <div className="flex items-center w-16 p-2 mb-4 space-x-2 border-2 rounded-md border-primary">
+          <Checkbox
+            onClick={() => setNill((prev) => !prev)}
+            id="nill"
+            checked={nill}
+          />
+          <label
+            htmlFor="nill"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            Nill
+          </label>
+        </div>
+      )}
       {nill ? (
         <>
           <div className="flex items-center justify-center w-full font-bold text-destructive">
@@ -149,7 +162,7 @@ export function Form3ResearchProjects({
               <div className="w-full lg:w-[35%]">
                 <TextInput
                   label="Funding Agency"
-                  name="fundingAgency"
+                  name="agency"
                   control={form.control}
                 />
               </div>
@@ -158,7 +171,7 @@ export function Form3ResearchProjects({
               <div className="w-full lg:w-[35%]">
                 <TextInput
                   label="Name of Research Grant"
-                  name="nameOfResearch"
+                  name="name"
                   control={form.control}
                 />
               </div>
@@ -170,7 +183,11 @@ export function Form3ResearchProjects({
                   label="Status"
                   name="status"
                   control={form.control}
-                  items={["Approved", "Completed", "Submitted"]}
+                  items={[
+                    { value: "Approved", label: "Approved" },
+                    { value: "Completed", label: "Completed" },
+                    { value: "Submitted", label: "Submitted" },
+                  ]}
                 />
               </div>
               {/* TYPE */}
@@ -179,7 +196,11 @@ export function Form3ResearchProjects({
                   label="Type"
                   name="type"
                   control={form.control}
-                  items={["National", "International", "Internal"]}
+                  items={[
+                    { value: "National", label: "National" },
+                    { value: "International", label: "International" },
+                    { value: "Internal", label: "Internal" },
+                  ]}
                 />
               </div>
               {/* ROLE */}
@@ -189,13 +210,13 @@ export function Form3ResearchProjects({
                   name="role"
                   control={form.control}
                   items={[
-                    "PI",
-                    "Co-PI",
-                    "Consultant",
-                    "Collaborator",
-                    "Team Lead",
-                    "Team Member",
-                    "Any Other",
+                    { value: "PI", label: "PI" },
+                    { value: "Co-PI", label: "Co-PI" },
+                    { value: "Consultant", label: "Consultant" },
+                    { value: "Collaborator", label: "Collaborator" },
+                    { value: "Team Lead", label: "Team Lead" },
+                    { value: "Team Member", label: "Team Member" },
+                    { value: "Any Other", label: "Any Other" },
                   ]}
                 />
               </div>
@@ -271,7 +292,11 @@ export function Form3ResearchProjects({
                   label="Completion"
                   name="completion"
                   control={form.control}
-                  items={["Applied", "Completed", "Ongoing"]}
+                  items={[
+                    { value: "Applied", label: "Applied" },
+                    { value: "Completed", label: "Completed" },
+                    { value: "Ongoing", label: "Ongoing" },
+                  ]}
                 />
               </div>
               {/* REMARKS*/}
@@ -283,30 +308,21 @@ export function Form3ResearchProjects({
                 />
               </div>
             </div>
-            <div className="flex flex-col w-full gap-4 lg:flex-row">
-              <div className="w-full lg:w-[50%]">
-                <MultiSelectInput
-                  label="Addressing any SDG"
-                  name="SDG"
-                  data={SDG}
-                />
+            {/* ANNEX FILE */}
+            {/* TODO: */}
+            {file ? (
+              <Link
+                href={file}
+                target="_blank"
+                className="text-secondary-foreground bg-secondary w-full lg:w-[50%] rounded-md h-10 mt-8 flex justify-center items-center"
+              >
+                File Uploaded
+              </Link>
+            ) : (
+              <div className="text-black bg-primary w-full lg:w-[50%] rounded-md h-10 flex justify-center items-center mt-8">
+                <UploadButtonComponent image={file} setImage={setFile} />
               </div>
-              {/* ANNEX FILE */}
-              {/* TODO: */}
-              {file ? (
-                <Link
-                  href={file}
-                  target="_blank"
-                  className="text-secondary-foreground bg-secondary w-full lg:w-[50%] rounded-md h-10 mt-8 flex justify-center items-center"
-                >
-                  File Uploaded
-                </Link>
-              ) : (
-                <div className="text-black bg-primary w-full lg:w-[50%] rounded-md h-10 flex justify-center items-center mt-8">
-                  <UploadButtonComponent image={file} setImage={setFile} />
-                </div>
-              )}
-            </div>
+            )}
             <div>
               {success && <FormSuccess message={success} className="my-2" />}
               {error && <FormError message={error} className="my-2" />}

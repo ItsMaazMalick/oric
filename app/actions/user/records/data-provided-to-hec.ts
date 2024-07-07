@@ -42,6 +42,36 @@ export async function saveDataProvidedToHec(
   revalidatePath("/user/dashboard/add-record");
 }
 
+export async function updateDataProvidedToHec(
+  values: z.infer<typeof hecSchema>,
+  file: string,
+  id: string
+) {
+  const validData = hecSchema.safeParse(values);
+  if (!validData?.success) {
+    return { error: "Invalid data provided" };
+  }
+
+  const existingRecord = await prisma.hec.findUnique({
+    where: { id },
+  });
+  if (!existingRecord) {
+    return { error: "No record found" };
+  }
+
+  await prisma.hec.update({
+    where: { id },
+    data: {
+      date: validData.data.date,
+      dataProvidedTo: validData.data.dataProvidedTo,
+      programOfOrganization: validData.data.programOfOrganization,
+      evidence: file,
+    },
+  });
+  return { success: "Data saved Successfully" };
+  revalidatePath("/user/dashboard/add-record");
+}
+
 export async function saveDataProvidedToHecNill(id: string) {
   if (!id) {
     return { error: "Id is required" };

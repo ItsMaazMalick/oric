@@ -43,6 +43,42 @@ export async function savePatentsTrade(
   revalidatePath("/user/dashboard/add-record");
 }
 
+export async function updatePatentsTrade(
+  values: z.infer<typeof patentsTradeSchema>,
+  file: string,
+  id: string
+) {
+  const validData = patentsTradeSchema.safeParse(values);
+  if (!validData?.success) {
+    return { error: "Invalid data provided" };
+  }
+
+  const existingRecord = await prisma.patentsTrademark.findUnique({
+    where: { id },
+  });
+  if (!existingRecord) {
+    return { error: "No record found" };
+  }
+
+  await prisma.patentsTrademark.update({
+    where: { id },
+    data: {
+      typeOfIP: validData.data.typeOfIP,
+      scope: validData.data.scope,
+      date: validData.data.date,
+      namesOfInventors: validData.data.namesOfInventors,
+      inventionTitle: validData.data.inventionTitle,
+      IPStatus: validData.data.IPStatus,
+      royaltyRevenue: validData.data.royaltyRevenue,
+      keyScientificAspects: validData.data.keyScientificAspects,
+      commertialPartners: validData.data.commertialPartners,
+      evidence: file,
+    },
+  });
+  return { success: "Data saved Successfully" };
+  revalidatePath("/user/dashboard/add-record");
+}
+
 export async function savePatentsTradeNill(id: string) {
   if (!id) {
     return { error: "Id is required" };

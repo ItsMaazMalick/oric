@@ -22,7 +22,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { countries, years } from "@/constants/data";
 
 import { FormEvent, useLayoutEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
@@ -40,6 +39,7 @@ import { Checkbox } from "../ui/checkbox";
 import {
   saveCivicEngagement,
   saveCivicEngagementNill,
+  updateCivicEngagement,
 } from "@/app/actions/user/records/civic-engagement";
 
 export function Form9CivicEngagementEvents({
@@ -72,18 +72,29 @@ export function Form9CivicEngagementEvents({
   });
 
   const onSubmit = async (values: z.infer<typeof civicEngagementSchema>) => {
-    if (!file) {
-      alert("Image is required");
-      setError("Image is required");
-      return;
+    if (updateData) {
+      const result = await updateCivicEngagement(
+        values,
+        file || updateData.briefReport,
+        updateData.id
+      );
+      setSuccess(result?.success);
+      setError(result?.error);
+      router.push("/user/dashboard/add-record");
     } else {
-      const res = await saveCivicEngagement(values, file, id);
-      setNill(false);
-      setFile("");
-      setSuccess(res.success);
-      setError(res.error);
-      form.reset();
-      router.refresh();
+      if (!file) {
+        alert("Image is required");
+        setError("Image is required");
+        return;
+      } else {
+        const res = await saveCivicEngagement(values, file, id);
+        setNill(false);
+        setFile("");
+        setSuccess(res.success);
+        setError(res.error);
+        form.reset();
+        router.refresh();
+      }
     }
   };
 
@@ -99,19 +110,21 @@ export function Form9CivicEngagementEvents({
 
   return (
     <>
-      <div className="flex items-center w-16 p-2 mb-4 space-x-2 border-2 rounded-md border-primary">
-        <Checkbox
-          onClick={() => setNill((prev) => !prev)}
-          id="nill"
-          checked={nill}
-        />
-        <label
-          htmlFor="nill"
-          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-        >
-          Nill
-        </label>
-      </div>
+      {!updateData && (
+        <div className="flex items-center w-16 p-2 mb-4 space-x-2 border-2 rounded-md border-primary">
+          <Checkbox
+            onClick={() => setNill((prev) => !prev)}
+            id="nill"
+            checked={nill}
+          />
+          <label
+            htmlFor="nill"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            Nill
+          </label>
+        </div>
+      )}
       {nill ? (
         <>
           <div className="flex items-center justify-center w-full font-bold text-destructive">
@@ -144,7 +157,13 @@ export function Form9CivicEngagementEvents({
                   label="Type"
                   name="type"
                   control={form.control}
-                  items={["Civic Engagement", "Issue of Public Concern"]}
+                  items={[
+                    { value: "Civic Engagement", label: "Civic Engagement" },
+                    {
+                      value: "Issue of Public Concern",
+                      label: "Issue of Public Concern",
+                    },
+                  ]}
                 />
               </div>
               {/* co_pi_university */}
@@ -153,7 +172,11 @@ export function Form9CivicEngagementEvents({
                   label="Role of Applicant"
                   name="role"
                   control={form.control}
-                  items={["Organizer", "Participant", "Resource Person"]}
+                  items={[
+                    { value: "Organizer", label: "Organizer" },
+                    { value: "Participant", label: "Participant" },
+                    { value: "Resource Person", label: "Resource Person" },
+                  ]}
                 />
               </div>
               {/* thematic_area */}
@@ -182,11 +205,11 @@ export function Form9CivicEngagementEvents({
                   name="outcomes"
                   control={form.control}
                   items={[
-                    "Case Study",
-                    "Policy Advice",
-                    "Outreach Event",
-                    "Capacity Building",
-                    "Any Other",
+                    { value: "Case Study", label: "Case Study" },
+                    { value: "Policy Advice", label: "Policy Advice" },
+                    { value: "Outreach Event", label: "Outreach Event" },
+                    { value: "Capacity Building", label: "Capacity Building" },
+                    { value: "Any Other", label: "Any Other" },
                   ]}
                 />
               </div>
@@ -208,11 +231,17 @@ export function Form9CivicEngagementEvents({
                   name="collaboratingAgency"
                   control={form.control}
                   items={[
-                    "Local Authority",
-                    "Government Department",
-                    "Civil Society Organizations",
-                    "NGO",
-                    "Any Other",
+                    { value: "Local Authority", label: "Local Authority" },
+                    {
+                      value: "Government Department",
+                      label: "Government Department",
+                    },
+                    {
+                      value: "Civil Society Organizations",
+                      label: "Civil Society Organizations",
+                    },
+                    { value: "NGO", label: "NGO" },
+                    { value: "Any Other", label: "Any Other" },
                   ]}
                 />
               </div>

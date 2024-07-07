@@ -12,13 +12,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { SDG, countries, years } from "@/constants/data";
 import { validateForm2 } from "@/lib/validator";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { useForm } from "react-hook-form";
-import MultiSelectInput from "../InputFields/MultiSelectInput";
 import SelectInput from "../InputFields/selectInput";
 import TextInput from "../InputFields/textInput";
 import { toast } from "../ui/use-toast";
@@ -30,6 +28,7 @@ import FormSubmitButton from "../button/FormSubmitButton";
 import {
   saveBookAuthoredEdited,
   saveBookAuthoredEditedNill,
+  updateBookAuthoredEdited,
 } from "@/app/actions/user/records/book-authored-edited";
 import {
   Select,
@@ -40,6 +39,11 @@ import {
 } from "../ui/select";
 import { RequiredTag } from "../InputFields/required-tag";
 import { DynamicSelectInput } from "../InputFields/dynamicselectInput";
+import { yesNo } from "@/constants/yes-no";
+import { years } from "@/constants/data";
+import { countries } from "@/constants/countries";
+import { SDG } from "@/constants/sdg";
+import { MultiSelectInput } from "../InputFields/MultiSelectInput";
 
 export function Form2BookAuthoredEdited({
   id,
@@ -48,7 +52,6 @@ export function Form2BookAuthoredEdited({
   id: string;
   updateData?: any;
 }) {
-  const [loading, setLoading] = useState(false);
   const [author, setAuthor] = useState("");
   const [nill, setNill] = useState(false);
   const [success, setSuccess] = useState<string | undefined>("");
@@ -68,15 +71,22 @@ export function Form2BookAuthoredEdited({
       publisherName: updateData?.publisherName || "",
       affiliation: updateData?.affiliation || "",
       link: updateData?.link || "",
-      addressing: updateData?.addressing || "SDG",
+      addressing: updateData?.addressing || [],
     },
   });
 
   const onSubmit = async (values: z.infer<typeof bookAuthoredSchema>) => {
-    const result = await saveBookAuthoredEdited(values, id);
-    setSuccess(result?.success);
-    setError(result?.error);
-    router.refresh();
+    if (updateData) {
+      const result = await updateBookAuthoredEdited(values, updateData.id);
+      setSuccess(result?.success);
+      setError(result?.error);
+      router.push("/user/dashboard/add-record");
+    } else {
+      const result = await saveBookAuthoredEdited(values, id);
+      setSuccess(result?.success);
+      setError(result?.error);
+      router.refresh();
+    }
   };
 
   const handleNill = async (e: FormEvent<HTMLFormElement>) => {
@@ -91,19 +101,21 @@ export function Form2BookAuthoredEdited({
 
   return (
     <>
-      <div className="flex items-center w-16 p-2 mb-4 space-x-2 border-2 rounded-md border-primary">
-        <Checkbox
-          onClick={() => setNill((prev) => !prev)}
-          id="nill"
-          checked={nill}
-        />
-        <label
-          htmlFor="nill"
-          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-        >
-          Nill
-        </label>
-      </div>
+      {!updateData && (
+        <div className="flex items-center w-16 p-2 mb-4 space-x-2 border-2 rounded-md border-primary">
+          <Checkbox
+            onClick={() => setNill((prev) => !prev)}
+            id="nill"
+            checked={nill}
+          />
+          <label
+            htmlFor="nill"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            Nill
+          </label>
+        </div>
+      )}
       {nill ? (
         <>
           <div className="flex items-center justify-center w-full font-bold text-destructive">
@@ -215,7 +227,7 @@ export function Form2BookAuthoredEdited({
                   label="Affiliation with AIOU"
                   name="affiliation"
                   control={form.control}
-                  items={["No", "Yes"]}
+                  items={yesNo}
                   required
                 />
               </div>
@@ -232,10 +244,11 @@ export function Form2BookAuthoredEdited({
             {/* ADDRESSING */}
             <MultiSelectInput
               label="Addressing any SDG"
-              name="SDG"
-              data={SDG}
+              name="addressing"
+              options={SDG}
+              control={form.control}
+              required
             />
-
             <div>
               {success && <FormSuccess message={success} className="my-2" />}
               {error && <FormError message={error} className="my-2" />}

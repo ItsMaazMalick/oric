@@ -44,6 +44,39 @@ export async function saveAgreementsSigned(
   revalidatePath("/user/dashboard/add-record");
 }
 
+export async function updateAgreementsSigned(
+  values: z.infer<typeof agreementSignedSchema>,
+  file: string,
+  id: string
+) {
+  const validData = agreementSignedSchema.safeParse(values);
+  if (!validData?.success) {
+    return { error: "Invalid data provided" };
+  }
+  const existingRecord = await prisma.agreementSigned.findUnique({
+    where: { id },
+  });
+  if (!existingRecord) {
+    return { error: "No record found" };
+  }
+
+  await prisma.agreementSigned.update({
+    where: { id },
+    data: {
+      typeOfLinkage: validData.data.typeOfLinkage,
+      linkageEstablishmentDate: validData.data.linkageEstablishmentDate,
+      scope: validData.data.scope,
+      collaboratingAgency: validData.data.collaboratingAgency,
+      collaboratingAgencyCountry: validData.data.collaboratingAgencyCountry,
+      duration: validData.data.duration,
+      areaOfFocus: validData.data.areaOfFocus,
+      mouCopy: file,
+    },
+  });
+  return { success: "Data saved Successfully" };
+  revalidatePath("/user/dashboard/add-record");
+}
+
 export async function saveAgreementsSignedNill(id: string) {
   if (!id) {
     return { error: "Id is required" };

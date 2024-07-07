@@ -42,6 +42,41 @@ export async function savePolicyAdvocacy(
   revalidatePath("/user/dashboard/add-record");
 }
 
+export async function updatePolicyAdvocacy(
+  values: z.infer<typeof policyAdvocacySchema>,
+  file: string,
+  id: string
+) {
+  const validData = policyAdvocacySchema.safeParse(values);
+  if (!validData?.success) {
+    return { error: "Invalid data provided" };
+  }
+
+  const existingRecord = await prisma.policyAdvocacy.findUnique({
+    where: { id },
+  });
+  if (!existingRecord) {
+    return { error: "No record found" };
+  }
+
+  await prisma.policyAdvocacy.update({
+    where: { id },
+    data: {
+      year: validData.data.year,
+      nameOfGovernmentBody: validData.data.nameOfGovernmentBody,
+      nameOfResearcher: validData.data.nameOfResearcher,
+      designationOfResearcher: validData.data.designationOfResearcher,
+      areaAdvocated: validData.data.areaAdvocated,
+      brief: validData.data.brief,
+      partners: validData.data.partners,
+      advocacyTools: validData.data.advocacyTools,
+      policyCaseStudyCopy: file,
+    },
+  });
+  return { success: "Data saved Successfully" };
+  revalidatePath("/user/dashboard/add-record");
+}
+
 export async function ssavePolicyAdvocacyNill(id: string) {
   if (!id) {
     return { error: "Id is required" };
