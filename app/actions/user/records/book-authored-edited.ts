@@ -113,7 +113,7 @@ export async function saveBookAuthoredEditedNill(id: string) {
       publisherName: "NILL",
       affiliation: "NILL",
       link: "NILL",
-      addressing: "NILL",
+      addressing: [],
       user: {
         connect: {
           id,
