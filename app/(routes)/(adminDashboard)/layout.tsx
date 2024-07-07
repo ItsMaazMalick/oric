@@ -6,6 +6,7 @@ import TooltipComponent from "@/components/tooltip/TooltipComponent";
 import Link from "next/link";
 import { getAdminSession } from "@/app/actions/session";
 import { redirect } from "next/navigation";
+import { AdminLogout } from "@/components/button/AdminLogout";
 
 export default async function AdminDashboardLayout({
   children,
@@ -42,7 +43,7 @@ export default async function AdminDashboardLayout({
             </div>
           </TooltipComponent>
 
-          <Logout />
+          <AdminLogout />
         </div>
         {/* <div className="text-primary-foreground">{name}</div> */}
         {/* <span className="text-primary-foreground">{name.slice(0, 1)}</span> */}

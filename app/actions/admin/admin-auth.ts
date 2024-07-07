@@ -27,23 +27,20 @@ export async function loginAdmin(values: z.infer<typeof adminLoginSchema>) {
       return { error: "All fields are required" };
     }
     const { email, password } = validatedFields.data;
-
-    if (!email || !password) {
-      revalidatePath("/user/login");
-      return { error: "All fields are required" };
-    }
     const admin = await prisma.admin.findUnique({
       where: { email },
     });
 
     if (!admin) {
-      revalidatePath("/admin/login");
       return { error: "Invalid credentials" };
     }
     const isPassword = await bcrypt.compare(password, admin.password);
     if (!isPassword) {
-      revalidatePath("/admin/login");
       return { error: "Invalid credentials" };
+    }
+
+    if (!admin.isVerified) {
+      return { error: "Verfication is required" };
     }
     //TOKEN DATA
     const tokenData = {

@@ -3,6 +3,7 @@ import { allRecords } from "@/app/actions/user/records";
 import { AccordionComp } from "@/components/accordion/AccordionComp";
 import BackButton from "@/components/button/BackButton";
 import { cookies } from "next/headers";
+import Image from "next/image";
 
 const AddBook = async () => {
   const session = await getUserSession();
