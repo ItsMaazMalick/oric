@@ -1,18 +1,11 @@
+import { DeleteUserRecord } from "@/components/dialog/delete-dialog";
+import { UpdateDialog } from "@/components/dialog/update-dialog";
 import { ViewDialog } from "@/components/dialog/view-dialog";
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
-import {
-  ArrowUpDown,
-  Eye,
-  FileCog,
-  FilePenLine,
-  Target,
-  Trash2,
-} from "lucide-react";
+import { ArrowUpDown, Cog, Eye, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { modalHeaders } from "./headers";
-import { DeleteUserRecord } from "@/components/dialog/delete-dialog";
-import { UpdateDialog } from "@/components/dialog/update-dialog";
 
 const firstCell = (row: any) => {
   return (
@@ -88,7 +81,7 @@ const actionCell = (row: any, title: string, index: number) => {
       </ViewDialog>
       <UpdateDialog title={title} data={row.original} index={index + 1}>
         <div className="cursor-pointer text-[10px] flex flex-col justify-center items-center text-primary">
-          <Eye />
+          <Cog />
           Update
         </div>
       </UpdateDialog>
